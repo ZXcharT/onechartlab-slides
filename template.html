@@ -1,0 +1,938 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OneChartLab Slides · Layout Gallery</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Noto+Sans+SC:wght@300;400;500;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #171824;
+      --bg-surface: #1e2030;
+      --bg-elevated: #252838;
+      --accent: #f0b93c;
+      --accent-rgb: 240, 185, 60;
+      --accent-light: #f5cd6e;
+      --accent-soft: rgba(240, 185, 60, 0.14);
+      --accent-subtle: rgba(240, 185, 60, 0.06);
+      --accent-border: rgba(240, 185, 60, 0.22);
+      --red: #e3392a;
+      --text: #ededf5;
+      --text-secondary: #9898a8;
+      --text-muted: #646478;
+      --border: rgba(255, 255, 255, 0.07);
+      --border-strong: rgba(255, 255, 255, 0.12);
+      --positive: #00b894;
+    }
+
+    * { box-sizing: border-box; }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, "Noto Sans SC", sans-serif;
+    }
+
+    button { font: inherit; }
+
+    .deck {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      padding: 5.5vw 7vw 8vh;
+      overflow: hidden;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateX(42px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    .slide.active {
+      z-index: 1;
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateX(0);
+    }
+
+    .slide.prev { transform: translateX(-42px); }
+
+    .slide-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 2.5vh;
+    }
+
+    .slide-content {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      justify-content: center;
+      min-height: 0;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    .metric-value,
+    .stat-num,
+    .agenda-num,
+    .bar-pct,
+    .step-circle,
+    .tl3-time {
+      font-family: "Space Grotesk", "Noto Sans SC", sans-serif;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    p,
+    ul,
+    blockquote { margin-top: 0; }
+
+    h1 { font-size: clamp(2.8rem, 5vw, 4.2rem); line-height: 1.08; }
+    h2 { margin-bottom: 1.5rem; font-size: clamp(2.4rem, 3.5vw, 3.4rem); line-height: 1.15; }
+    h3 { margin-bottom: 0.5rem; font-size: clamp(1.1rem, 1.55vw, 1.45rem); }
+    h4 { margin: 0; color: var(--accent); font-size: clamp(1rem, 1.3vw, 1.2rem); letter-spacing: 0.1em; text-transform: uppercase; }
+    p,
+    li { color: var(--text-secondary); font-size: clamp(1.1rem, 1.45vw, 1.4rem); line-height: 1.75; }
+
+    .tag {
+      padding: 0.4rem 1rem;
+      border-radius: 999px;
+      background: var(--accent-subtle);
+      color: var(--accent);
+      font-size: 0.95rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+    }
+
+    .accent-line {
+      width: 64px;
+      height: 4px;
+      margin-bottom: 1.6rem;
+      background: var(--accent);
+    }
+
+    .text-gradient {
+      background: linear-gradient(135deg, var(--accent) 0%, #ffe9a0 52%, #fff 100%);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .agenda-item,
+    .metric-card,
+    .stat-cell,
+    .detail-block,
+    .stack-tier {
+      border: 1px solid var(--border);
+      background: var(--bg-surface);
+      transition: border-color 0.3s ease, background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
+    }
+
+    .agenda-item:hover,
+    .metric-card:hover,
+    .stat-cell:hover,
+    .detail-block:hover,
+    .stack-tier:hover {
+      border-color: var(--accent-border);
+      background: var(--bg-elevated);
+    }
+
+    .agenda-item.expanded,
+    .metric-card.expanded,
+    .stat-cell.expanded,
+    .detail-block.expanded,
+    .stack-tier.expanded {
+      border-color: var(--accent);
+      background: var(--bg);
+      box-shadow: 0 0 0 1px var(--accent), 0 8px 32px rgba(0, 0, 0, 0.4);
+      transform: scale(1.04);
+    }
+
+    /* 01 · cover */
+    .layout-cover {
+      justify-content: center;
+      padding-left: 16vw;
+    }
+
+    .layout-cover h1 {
+      position: relative;
+      z-index: 2;
+      max-width: 70vw;
+      margin-bottom: 1.5rem;
+      font-size: clamp(3.5rem, 6.2vw, 5.2rem);
+    }
+
+    .layout-cover .subtitle {
+      position: relative;
+      z-index: 2;
+      max-width: 66vw;
+      margin-bottom: 2rem;
+      font-size: clamp(1.35rem, 2vw, 1.9rem);
+    }
+
+    .layout-cover .meta {
+      position: relative;
+      z-index: 2;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    .cover-deco {
+      position: absolute;
+      inset: 0 0 0 auto;
+      width: 38vw;
+      background: var(--accent-subtle);
+      clip-path: polygon(28% 0, 100% 0, 100% 100%, 0 100%);
+    }
+
+    .cover-orbs,
+    .cover-datastream {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .cover-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(100px);
+    }
+
+    .cover-orb-1 {
+      top: -15%;
+      right: -10%;
+      width: 55vw;
+      height: 55vw;
+      background: rgba(var(--accent-rgb), 0.35);
+      animation: orbFloat1 18s ease-in-out infinite alternate;
+    }
+
+    .cover-orb-2 {
+      bottom: -18%;
+      left: 8%;
+      width: 40vw;
+      height: 40vw;
+      background: rgba(var(--accent-rgb), 0.2);
+      animation: orbFloat2 22s ease-in-out infinite alternate;
+    }
+
+    .cover-datastream {
+      display: flex;
+      gap: 3vw;
+      opacity: 0.06;
+    }
+
+    .cover-datastream span {
+      color: var(--accent);
+      font: 12px/2.1 "JetBrains Mono", monospace;
+      writing-mode: vertical-rl;
+      animation: dataDrift 18s linear infinite;
+    }
+
+    .cover-datastream span:nth-child(even) { animation-direction: reverse; }
+
+    @keyframes orbFloat1 { to { transform: translate(-10%, 9%) scale(1.08); } }
+    @keyframes orbFloat2 { to { transform: translate(14%, -10%) scale(0.94); } }
+    @keyframes dataDrift { to { transform: translateY(-30%); } }
+
+    /* 02 · agenda */
+    .agenda-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-rows: repeat(3, 1fr);
+      gap: 1.25rem;
+      min-height: 0;
+    }
+
+    .agenda-item {
+      display: grid;
+      grid-template-columns: 68px 1fr;
+      grid-template-rows: auto auto;
+      align-content: center;
+      padding: 1.15rem 1.4rem;
+      border-radius: 12px;
+    }
+
+    .agenda-num {
+      grid-row: 1 / 3;
+      align-self: center;
+      color: var(--accent);
+      font-size: 1.4rem;
+      font-weight: 600;
+    }
+
+    .agenda-item h3,
+    .agenda-item p { margin-bottom: 0; }
+    .agenda-item p { font-size: clamp(0.9rem, 1.1vw, 1.05rem); }
+
+    /* 03 · metrics */
+    .metrics-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+
+    .metric-card {
+      min-height: 330px;
+      padding: 1.5rem;
+      border-radius: 14px;
+    }
+
+    .metric-value {
+      margin-bottom: 0.35rem;
+      color: var(--accent);
+      font-size: clamp(2.8rem, 4.8vw, 4.6rem);
+      font-weight: 700;
+    }
+
+    .metric-label { margin-bottom: 0.8rem; font-weight: 600; }
+    .metric-desc,
+    .metric-supports li { font-size: clamp(0.92rem, 1.12vw, 1.06rem); }
+    .metric-supports { padding-left: 1.25rem; }
+
+    /* 04 · dashboard */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+    }
+
+    .stat-cell {
+      min-height: 168px;
+      padding: 1.3rem 1.45rem;
+      border-radius: 12px;
+    }
+
+    .stat-num { color: var(--accent); font-size: 2.1rem; font-weight: 700; }
+    .stat-unit { margin-left: 0.35rem; color: var(--text-muted); font-size: 0.85rem; }
+    .stat-name { margin-top: 0.55rem; font-weight: 600; }
+    .stat-context { margin: 0.35rem 0 0; font-size: 0.94rem; line-height: 1.5; }
+
+    /* 05 · split */
+    .split-body {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: center;
+    }
+
+    .insight-list { padding-left: 1.35rem; }
+    .insight-list li { margin-bottom: 1rem; }
+
+    .split-highlight {
+      padding: 1.8rem;
+      border: 1px solid var(--accent-border);
+      border-radius: 12px;
+      background: var(--bg-surface);
+      color: var(--text);
+      font-size: clamp(1.25rem, 1.75vw, 1.65rem);
+      line-height: 1.55;
+    }
+
+    .mini-stat-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.8rem;
+      margin-top: 1rem;
+    }
+
+    .mini-stat {
+      padding: 0.85rem;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--bg-surface);
+      text-align: center;
+    }
+
+    .mini-val { color: var(--accent); font-size: 1.25rem; font-weight: 600; }
+    .mini-label { margin-top: 0.25rem; color: var(--text-muted); font-size: 0.78rem; }
+
+    /* 06 · bars */
+    .bars-container { display: grid; gap: 1rem; }
+    .bar-item {
+      display: grid;
+      grid-template-columns: minmax(170px, 1fr) 3fr 62px;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .bar-label,
+    .bar-pct { font-size: 1rem; }
+    .bar-pct { color: var(--accent); text-align: right; }
+    .bar-track { height: 22px; overflow: hidden; border-radius: 6px; background: var(--accent-subtle); }
+    .bar-fill { height: 100%; border-radius: 6px; background: var(--accent); transition: width 0.8s ease; }
+
+    /* 07 · quote */
+    .layout-quote {
+      align-items: center;
+      justify-content: center;
+      padding-inline: 12vw;
+      text-align: center;
+    }
+
+    .quote-mark {
+      margin-bottom: 1rem;
+      color: var(--accent);
+      font: 600 1rem "Space Grotesk", sans-serif;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+
+    .layout-quote blockquote {
+      max-width: 980px;
+      margin-bottom: 1.8rem;
+      color: var(--text);
+      font: 500 clamp(2.2rem, 4vw, 4rem)/1.25 "Space Grotesk", "Noto Sans SC", sans-serif;
+    }
+
+    .quote-source { color: var(--text-muted); font-size: 0.95rem; }
+
+    /* 08 · timeline */
+    .timeline-track {
+      position: relative;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.3rem;
+    }
+
+    .timeline-track::before {
+      position: absolute;
+      top: 28px;
+      right: 0;
+      left: 56px;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--border-strong), var(--accent));
+      background-size: 200% 100%;
+      content: "";
+      animation: timelineFlow 3s linear infinite;
+    }
+
+    .timeline-step { position: relative; transition: opacity 0.2s ease, transform 0.2s ease; }
+    .timeline-step:hover { transform: translateY(-4px); }
+    .step-circle {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      width: 56px;
+      height: 56px;
+      margin-bottom: 1rem;
+      border-radius: 50%;
+      background: var(--accent);
+      color: var(--bg);
+      place-items: center;
+      font-size: 1.25rem;
+      font-weight: 600;
+    }
+
+    .step-title { margin-bottom: 0.4rem; font-weight: 600; }
+    .step-desc { color: var(--text-secondary); font-size: 0.98rem; line-height: 1.55; }
+    @keyframes timelineFlow { to { background-position: -200% 0; } }
+
+    /* 09 · detail */
+    .detail-body {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+    }
+
+    .detail-col { display: grid; gap: 1.25rem; }
+    .detail-block { padding: 1.35rem 1.5rem; border-radius: 12px; }
+    .detail-block p { margin-bottom: 0; font-size: 1rem; }
+
+    /* 10 · stack */
+    .stack-body { display: grid; gap: 0.8rem; }
+    .stack-tier {
+      display: grid;
+      grid-template-columns: 56px minmax(110px, 0.7fr) 2fr;
+      gap: 1rem;
+      align-items: center;
+      padding: 0.85rem 1rem;
+      border-radius: 12px;
+    }
+
+    .stack-icon {
+      display: grid;
+      width: 44px;
+      height: 44px;
+      border: 1px solid var(--border-strong);
+      border-radius: 12px;
+      place-items: center;
+      font-size: 1.2rem;
+    }
+
+    .stack-tier:first-child .stack-icon { border-color: var(--accent); background: var(--accent); color: var(--bg); }
+    .stack-label { font-weight: 600; }
+    .stack-desc { color: var(--text-secondary); font-size: 0.95rem; line-height: 1.45; }
+
+    /* 11 · compare */
+    .compare-table { width: 100%; border-collapse: separate; border-spacing: 0; overflow: hidden; border-radius: 12px; }
+    .compare-table th,
+    .compare-table td { padding: 0.95rem 1.1rem; border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .compare-table th { background: var(--accent); color: var(--bg); text-align: left; }
+    .compare-table td { background: var(--bg-surface); color: var(--text-secondary); }
+    .compare-table tr:last-child td { border-bottom: 0; }
+    .compare-table th:last-child,
+    .compare-table td:last-child { border-right: 0; }
+
+    /* 12 · three-column timeline */
+    .tl3-header,
+    .tl3-row { display: grid; grid-template-columns: 1fr 120px 1fr; gap: 1rem; }
+    .tl3-header { margin-bottom: 0.55rem; color: var(--text-muted); font-size: 0.78rem; text-transform: uppercase; }
+    .tl3-h-label:nth-child(2) { text-align: center; }
+    .tl3-row { align-items: center; min-height: 48px; border-bottom: 1px solid var(--border); }
+    .tl3-mid { display: flex; align-items: center; justify-content: center; gap: 0.55rem; }
+    .tl3-time { color: var(--accent); font-weight: 600; }
+    .tl3-node { width: 10px; height: 10px; border: 2px solid var(--accent); border-radius: 50%; background: var(--bg); }
+    .tl3-left,
+    .tl3-right { color: var(--text-secondary); font-size: 0.96rem; }
+    .tl3-sub { display: block; margin-top: 0.15rem; color: var(--text-muted); font-size: 0.74rem; }
+
+    /* 13–16 · statement pages */
+    .layout-hook,
+    .layout-statement,
+    .layout-outro,
+    .layout-closing {
+      align-items: center;
+      justify-content: center;
+      padding-inline: 12vw;
+      text-align: center;
+    }
+
+    .hook-orb {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 50vw;
+      height: 50vw;
+      border-radius: 50%;
+      background: rgba(var(--accent-rgb), 0.25);
+      filter: blur(120px);
+      opacity: 0.35;
+      transform: translate(-50%, -50%);
+      animation: hookOrbBreathe 6s ease-in-out infinite alternate;
+    }
+
+    .hook-giant-q { position: absolute; color: rgba(var(--accent-rgb), 0.08); font: 700 36vw "Space Grotesk"; }
+    .layout-hook h1,
+    .layout-statement h1,
+    .layout-outro h1,
+    .layout-closing h1 { position: relative; z-index: 1; max-width: 1080px; font-size: clamp(3.2rem, 5.8vw, 5.4rem); }
+    .hook-sub,
+    .outro-sub,
+    .closing-sub { position: relative; z-index: 1; max-width: 880px; }
+
+    .statement-cursor {
+      display: inline-block;
+      width: 0.45em;
+      height: 0.8em;
+      margin-left: 0.12em;
+      background: var(--accent);
+      vertical-align: baseline;
+      animation: cursorBlink 1s steps(1) infinite;
+    }
+
+    .layout-outro h1,
+    .layout-outro .outro-sub { transition: opacity 0.5s ease, transform 0.5s ease, font-size 0.5s ease; }
+    .layout-outro.focus-sub h1 { opacity: 0.4; transform: scale(0.85); }
+    .layout-outro.focus-sub .outro-sub { color: var(--text); font-size: clamp(2.1rem, 3vw, 2.8rem); }
+
+    .closing-ring-outer,
+    .closing-ring-inner {
+      position: absolute;
+      border: 1px solid var(--accent-border);
+      border-radius: 50%;
+      animation: ringFloat 14s ease-in-out infinite alternate;
+    }
+
+    .closing-ring-outer { width: 44vw; height: 44vw; }
+    .closing-ring-inner { width: 30vw; height: 30vw; animation-delay: -5s; }
+
+    @keyframes hookOrbBreathe { to { opacity: 0.48; transform: translate(-50%, -50%) scale(1.15); } }
+    @keyframes cursorBlink { 50% { opacity: 0; } }
+    @keyframes ringFloat { to { transform: rotate(16deg) scale(1.04); } }
+
+    /* Navigation */
+    .slide-counter,
+    .keyboard-hint,
+    .nav-controls {
+      position: fixed;
+      z-index: 10;
+      bottom: 2.1vh;
+    }
+
+    .slide-counter { left: 3vw; color: var(--text-muted); font: 500 0.78rem "Space Grotesk", sans-serif; }
+    .keyboard-hint { left: 50%; color: var(--text-muted); font-size: 0.72rem; transform: translateX(-50%); }
+    .nav-controls { right: 3vw; display: flex; gap: 0.55rem; }
+    .nav-btn {
+      display: grid;
+      width: 34px;
+      height: 34px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--bg-surface);
+      color: var(--text);
+      cursor: pointer;
+      place-items: center;
+    }
+
+    .nav-btn:hover:not(:disabled) { border-color: var(--accent-border); color: var(--accent); }
+    .nav-btn:disabled { opacity: 0.28; cursor: not-allowed; }
+    .progress-bar { position: fixed; z-index: 10; bottom: 0; left: 0; height: 3px; background: var(--accent); transition: width 0.4s ease; }
+
+    @media (max-width: 780px) {
+      .slide { padding: 7vh 7vw 9vh; overflow-y: auto; }
+      .layout-cover { padding-left: 8vw; }
+      .layout-cover h1,
+      .layout-cover .subtitle { max-width: 100%; }
+      .agenda-grid,
+      .metrics-row,
+      .stats-grid,
+      .split-body,
+      .detail-body,
+      .timeline-track { grid-template-columns: 1fr; }
+      .agenda-grid { grid-template-rows: none; }
+      .timeline-track::before { display: none; }
+      .stack-tier,
+      .tl3-header,
+      .tl3-row { grid-template-columns: 1fr; }
+      .mini-stat-row { grid-template-columns: 1fr; }
+      .keyboard-hint { display: none; }
+    }
+
+    @media (max-height: 720px) and (min-width: 781px) {
+      .slide { padding-top: 4vh; padding-bottom: 7vh; }
+      h2 { margin-bottom: 0.9rem; font-size: clamp(1.9rem, 3vw, 2.8rem); }
+      p,
+      li { font-size: clamp(0.88rem, 1.08vw, 1.05rem); line-height: 1.5; }
+      .metric-card { min-height: 260px; padding: 1.1rem; }
+      .stat-cell { min-height: 132px; padding: 0.9rem 1rem; }
+      .agenda-grid,
+      .stats-grid,
+      .bars-container { gap: 0.7rem; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+      .slide,
+      .slide.prev { transform: none; }
+      .expanded { transform: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <main class="deck" aria-label="OneChartLab Slides layout gallery">
+    <!-- 01 · Cover -->
+    <section class="slide layout-cover active">
+      <div class="cover-orbs" aria-hidden="true">
+        <div class="cover-orb cover-orb-1"></div>
+        <div class="cover-orb cover-orb-2"></div>
+      </div>
+      <div class="cover-datastream" id="cover-datastream" aria-hidden="true"></div>
+      <div class="cover-deco" aria-hidden="true"></div>
+      <div class="accent-line"></div>
+      <h1><span class="text-gradient">OneChartLab Slides</span><br>agent-friendly HTML presentations</h1>
+      <p class="subtitle">A neutral seed deck for layout exploration. Replace every placeholder with attributable project material.</p>
+      <p class="meta">ZXcharT theme · layout gallery</p>
+    </section>
+
+    <!-- 02 · Agenda -->
+    <section class="slide layout-agenda">
+      <header class="slide-header"><h4>01 / Agenda</h4><span class="tag">Grid</span></header>
+      <div class="slide-content">
+        <h2>Six places for a narrative</h2>
+        <div class="agenda-grid">
+          <article class="agenda-item"><span class="agenda-num">01</span><h3>Context</h3><p>What changed?</p></article>
+          <article class="agenda-item"><span class="agenda-num">02</span><h3>Question</h3><p>What matters?</p></article>
+          <article class="agenda-item"><span class="agenda-num">03</span><h3>Evidence</h3><p>What supports it?</p></article>
+          <article class="agenda-item"><span class="agenda-num">04</span><h3>Options</h3><p>What can happen?</p></article>
+          <article class="agenda-item"><span class="agenda-num">05</span><h3>Decision</h3><p>What follows?</p></article>
+          <article class="agenda-item"><span class="agenda-num">06</span><h3>Next step</h3><p>What should be verified?</p></article>
+        </div>
+      </div>
+    </section>
+
+    <!-- 03 · Metrics -->
+    <section class="slide layout-metrics">
+      <header class="slide-header"><h4>02 / Metrics</h4><span class="tag">Three cards</span></header>
+      <div class="slide-content">
+        <h2>Use labeled placeholders, not invented facts</h2>
+        <div class="metrics-row">
+          <article class="metric-card"><div class="metric-value">—</div><div class="metric-label">Primary measure</div><p class="metric-desc">State the unit, source, and period before using a number.</p><ul class="metric-supports"><li>Definition</li><li>Time window</li><li>Source link</li></ul></article>
+          <article class="metric-card"><div class="metric-value">—</div><div class="metric-label">Comparison</div><p class="metric-desc">Define the baseline and comparison method.</p><ul class="metric-supports"><li>Reference group</li><li>Calculation</li><li>Known limits</li></ul></article>
+          <article class="metric-card"><div class="metric-value">—</div><div class="metric-label">Decision signal</div><p class="metric-desc">Explain what threshold would change the decision.</p><ul class="metric-supports"><li>Trigger</li><li>Owner</li><li>Review date</li></ul></article>
+        </div>
+      </div>
+    </section>
+
+    <!-- 04 · Dashboard -->
+    <section class="slide layout-dashboard">
+      <header class="slide-header"><h4>03 / Dashboard</h4><span class="tag">Six cells</span></header>
+      <div class="slide-content">
+        <h2>Compact status overview</h2>
+        <div class="stats-grid">
+          <article class="stat-cell"><div><span class="stat-num">A</span><span class="stat-unit">input</span></div><div class="stat-name">Source</div><p class="stat-context">Verified and attributable.</p></article>
+          <article class="stat-cell"><div><span class="stat-num">B</span><span class="stat-unit">scope</span></div><div class="stat-name">Boundary</div><p class="stat-context">Included and excluded items.</p></article>
+          <article class="stat-cell"><div><span class="stat-num">C</span><span class="stat-unit">method</span></div><div class="stat-name">Process</div><p class="stat-context">A reproducible transformation.</p></article>
+          <article class="stat-cell"><div><span class="stat-num">D</span><span class="stat-unit">result</span></div><div class="stat-name">Output</div><p class="stat-context">Observed, not inferred.</p></article>
+          <article class="stat-cell"><div><span class="stat-num">E</span><span class="stat-unit">risk</span></div><div class="stat-name">Limitation</div><p class="stat-context">Known uncertainty or conflict.</p></article>
+          <article class="stat-cell"><div><span class="stat-num">F</span><span class="stat-unit">action</span></div><div class="stat-name">Next step</div><p class="stat-context">Owner and review point.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <!-- 05 · Split -->
+    <section class="slide layout-split">
+      <header class="slide-header"><h4>04 / Split</h4><span class="tag">Two columns</span></header>
+      <div class="slide-content">
+        <h2>Separate evidence from interpretation</h2>
+        <div class="split-body">
+          <ul class="insight-list"><li>Record the source and time window.</li><li>State what the evidence directly supports.</li><li>Mark assumptions and alternatives explicitly.</li></ul>
+          <div>
+            <div class="split-highlight">Use this panel for a synthesis, decision rule, or unresolved question. It is not a quotation unless a real source is supplied.</div>
+            <div class="mini-stat-row"><div class="mini-stat"><div class="mini-val">01</div><div class="mini-label">Observation</div></div><div class="mini-stat"><div class="mini-val">02</div><div class="mini-label">Inference</div></div><div class="mini-stat"><div class="mini-val">03</div><div class="mini-label">Decision</div></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 06 · Bars -->
+    <section class="slide layout-bars">
+      <header class="slide-header"><h4>05 / Bars</h4><span class="tag">Illustrative</span></header>
+      <div class="slide-content">
+        <h2>Example scale — replace with sourced values</h2>
+        <div class="bars-container">
+          <div class="bar-item"><div class="bar-label">Priority A</div><div class="bar-track"><div class="bar-fill" style="width: 84%"></div></div><div class="bar-pct">84</div></div>
+          <div class="bar-item"><div class="bar-label">Priority B</div><div class="bar-track"><div class="bar-fill" style="width: 68%"></div></div><div class="bar-pct">68</div></div>
+          <div class="bar-item"><div class="bar-label">Priority C</div><div class="bar-track"><div class="bar-fill" style="width: 52%"></div></div><div class="bar-pct">52</div></div>
+          <div class="bar-item"><div class="bar-label">Priority D</div><div class="bar-track"><div class="bar-fill" style="width: 36%"></div></div><div class="bar-pct">36</div></div>
+          <div class="bar-item"><div class="bar-label">Priority E</div><div class="bar-track"><div class="bar-fill" style="width: 20%"></div></div><div class="bar-pct">20</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 07 · Quote -->
+    <section class="slide layout-quote">
+      <div class="quote-mark">Attributed quotation placeholder</div>
+      <blockquote>[Insert a verified quotation, or replace this layout with a non-quotation statement.]</blockquote>
+      <p class="quote-source">[Author · source · date · permission status]</p>
+    </section>
+
+    <!-- 08 · Timeline -->
+    <section class="slide layout-timeline">
+      <header class="slide-header"><h4>06 / Timeline</h4><span class="tag">Four steps</span></header>
+      <div class="slide-content">
+        <h2>A simple production path</h2>
+        <div class="timeline-track">
+          <article class="timeline-step"><div class="step-circle">1</div><div class="step-title">Frame</div><div class="step-desc">Define audience and outcome.</div></article>
+          <article class="timeline-step"><div class="step-circle">2</div><div class="step-title">Gather</div><div class="step-desc">Collect attributable inputs.</div></article>
+          <article class="timeline-step"><div class="step-circle">3</div><div class="step-title">Compose</div><div class="step-desc">Map content to layouts.</div></article>
+          <article class="timeline-step"><div class="step-circle">4</div><div class="step-title">Review</div><div class="step-desc">Test readability and claims.</div></article>
+        </div>
+      </div>
+    </section>
+
+    <!-- 09 · Detail -->
+    <section class="slide layout-detail">
+      <header class="slide-header"><h4>07 / Detail</h4><span class="tag">Two groups</span></header>
+      <div class="slide-content">
+        <h2>Keep detail blocks independently reviewable</h2>
+        <div class="detail-body">
+          <div class="detail-col"><article class="detail-block"><h3>Claim</h3><p>Use a short statement with a supporting note.</p></article><article class="detail-block"><h3>Evidence</h3><p>Link a source or mark the claim as pending.</p></article></div>
+          <div class="detail-col"><article class="detail-block"><h3>Constraint</h3><p>Describe limits that affect interpretation.</p></article><article class="detail-block"><h3>Decision</h3><p>Connect the conclusion to a next action.</p></article></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 10 · Stack -->
+    <section class="slide layout-stack">
+      <header class="slide-header"><h4>08 / Stack</h4><span class="tag">Layers</span></header>
+      <div class="slide-content">
+        <h2>A portable agent workflow</h2>
+        <div class="stack-body">
+          <article class="stack-tier"><div class="stack-icon">01</div><div class="stack-label">Data</div><div class="stack-desc">Use user-provided or public, attributable inputs.</div></article>
+          <article class="stack-tier"><div class="stack-icon">02</div><div class="stack-label">Skill</div><div class="stack-desc">Apply a reusable method with declared constraints.</div></article>
+          <article class="stack-tier"><div class="stack-icon">03</div><div class="stack-label">Execution</div><div class="stack-desc">Create a traceable draft in an isolated output path.</div></article>
+          <article class="stack-tier"><div class="stack-icon">04</div><div class="stack-label">Verification</div><div class="stack-desc">Check facts, links, layout fit, and unresolved gaps independently.</div></article>
+        </div>
+      </div>
+    </section>
+
+    <!-- 11 · Compare -->
+    <section class="slide layout-compare">
+      <header class="slide-header"><h4>09 / Compare</h4><span class="tag">Table</span></header>
+      <div class="slide-content">
+        <h2>Compare options on stated criteria</h2>
+        <table class="compare-table"><thead><tr><th>Option</th><th>Strength</th><th>Constraint</th><th>Validation</th></tr></thead><tbody><tr><td>Option A</td><td>Placeholder</td><td>Placeholder</td><td>Test</td></tr><tr><td>Option B</td><td>Placeholder</td><td>Placeholder</td><td>Review</td></tr><tr><td>Option C</td><td>Placeholder</td><td>Placeholder</td><td>Pilot</td></tr></tbody></table>
+      </div>
+    </section>
+
+    <!-- 12 · Three-column timeline -->
+    <section class="slide layout-timeline-3col">
+      <header class="slide-header"><h4>10 / Three columns</h4><span class="tag">Review loop</span></header>
+      <div class="slide-content">
+        <h2>Coordinate execution and verification</h2>
+        <div class="tl3-header"><span class="tl3-h-label">State</span><span class="tl3-h-label">Step</span><span class="tl3-h-label">Action</span></div>
+        <div class="tl3-body">
+          <div class="tl3-row"><div class="tl3-left">Need identified</div><div class="tl3-mid"><span class="tl3-time">01</span><span class="tl3-node"></span></div><div class="tl3-right">Define brief and scope<span class="tl3-sub">Decision owner</span></div></div>
+          <div class="tl3-row"><div class="tl3-left">Inputs gathered</div><div class="tl3-mid"><span class="tl3-time">02</span><span class="tl3-node"></span></div><div class="tl3-right">Build a versioned draft<span class="tl3-sub">Execution role</span></div></div>
+          <div class="tl3-row"><div class="tl3-left">Draft complete</div><div class="tl3-mid"><span class="tl3-time">03</span><span class="tl3-node"></span></div><div class="tl3-right">Check facts and layout fit<span class="tl3-sub">Independent verifier</span></div></div>
+          <div class="tl3-row"><div class="tl3-left">Issues resolved</div><div class="tl3-mid"><span class="tl3-time">04</span><span class="tl3-node"></span></div><div class="tl3-right">Record changes and gaps<span class="tl3-sub">Final owner</span></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 13 · Hook -->
+    <section class="slide layout-hook"><div class="hook-orb" aria-hidden="true"></div><div class="hook-giant-q" aria-hidden="true">?</div><h1>What must be true before a decision?</h1><p class="hook-sub">Frame a real question. Do not manufacture urgency.</p></section>
+
+    <!-- 14 · Statement -->
+    <section class="slide layout-statement"><div class="hook-orb" aria-hidden="true"></div><h1>Traceable work makes review faster.<span class="statement-cursor" aria-hidden="true"></span></h1><p class="hook-sub">Keep inputs, method, output, and limitations connected.</p></section>
+
+    <!-- 15 · Outro -->
+    <section class="slide layout-outro"><h1>Make the <span class="text-gradient">next revision</span> easier.</h1><p class="outro-sub" id="outroSub">Document the structure so another person or agent can continue safely.</p></section>
+
+    <!-- 16 · Closing -->
+    <section class="slide layout-closing"><div class="closing-ring-outer" aria-hidden="true"></div><div class="closing-ring-inner" aria-hidden="true"></div><h1>End of gallery</h1><p class="closing-sub">Copy the seed, retain only the layouts you need, and replace every placeholder.</p></section>
+  </main>
+
+  <div class="slide-counter"><span id="current">1</span> / <span id="total">16</span></div>
+  <div class="keyboard-hint">← → navigate · Space next · Home first · End last · Esc clear focus</div>
+  <div class="progress-bar" id="progress"></div>
+  <nav class="nav-controls" aria-label="Slide controls"><button class="nav-btn" id="prevBtn" aria-label="Previous slide">←</button><button class="nav-btn" id="nextBtn" aria-label="Next slide">→</button></nav>
+
+  <script>
+    const slides = [...document.querySelectorAll(".slide")];
+    const currentEl = document.getElementById("current");
+    const totalEl = document.getElementById("total");
+    const progressEl = document.getElementById("progress");
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let current = 0;
+    let expandedBlock = null;
+
+    totalEl.textContent = slides.length;
+
+    function clearExpanded() {
+      if (expandedBlock) expandedBlock.classList.remove("expanded");
+      expandedBlock = null;
+    }
+
+    function animateBars(slide) {
+      if (reduceMotion) return;
+      slide.querySelectorAll(".bar-fill").forEach((bar, index) => {
+        const target = bar.dataset.target || bar.style.width;
+        bar.dataset.target = target;
+        bar.style.width = "0";
+        requestAnimationFrame(() => setTimeout(() => { bar.style.width = target; }, index * 80));
+      });
+    }
+
+    function updateSlide() {
+      clearExpanded();
+      slides.forEach((slide, index) => {
+        slide.classList.toggle("active", index === current);
+        slide.classList.toggle("prev", index < current);
+      });
+      currentEl.textContent = current + 1;
+      progressEl.style.width = `${((current + 1) / slides.length) * 100}%`;
+      prevBtn.disabled = current === 0;
+      nextBtn.disabled = current === slides.length - 1;
+      animateBars(slides[current]);
+    }
+
+    function changeSlide(delta) {
+      current = Math.max(0, Math.min(slides.length - 1, current + delta));
+      updateSlide();
+    }
+
+    prevBtn.addEventListener("click", () => changeSlide(-1));
+    nextBtn.addEventListener("click", () => changeSlide(1));
+
+    document.addEventListener("keydown", event => {
+      if (["ArrowRight", " ", "PageDown"].includes(event.key)) { event.preventDefault(); changeSlide(1); }
+      if (["ArrowLeft", "PageUp"].includes(event.key)) { event.preventDefault(); changeSlide(-1); }
+      if (event.key === "Home") { current = 0; updateSlide(); }
+      if (event.key === "End") { current = slides.length - 1; updateSlide(); }
+      if (event.key === "Escape") clearExpanded();
+    });
+
+    let touchStartX = 0;
+    document.addEventListener("touchstart", event => { touchStartX = event.changedTouches[0].screenX; }, { passive: true });
+    document.addEventListener("touchend", event => {
+      const touchEndX = event.changedTouches[0].screenX;
+      if (Math.abs(touchStartX - touchEndX) > 50) changeSlide(touchStartX > touchEndX ? 1 : -1);
+    }, { passive: true });
+
+    document.querySelectorAll(".agenda-item, .metric-card, .stat-cell, .detail-block, .stack-tier").forEach(block => {
+      block.addEventListener("click", event => {
+        event.stopPropagation();
+        if (expandedBlock && expandedBlock !== block) expandedBlock.classList.remove("expanded");
+        block.classList.toggle("expanded");
+        expandedBlock = block.classList.contains("expanded") ? block : null;
+      });
+    });
+    document.addEventListener("click", clearExpanded);
+
+    document.querySelectorAll(".timeline-track, .stack-body").forEach(group => {
+      const items = [...group.children];
+      group.addEventListener("mousemove", event => {
+        const horizontal = group.classList.contains("timeline-track");
+        items.forEach(item => {
+          const rect = item.getBoundingClientRect();
+          const pointer = horizontal ? event.clientX : event.clientY;
+          const center = horizontal ? rect.left + rect.width / 2 : rect.top + rect.height / 2;
+          const scale = horizontal ? group.clientWidth : group.clientHeight;
+          item.style.opacity = Math.max(0.4, 1 - (Math.abs(pointer - center) / scale) * 1.2);
+        });
+      });
+      group.addEventListener("mouseleave", () => items.forEach(item => { item.style.opacity = ""; }));
+    });
+
+    const outroSub = document.getElementById("outroSub");
+    if (outroSub) outroSub.addEventListener("click", event => { event.stopPropagation(); outroSub.closest(".layout-outro").classList.toggle("focus-sub"); });
+
+    const dataStream = document.getElementById("cover-datastream");
+    if (dataStream && !reduceMotion) {
+      for (let column = 0; column < 14; column += 1) {
+        const span = document.createElement("span");
+        span.textContent = Array.from({ length: 30 }, (_, row) => `LAYOUT ${column + 1}.${row + 1}`).join(" ");
+        dataStream.appendChild(span);
+      }
+    }
+
+    updateSlide();
+  </script>
+</body>
+</html>

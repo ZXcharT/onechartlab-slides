@@ -1,0 +1,13 @@
+# Generated slide projects
+projects/*
+!projects/.gitkeep
+
+# System and editor files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Python
+__pycache__/
+*.py[cod]
