@@ -181,24 +181,24 @@ def main() -> int:
         errors.append("Python generator portability marker missing")
     if 'sh scripts/new-project.sh "my-deck"' not in readme:
         errors.append("README must invoke the POSIX generator through sh")
-    if "# OneChartLab Slides" not in readme or "agent-first" not in readme:
-        errors.append("README product name or agent-first positioning is inconsistent")
+    if "# OneChartLab Slides" not in readme or "OneChartLab Slides is an Agent Skill" not in readme:
+        errors.append("README product description is missing or inconsistent")
     if "[简体中文](README.zh-CN.md)" not in readme:
         errors.append("English README is missing the Simplified Chinese language link")
     if "## Install the Skill" not in readme or "~/.agents/skills/onechartlab-slides/" not in readme:
         errors.append("English README is missing concrete Skill installation instructions")
     if (
         "[English](README.md)" not in readme_zh
+        or "OneChartLab Slides 是一个用于制作 HTML 演示文稿的 Agent Skill" not in readme_zh
         or "## 安装 Skill" not in readme_zh
-        or "## 用 Agent 制作演示文稿" not in readme_zh
-        or "HTML 是 Agent 生成的交付格式" not in readme_zh
-        or "## 需要会 HTML 吗？" not in readme_zh
+        or "## 快速开始" not in readme_zh
+        or "## 使用要求" not in readme_zh
     ):
-        errors.append("Simplified Chinese README is incomplete or missing installation/onboarding guidance")
-    if readme.index("## Create a deck with an AI agent") > readme.index("## Advanced use: manual scaffolding"):
-        errors.append("English README must present the agent workflow before manual scaffolding")
-    if readme_zh.index("## 用 Agent 制作演示文稿") > readme_zh.index("## 高级用法：手动创建项目"):
-        errors.append("Simplified Chinese README must present the agent workflow before manual scaffolding")
+        errors.append("Simplified Chinese README is incomplete or missing user instructions")
+    if readme.index("## Quick start") > readme.index("## Optional: create a project from the command line"):
+        errors.append("English README must present normal use before optional command-line use")
+    if readme_zh.index("## 快速开始") > readme_zh.index("## 可选：使用命令行创建项目"):
+        errors.append("Simplified Chinese README must present normal use before optional command-line use")
     skill_text = (ROOT / "SKILL.md").read_text(encoding="utf-8")
     skill_frontmatter = skill_text.split("---", 2)[1] if skill_text.startswith("---") else ""
     if "name: onechartlab-slides" not in skill_frontmatter:

@@ -6,6 +6,7 @@
 - Linked the operational SOP, design system, layout reference, customization guide, and template from `SKILL.md`.
 - Added installation and first-use instructions for HanaAgent, Claude, and OpenAI Codex.
 - Corrected the install-package contract: the archive filename may carry a version, but its top-level folder must remain `onechartlab-slides/`.
+- Rewrote both READMEs as direct user documentation: features, installation, quick start, requirements, layouts, and files.
 
 ## 0.1.0 — 2026-08-01
 

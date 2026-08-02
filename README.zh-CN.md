@@ -2,120 +2,96 @@
 
 [English](README.md) | **简体中文**
 
-> 面向 AI Agent 的 HTML 幻灯片制作系统。你提供材料和要求，Agent 负责把它做成可播放、可继续修改的演示文稿。
+OneChartLab Slides 是一个用于制作 HTML 演示文稿的 Agent Skill。它内置 16 种常用版式和 ZXcharT 深色视觉主题，适合研究报告、项目汇报、产品介绍、数据展示和视频分镜。
 
-OneChartLab Slides 为 AI Agent 提供了一套明确的设计规范、16 种常用版式和完整的 ZXcharT 深色视觉主题。它的重点不是让用户亲自编写 HTML，而是让 Agent 在统一的视觉与结构约束下，稳定地生成质量更高的演示文稿。
+安装后，向 Agent 提供主题、材料、受众和制作要求，即可生成可在浏览器中播放并继续修改的演示文稿。
 
-用户主要通过自然语言与 Agent 沟通。HTML 是 Agent 生成的交付格式，不是用户必须掌握的操作方式。
+## 主要功能
 
-## 它解决什么问题
-
-通用 AI 虽然可以生成网页，但制作演示文稿时常见这些问题：页面风格不统一、内容层级混乱、信息密度失控、每一页都像临时拼出来的。
-
-OneChartLab Slides 为 Agent 提供：
-
-- 统一的字体、颜色、间距和动效规范
-- 16 种适用于不同内容目的的页面结构
-- 可直接复制和改写的 HTML 模板
-- 从内容规划、生成到预览检查的工作流程
-- 可继续修改、可以直接用浏览器播放的最终文件
-
-## 哪些 Agent 可以使用
-
-任何能够读取和写入本地文件的 AI Agent 都可以使用。若 Agent 还能打开或预览 HTML，就可以进一步检查文字溢出、页面比例、交互和可读性。
-
-使用时可以：
-
-- 将本仓库文件夹提供给 Agent；或
-- 将本仓库安装为 Agent Skill；或
-- 让 Agent 读取仓库中的 `SKILL.md`、`AGENTS.md` 和主题规范。
-
-项目不绑定特定模型或特定 Agent 平台。
+- 根据文章、报告、数据或提纲规划演示结构
+- 在生成前提供逐页大纲供用户确认
+- 根据内容自动选择封面、目录、数据、对比、时间轴和观点等版式
+- 生成包含样式与交互的 HTML 演示文稿
+- 支持键盘、触控和页面按钮翻页
+- 支持卡片聚焦、条形图动画和减少动态效果设置
+- 检查文字溢出、页面可读性、来源链接和内容完整性
+- 使用 CSS 变量统一管理颜色、字体和间距
 
 ## 安装 Skill
 
-请安装完整的 **`onechartlab-slides` 文件夹**，不要只复制 `SKILL.md`。模板、设计规范、版式说明和脚本也是 Skill 的组成部分。使用 ZIP 上传时，压缩包内应只有一个顶层文件夹，并且名称必须是 `onechartlab-slides/`。
+请安装完整的 `onechartlab-slides` 文件夹。模板、设计规范、版式说明和脚本都属于 Skill 的组成部分。
+
+使用 ZIP 上传时，压缩包内应只有一个顶层文件夹：
+
+```text
+onechartlab-slides/
+└── SKILL.md
+```
 
 ### HanaAgent
 
-可以直接让 HanaAgent 从 GitHub 安装，或在 Skill 安装界面选择仓库/ZIP：
+让 HanaAgent 从 GitHub 安装，或在 Skill 安装界面选择仓库/ZIP：
 
 ```text
 请安装这个 Skill：https://github.com/ZXcharT/onechartlab-slides
 ```
 
-需要手动放置文件夹时，参见 [docs/platforms/hanaagent.md](docs/platforms/hanaagent.md)。
+手动安装方法参见 [docs/platforms/hanaagent.md](docs/platforms/hanaagent.md)。
 
 ### Claude
 
-先启用 **Code execution and file creation**，然后进入 **Customize → Skills → Add/Create skill → Upload a skill**，上传内部顶层文件夹为 `onechartlab-slides/` 的 ZIP。
+1. 启用 **Code execution and file creation**；
+2. 进入 **Customize → Skills**；
+3. 选择 **Add/Create skill → Upload a skill**；
+4. 上传内部顶层文件夹为 `onechartlab-slides/` 的 ZIP。
 
 ### OpenAI Codex
 
-可以让 `$skill-installer` 从 GitHub 仓库安装，也可以把完整文件夹放到：
+可以让 `$skill-installer` 从 GitHub 安装，也可以把完整文件夹放到：
 
 ```text
 ~/.agents/skills/onechartlab-slides/
 ```
 
-只想在某个项目中使用时，放到该项目的 `.agents/skills/onechartlab-slides/`。如果新安装的 Skill 没有出现，重启 Codex。
-
-### 第一次调用
-
-安装后可以直接描述需求，也可以在支持显式选择 Skill 的 Agent 中主动指定它：
+项目专用安装位置：
 
 ```text
-请使用 OneChartLab Slides，把这份报告制作成 10 页演示文稿。
-先给我页面大纲，确认后再生成 HTML。
+项目目录/.agents/skills/onechartlab-slides/
 ```
 
-## 用 Agent 制作演示文稿
+如果新安装的 Skill 没有出现，请重启 Codex。
 
-### 1. 让 Agent 读取规则
+## 快速开始
 
-可以先对 Agent 说：
+安装后，直接向 Agent 描述任务：
 
 ```text
-请先阅读 OneChartLab Slides 仓库中的 SKILL.md、AGENTS.md
-和 themes/zxchart/design.md，后续使用这套系统制作演示文稿。
+请使用 OneChartLab Slides，把这份季度经营总结制作成 10 页中文演示文稿。
+受众是公司管理层，重点展示核心指标、问题和下一步计划。
+先给我逐页大纲，确认后再生成 HTML。
 ```
 
-### 2. 提供制作简报
+标准流程：
 
-至少说明主题、受众、目标和材料。需要时再补充页数、语气和视觉要求。
+1. Agent 阅读材料并确认主题、受众、页数和输出位置；
+2. Agent 生成逐页大纲并匹配版式；
+3. 用户确认大纲；
+4. Agent 创建 HTML 文件并写入内容；
+5. Agent 在浏览器中检查排版、翻页和交互；
+6. Agent 根据反馈修改并返回文件位置。
+
+默认成品位置：
 
 ```text
-请使用 OneChartLab Slides 制作一份 12 页演示文稿。
-主题：AI 基础设施投资周期
-受众：个人投资者
-目标：解释产业链的核心瓶颈和验证信号
-材料：使用我提供的研究文档
-要求：先给出页面大纲，确认后再生成 HTML；所有数据注明来源。
+projects/项目名称/index.html
 ```
 
-### 3. 确认页面大纲
+## 使用要求
 
-Agent 会根据内容目的选择合适的版式。建议先确认每页讲什么，再让它生成完整文件，避免排版完成后大幅调整叙事结构。
-
-### 4. 生成并检查
-
-一个完整流程通常包括：
-
-1. 阅读材料，提炼核心结论；
-2. 规划页面顺序并选择版式；
-3. 复制 `template.html` 创建项目；
-4. 写入标题、正文、数据和来源；
-5. 在浏览器中预览；
-6. 检查事实、链接、文字溢出和页面可读性；
-7. 根据反馈继续修改。
-
-更完整的执行与验证规范参见 [AGENTS.md](AGENTS.md) 和 [SKILL.md](SKILL.md)。
-
-## 需要会 HTML 吗？
-
-**不需要会 HTML。** 普通用户只需要通过自然语言告诉 Agent 想做什么，并对大纲和最终效果做判断。
-
-生成后的演示文稿以 HTML 文件交付，可以直接用浏览器播放。如果你熟悉 HTML/CSS，也可以在 Agent 生成后进行精细调整，但这不是主要使用方式。
+- 需要能够读取和写入本地文件的 AI Agent
+- 建议 Agent 具备浏览器预览能力
+- 演示文稿使用当前版本的 Chrome、Edge、Firefox 或 Safari 播放
+- 只有在运行可选 Python 生成脚本时才需要 Python 3
 
 ## 内置版式
 
@@ -124,36 +100,25 @@ Agent 会根据内容目的选择合适的版式。建议先确认每页讲什�
 - **数据与比较**：`layout-metrics`、`layout-dashboard`、`layout-bars`、`layout-compare`
 - **叙事与观点**：`layout-quote`、`layout-timeline`、`layout-timeline-3col`、`layout-hook`、`layout-statement`
 
-Agent 会根据每页的表达目的选择版式，而不是让用户自己记住这些名称。详细说明参见 [docs/layouts.md](docs/layouts.md)。
-
-## 主要特点
-
-- 16 种常用版式，覆盖封面、目录、数据、对比、时间轴、观点和收尾等场景
-- 单个 HTML 文件承载主要内容、样式和交互，便于交付与继续修改
-- 采用 ZXcharT 深色主题，以金色作为重点强调色
-- 支持键盘、触控和页面按钮切换幻灯片
-- 支持卡片聚焦、条形图动画和减少动态效果的系统设置
-- 不绑定特定 AI 平台，也不依赖私有金融工具或个人环境
+详细说明参见 [docs/layouts.md](docs/layouts.md)。
 
 ## 关键文件
 
 ```text
 .
-├── SKILL.md                       Agent 使用入口和任务说明
-├── AGENTS.md                      制作、检查和协作流程
-├── template.html                  Agent 创建演示文稿时使用的基础模板
-├── index.html                     16 种版式的预览入口
+├── SKILL.md                       Skill 入口与执行要求
+├── AGENTS.md                      制作和检查流程
+├── template.html                  演示文稿基础模板
+├── index.html                     16 种版式预览
 ├── themes/zxchart/design.md       视觉规范与版式清单
-├── docs/                          布局、定制和平台使用说明
+├── docs/                          布局、定制和平台说明
 ├── examples/agent-workflow/       通用 Agent 工作流示例
-├── scripts/                       Agent 或高级用户可调用的项目脚本
-├── projects/                      新生成的演示文稿默认保存在这里
-└── assets/                        项目使用的图片等素材
+├── scripts/                       可选项目生成脚本和检查器
+├── projects/                      默认成品目录
+└── assets/                        图片等项目素材
 ```
 
-## 高级用法：手动创建项目
-
-这不是普通用户的主要使用方式。熟悉命令行或 HTML 的用户，可以手动复制 `template.html`，也可以使用脚本创建项目目录。
+## 可选：使用命令行创建项目
 
 ### macOS / Linux
 
@@ -167,11 +132,11 @@ sh scripts/new-project.sh "my-deck"
 py scripts/new-project.py "my-deck"
 ```
 
-脚本只会在 `projects/my-deck/` 中创建一份模板副本，不会上传文件或连接 AI 服务。Agent 也可以在执行任务时自行调用这些脚本。
+两个命令都会创建：
 
-## 浏览器兼容性
-
-建议使用当前版本的 Chrome、Edge、Firefox 或 Safari。页面中的 JavaScript 用于切换幻灯片和部分交互；即使无法加载 Google Fonts，也会自动使用系统字体。
+```text
+projects/my-deck/index.html
+```
 
 ## 致谢
 
