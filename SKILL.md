@@ -1,6 +1,6 @@
 ---
 name: onechartlab-slides
-description: Create, adapt, review, or explain portable HTML slide decks using the OneChartLab Slides layout gallery. Trigger for HTML slides, browser presentations, layout selection, or agent-friendly deck workflows.
+description: Agent-first system for creating, adapting, and reviewing portable HTML slide decks with the OneChartLab Slides layout system and ZXcharT theme. Trigger for HTML slides, browser presentations, layout selection, or agent-generated deck workflows.
 ---
 
 # OneChartLab Slides skill

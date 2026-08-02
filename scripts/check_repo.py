@@ -181,17 +181,21 @@ def main() -> int:
         errors.append("Python generator portability marker missing")
     if 'sh scripts/new-project.sh "my-deck"' not in readme:
         errors.append("README must invoke the POSIX generator through sh")
-    if "# OneChartLab Slides" not in readme or "onechartlab-slides" not in readme:
-        errors.append("README product name or repository slug is inconsistent")
+    if "# OneChartLab Slides" not in readme or "agent-first" not in readme:
+        errors.append("README product name or agent-first positioning is inconsistent")
     if "[简体中文](README.zh-CN.md)" not in readme:
         errors.append("English README is missing the Simplified Chinese language link")
     if (
         "[English](README.md)" not in readme_zh
-        or "## 最快体验" not in readme_zh
-        or "不需要。" not in readme_zh
-        or "脚本不会上传文件" not in readme_zh
+        or "## 用 Agent 制作演示文稿" not in readme_zh
+        or "HTML 是 Agent 生成的交付格式" not in readme_zh
+        or "## 需要会 HTML 吗？" not in readme_zh
     ):
-        errors.append("Simplified Chinese README is incomplete or missing user-first onboarding")
+        errors.append("Simplified Chinese README is incomplete or missing agent-first onboarding")
+    if readme.index("## Create a deck with an AI agent") > readme.index("## Advanced use: manual scaffolding"):
+        errors.append("English README must present the agent workflow before manual scaffolding")
+    if readme_zh.index("## 用 Agent 制作演示文稿") > readme_zh.index("## 高级用法：手动创建项目"):
+        errors.append("Simplified Chinese README must present the agent workflow before manual scaffolding")
     skill_text = (ROOT / "SKILL.md").read_text(encoding="utf-8")
     if "name: onechartlab-slides" not in skill_text:
         errors.append("SKILL.md must use the onechartlab-slides identifier")

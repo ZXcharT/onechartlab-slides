@@ -7,4 +7,4 @@
 - Added portable project generators, repository checks, platform documentation, and generic agent workflow example.
 - Removed private identities, local paths, personal demonstrations, unsupported statistics, screenshots, and unclear visual assets.
 - Added reduced-motion support and source/license records.
-- Added a complete Simplified Chinese README with reciprocal language navigation.
+- Added complete English and Simplified Chinese agent-first onboarding with reciprocal language navigation.
