@@ -26,6 +26,43 @@ Any AI agent that can read and write local files can use the system. An agent th
 
 You can give the agent this repository folder, install it as a Skill, or ask it to read `SKILL.md`, `AGENTS.md`, and the theme specification. OneChartLab Slides is not tied to a particular model or agent platform.
 
+## Install the Skill
+
+Install the **complete `onechartlab-slides` folder**. Do not copy only `SKILL.md`: the Skill also needs its template, design rules, layout reference, and scripts. If you use a ZIP uploader, the archive should contain one top-level folder named exactly `onechartlab-slides/`.
+
+### HanaAgent
+
+Ask HanaAgent to install the GitHub repository as a Skill, or select the repository/ZIP in its Skill installer:
+
+```text
+Install this Skill: https://github.com/ZXcharT/onechartlab-slides
+```
+
+See [docs/platforms/hanaagent.md](docs/platforms/hanaagent.md) for the local-folder alternative.
+
+### Claude
+
+Enable **Code execution and file creation**, then open **Customize → Skills → Add/Create skill → Upload a skill** and upload a correctly structured ZIP containing the `onechartlab-slides/` folder.
+
+### OpenAI Codex
+
+Ask `$skill-installer` to install the GitHub repository, or place the complete folder at:
+
+```text
+~/.agents/skills/onechartlab-slides/
+```
+
+For a project-only installation, use `.agents/skills/onechartlab-slides/` inside that project. Restart Codex if a newly installed Skill does not appear.
+
+### First call
+
+After installation, describe the desired result normally or invoke the Skill explicitly where the Agent supports it:
+
+```text
+Use OneChartLab Slides to turn this report into a 10-slide presentation.
+Show me the outline before generating the HTML.
+```
+
 ## Create a deck with an AI agent
 
 ### 1. Load the system instructions

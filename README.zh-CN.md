@@ -32,6 +32,43 @@ OneChartLab Slides 为 Agent 提供：
 
 项目不绑定特定模型或特定 Agent 平台。
 
+## 安装 Skill
+
+请安装完整的 **`onechartlab-slides` 文件夹**，不要只复制 `SKILL.md`。模板、设计规范、版式说明和脚本也是 Skill 的组成部分。使用 ZIP 上传时，压缩包内应只有一个顶层文件夹，并且名称必须是 `onechartlab-slides/`。
+
+### HanaAgent
+
+可以直接让 HanaAgent 从 GitHub 安装，或在 Skill 安装界面选择仓库/ZIP：
+
+```text
+请安装这个 Skill：https://github.com/ZXcharT/onechartlab-slides
+```
+
+需要手动放置文件夹时，参见 [docs/platforms/hanaagent.md](docs/platforms/hanaagent.md)。
+
+### Claude
+
+先启用 **Code execution and file creation**，然后进入 **Customize → Skills → Add/Create skill → Upload a skill**，上传内部顶层文件夹为 `onechartlab-slides/` 的 ZIP。
+
+### OpenAI Codex
+
+可以让 `$skill-installer` 从 GitHub 仓库安装，也可以把完整文件夹放到：
+
+```text
+~/.agents/skills/onechartlab-slides/
+```
+
+只想在某个项目中使用时，放到该项目的 `.agents/skills/onechartlab-slides/`。如果新安装的 Skill 没有出现，重启 Codex。
+
+### 第一次调用
+
+安装后可以直接描述需求，也可以在支持显式选择 Skill 的 Agent 中主动指定它：
+
+```text
+请使用 OneChartLab Slides，把这份报告制作成 10 页演示文稿。
+先给我页面大纲，确认后再生成 HTML。
+```
+
 ## 用 Agent 制作演示文稿
 
 ### 1. 让 Agent 读取规则

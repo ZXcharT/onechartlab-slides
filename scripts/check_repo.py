@@ -185,20 +185,38 @@ def main() -> int:
         errors.append("README product name or agent-first positioning is inconsistent")
     if "[简体中文](README.zh-CN.md)" not in readme:
         errors.append("English README is missing the Simplified Chinese language link")
+    if "## Install the Skill" not in readme or "~/.agents/skills/onechartlab-slides/" not in readme:
+        errors.append("English README is missing concrete Skill installation instructions")
     if (
         "[English](README.md)" not in readme_zh
+        or "## 安装 Skill" not in readme_zh
         or "## 用 Agent 制作演示文稿" not in readme_zh
         or "HTML 是 Agent 生成的交付格式" not in readme_zh
         or "## 需要会 HTML 吗？" not in readme_zh
     ):
-        errors.append("Simplified Chinese README is incomplete or missing agent-first onboarding")
+        errors.append("Simplified Chinese README is incomplete or missing installation/onboarding guidance")
     if readme.index("## Create a deck with an AI agent") > readme.index("## Advanced use: manual scaffolding"):
         errors.append("English README must present the agent workflow before manual scaffolding")
     if readme_zh.index("## 用 Agent 制作演示文稿") > readme_zh.index("## 高级用法：手动创建项目"):
         errors.append("Simplified Chinese README must present the agent workflow before manual scaffolding")
     skill_text = (ROOT / "SKILL.md").read_text(encoding="utf-8")
-    if "name: onechartlab-slides" not in skill_text:
+    skill_frontmatter = skill_text.split("---", 2)[1] if skill_text.startswith("---") else ""
+    if "name: onechartlab-slides" not in skill_frontmatter:
         errors.append("SKILL.md must use the onechartlab-slides identifier")
+    if "license: MIT. See LICENSE." not in skill_frontmatter or "compatibility:" not in skill_frontmatter:
+        errors.append("SKILL.md is missing its public license or compatibility declaration")
+    for trigger in ["PPT", "视频分镜", "HTML Slides"]:
+        if trigger not in skill_frontmatter:
+            errors.append(f"SKILL.md description missing trigger context: {trigger}")
+    for reference in [
+        "AGENTS.md",
+        "themes/zxchart/design.md",
+        "docs/layouts.md",
+        "docs/customization.md",
+        "template.html",
+    ]:
+        if f"`{reference}`" not in skill_text:
+            errors.append(f"SKILL.md missing operational resource link: {reference}")
     if "./scripts/new-project.sh" in readme:
         errors.append("README contains an executable-bit-dependent shell command")
     if "workflow_dispatch:" not in pages:
