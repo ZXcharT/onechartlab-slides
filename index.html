@@ -1,1 +1,321 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>OneChartLab Slides Layout Gallery</title><style>html,body,iframe{width:100%;height:100%;margin:0;border:0;background:#171824}a{position:fixed;right:1rem;top:1rem;z-index:2;color:#171824;background:#f0b93c;padding:.45rem .7rem;border-radius:6px;font:14px sans-serif;text-decoration:none}</style></head><body><a href="template.html" target="_blank">Open seed</a><iframe title="OneChartLab Slides layout gallery" src="template.html"></iframe></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Selected OneChartLab Slides layouts rendered from the live HTML template.">
+  <title>OneChartLab Slides · Selected Gallery</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #10111a;
+      --surface: #171824;
+      --surface-2: #1e2030;
+      --accent: #f0b93c;
+      --accent-soft: rgba(240, 185, 60, 0.14);
+      --text: #f1f1f6;
+      --muted: #a0a0b2;
+      --line: rgba(255, 255, 255, 0.09);
+      --max: 1180px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at 78% 3%, rgba(240, 185, 60, 0.08), transparent 28rem),
+        var(--bg);
+      color: var(--text);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    a { color: inherit; }
+    .shell { width: min(calc(100% - 40px), var(--max)); margin: 0 auto; }
+
+    .site-header {
+      min-height: 74px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .brand {
+      color: var(--text);
+      text-decoration: none;
+      font-size: 0.92rem;
+      font-weight: 760;
+      letter-spacing: 0.04em;
+    }
+    .brand span { color: var(--accent); }
+
+    .site-nav { display: flex; gap: 1.2rem; align-items: center; }
+    .site-nav a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.86rem;
+      transition: color 160ms ease;
+    }
+    .site-nav a:hover { color: var(--text); }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(260px, 0.42fr);
+      gap: clamp(2rem, 7vw, 7rem);
+      align-items: end;
+      padding: clamp(5rem, 12vw, 9rem) 0 clamp(4rem, 8vw, 6.5rem);
+    }
+
+    .eyebrow {
+      margin: 0 0 1.15rem;
+      color: var(--accent);
+      font-size: 0.74rem;
+      font-weight: 760;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      max-width: 760px;
+      margin: 0;
+      font-size: clamp(3.1rem, 7vw, 6.7rem);
+      line-height: 0.96;
+      letter-spacing: -0.055em;
+    }
+
+    .hero-copy {
+      margin: 1.7rem 0 0;
+      max-width: 670px;
+      color: var(--muted);
+      font-size: clamp(1rem, 1.6vw, 1.2rem);
+      line-height: 1.7;
+    }
+
+    .hero-side { padding-bottom: 0.25rem; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+    .button {
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 1.05rem;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      color: var(--text);
+      text-decoration: none;
+      font-size: 0.86rem;
+      font-weight: 700;
+      transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+    }
+    .button:hover { transform: translateY(-2px); border-color: rgba(240, 185, 60, 0.45); }
+    .button-primary { color: #171824; background: var(--accent); border-color: var(--accent); }
+
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.7rem;
+      margin-top: 1.4rem;
+    }
+    .stat { padding-top: 0.8rem; border-top: 1px solid var(--line); }
+    .stat strong { display: block; font-size: 1rem; }
+    .stat span { color: var(--muted); font-size: 0.72rem; }
+
+    .gallery-section { padding: 0 0 7rem; }
+    .section-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    h2 { margin: 0; font-size: clamp(1.65rem, 3vw, 2.35rem); letter-spacing: -0.03em; }
+    .section-head p { margin: 0; color: var(--muted); font-size: 0.88rem; }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1.2rem;
+    }
+
+    .gallery-card {
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--surface);
+      transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+    }
+    .gallery-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(240, 185, 60, 0.34);
+      box-shadow: 0 22px 55px rgba(0, 0, 0, 0.24);
+    }
+
+    .preview {
+      position: relative;
+      aspect-ratio: 16 / 9;
+      overflow: hidden;
+      background: #171824;
+      border-bottom: 1px solid var(--line);
+    }
+    .preview iframe {
+      width: 400%;
+      height: 400%;
+      border: 0;
+      transform: scale(0.25);
+      transform-origin: 0 0;
+      pointer-events: none;
+    }
+    .preview-hit { position: absolute; inset: 0; z-index: 2; }
+    .preview-hit:focus-visible { outline: 3px solid var(--accent); outline-offset: -3px; }
+
+    .card-body {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 1rem;
+      align-items: center;
+      padding: 1rem 1.05rem 1.05rem;
+    }
+    .card-index {
+      color: var(--accent);
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+    }
+    .card-title { margin: 0; font-size: 1rem; }
+    .card-description { margin: 0.25rem 0 0; color: var(--muted); font-size: 0.78rem; line-height: 1.45; }
+    .open-link {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.75rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .open-link:hover { color: var(--accent); }
+
+    .site-footer {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 1.6rem 0 2.3rem;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 0.78rem;
+    }
+    .site-footer a { text-decoration: none; }
+    .site-footer a:hover { color: var(--accent); }
+
+    @media (max-width: 850px) {
+      .hero { grid-template-columns: 1fr; align-items: start; }
+      .hero-side { max-width: 540px; }
+      .gallery-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 560px) {
+      .shell { width: min(calc(100% - 24px), var(--max)); }
+      .site-nav a:first-child { display: none; }
+      .hero { padding-top: 4rem; }
+      .hero-stats { grid-template-columns: 1fr; }
+      .section-head { display: block; }
+      .section-head p { margin-top: 0.45rem; }
+      .card-body { grid-template-columns: auto 1fr; }
+      .open-link { grid-column: 2; }
+      .site-footer { display: block; line-height: 1.7; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <header class="shell site-header">
+    <a class="brand" href="./">OneChartLab <span>Slides</span></a>
+    <nav class="site-nav" aria-label="Primary navigation">
+      <a href="https://github.com/ZXcharT/onechartlab-slides#readme">Documentation</a>
+      <a href="https://github.com/ZXcharT/onechartlab-slides">GitHub ↗</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="shell hero">
+      <div>
+        <p class="eyebrow">Open source · Agent Skill</p>
+        <h1>From brief to browser-ready deck.</h1>
+        <p class="hero-copy">A focused HTML presentation system with the ZXcharT visual language, reusable layouts, and an Agent-ready production workflow.</p>
+      </div>
+      <div class="hero-side">
+        <div class="hero-actions">
+          <a class="button button-primary" href="template.html" target="_blank" rel="noopener">View full deck</a>
+          <a class="button" href="https://github.com/ZXcharT/onechartlab-slides#install-the-skill">Install the Skill</a>
+        </div>
+        <div class="hero-stats" aria-label="Project highlights">
+          <div class="stat"><strong>16</strong><span>layout patterns</span></div>
+          <div class="stat"><strong>01</strong><span>HTML deliverable</span></div>
+          <div class="stat"><strong>MIT</strong><span>open source</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="shell gallery-section" aria-labelledby="gallery-title">
+      <div class="section-head">
+        <div><p class="eyebrow">Selected gallery</p><h2 id="gallery-title">Six representative views</h2></div>
+        <p>Live HTML previews · click any frame to open</p>
+      </div>
+
+      <div class="gallery-grid">
+        <article class="gallery-card">
+          <div class="preview">
+            <iframe src="template.html?slide=1&amp;embed=1" title="Cover layout preview" loading="lazy" tabindex="-1" sandbox="allow-scripts allow-same-origin"></iframe>
+            <a class="preview-hit" href="template.html?slide=1" target="_blank" rel="noopener" aria-label="Open cover layout"></a>
+          </div>
+          <div class="card-body"><span class="card-index">01</span><div><h3 class="card-title">Opening statement</h3><p class="card-description">A cinematic cover with a clear title, scope, and visual identity.</p></div><a class="open-link" href="template.html?slide=1" target="_blank" rel="noopener">Open ↗</a></div>
+        </article>
+
+        <article class="gallery-card">
+          <div class="preview">
+            <iframe src="template.html?slide=4&amp;embed=1" title="Dashboard layout preview" loading="lazy" tabindex="-1" sandbox="allow-scripts allow-same-origin"></iframe>
+            <a class="preview-hit" href="template.html?slide=4" target="_blank" rel="noopener" aria-label="Open dashboard layout"></a>
+          </div>
+          <div class="card-body"><span class="card-index">02</span><div><h3 class="card-title">Data dashboard</h3><p class="card-description">Six compact cells for metrics, status, and decision signals.</p></div><a class="open-link" href="template.html?slide=4" target="_blank" rel="noopener">Open ↗</a></div>
+        </article>
+
+        <article class="gallery-card">
+          <div class="preview">
+            <iframe src="template.html?slide=6&amp;embed=1" title="Bar ranking layout preview" loading="lazy" tabindex="-1" sandbox="allow-scripts allow-same-origin"></iframe>
+            <a class="preview-hit" href="template.html?slide=6" target="_blank" rel="noopener" aria-label="Open bar ranking layout"></a>
+          </div>
+          <div class="card-body"><span class="card-index">03</span><div><h3 class="card-title">Ranked evidence</h3><p class="card-description">Animated bars for ordered values with visible units and labels.</p></div><a class="open-link" href="template.html?slide=6" target="_blank" rel="noopener">Open ↗</a></div>
+        </article>
+
+        <article class="gallery-card">
+          <div class="preview">
+            <iframe src="template.html?slide=11&amp;embed=1" title="Comparison layout preview" loading="lazy" tabindex="-1" sandbox="allow-scripts allow-same-origin"></iframe>
+            <a class="preview-hit" href="template.html?slide=11" target="_blank" rel="noopener" aria-label="Open comparison layout"></a>
+          </div>
+          <div class="card-body"><span class="card-index">04</span><div><h3 class="card-title">Structured comparison</h3><p class="card-description">A criteria-led table for options, trade-offs, and decisions.</p></div><a class="open-link" href="template.html?slide=11" target="_blank" rel="noopener">Open ↗</a></div>
+        </article>
+
+        <article class="gallery-card">
+          <div class="preview">
+            <iframe src="template.html?slide=12&amp;embed=1" title="Three-column timeline preview" loading="lazy" tabindex="-1" sandbox="allow-scripts allow-same-origin"></iframe>
+            <a class="preview-hit" href="template.html?slide=12" target="_blank" rel="noopener" aria-label="Open timeline layout"></a>
+          </div>
+          <div class="card-body"><span class="card-index">05</span><div><h3 class="card-title">Three-part sequence</h3><p class="card-description">Align events, interpretation, and response across a timeline.</p></div><a class="open-link" href="template.html?slide=12" target="_blank" rel="noopener">Open ↗</a></div>
+        </article>
+
+        <article class="gallery-card">
+          <div class="preview">
+            <iframe src="template.html?slide=14&amp;embed=1" title="Statement layout preview" loading="lazy" tabindex="-1" sandbox="allow-scripts allow-same-origin"></iframe>
+            <a class="preview-hit" href="template.html?slide=14" target="_blank" rel="noopener" aria-label="Open statement layout"></a>
+          </div>
+          <div class="card-body"><span class="card-index">06</span><div><h3 class="card-title">Thesis statement</h3><p class="card-description">A single high-conviction idea with deliberate pacing and space.</p></div><a class="open-link" href="template.html?slide=14" target="_blank" rel="noopener">Open ↗</a></div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="shell site-footer">
+    <span>OneChartLab Slides · ZXcharT</span>
+    <span><a href="LICENSE">MIT code</a> · names and logos reserved</span>
+  </footer>
+</body>
+</html>

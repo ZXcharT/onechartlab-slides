@@ -636,6 +636,11 @@
       .bars-container { gap: 0.7rem; }
     }
 
+    body.embed .slide-counter,
+    body.embed .keyboard-hint,
+    body.embed .progress-bar,
+    body.embed .nav-controls { display: none !important; }
+
     @media (prefers-reduced-motion: reduce) {
       *,
       *::before,
@@ -839,9 +844,14 @@
     const prevBtn = document.getElementById("prevBtn");
     const nextBtn = document.getElementById("nextBtn");
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    let current = 0;
+    const params = new URLSearchParams(window.location.search);
+    const requestedSlide = Number.parseInt(params.get("slide") || "1", 10);
+    let current = Number.isFinite(requestedSlide)
+      ? Math.max(0, Math.min(slides.length - 1, requestedSlide - 1))
+      : 0;
     let expandedBlock = null;
 
+    if (params.get("embed") === "1") document.body.classList.add("embed");
     totalEl.textContent = slides.length;
 
     function clearExpanded() {

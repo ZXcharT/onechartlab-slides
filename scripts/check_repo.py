@@ -138,6 +138,23 @@ def main() -> int:
     if len(slide_layouts) != len(set(slide_layouts)):
         errors.append("template contains duplicate slide layouts")
 
+    gallery = (ROOT / "index.html").read_text(encoding="utf-8")
+    gallery_cards = gallery.count('class="gallery-card"')
+    gallery_previews = [
+        int(value)
+        for value in re.findall(r"template\.html\?slide=(\d+)&amp;embed=1", gallery)
+    ]
+    if not 4 <= gallery_cards <= 8:
+        errors.append(f"gallery must stay curated at 4-8 cards, found {gallery_cards}")
+    if len(gallery_previews) != gallery_cards or len(gallery_previews) != len(set(gallery_previews)):
+        errors.append(f"gallery live previews are missing or duplicated: {gallery_previews}")
+    if any(value < 1 or value > len(LAYOUTS) for value in gallery_previews):
+        errors.append(f"gallery references an invalid slide number: {gallery_previews}")
+    if "Selected Gallery" not in gallery or "Live HTML previews" not in gallery:
+        errors.append("gallery title or live-preview description is missing")
+    if "URLSearchParams" not in template or 'classList.add("embed")' not in template:
+        errors.append("template must support direct slide links and embedded gallery previews")
+
     for doc in LAYOUT_DOCS:
         text = (ROOT / doc).read_text(encoding="utf-8")
         missing = [layout for layout in LAYOUTS if layout not in text]
