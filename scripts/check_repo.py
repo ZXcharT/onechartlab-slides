@@ -11,7 +11,7 @@ ROOT = Path(__file__).resolve().parent.parent
 
 REQUIRED = [
     "README.md",
-    "README.zh-CN.md",
+    "README.en.md",
     "LICENSE",
     "THIRD_PARTY_NOTICES.md",
     "TRADEMARKS.md",
@@ -86,7 +86,7 @@ TEXT_SUFFIXES = {
 
 LAYOUT_DOCS = [
     "README.md",
-    "README.zh-CN.md",
+    "README.en.md",
     "SKILL.md",
     "AGENTS.md",
     "themes/zxchart/design.md",
@@ -186,8 +186,8 @@ def main() -> int:
 
     shell = (ROOT / "scripts/new-project.sh").read_text(encoding="utf-8")
     python_script = (ROOT / "scripts/new-project.py").read_text(encoding="utf-8")
-    readme = (ROOT / "README.md").read_text(encoding="utf-8")
-    readme_zh = (ROOT / "README.zh-CN.md").read_text(encoding="utf-8")
+    readme_zh = (ROOT / "README.md").read_text(encoding="utf-8")
+    readme = (ROOT / "README.en.md").read_text(encoding="utf-8")
     pages = (ROOT / ".github/workflows/pages.yml").read_text(encoding="utf-8")
     license_text = (ROOT / "LICENSE").read_text(encoding="utf-8")
     trademarks = (ROOT / "TRADEMARKS.md").read_text(encoding="utf-8")
@@ -200,12 +200,12 @@ def main() -> int:
         errors.append("README must invoke the POSIX generator through sh")
     if "# OneChartLab Slides" not in readme or "OneChartLab Slides is an Agent Skill" not in readme:
         errors.append("README product description is missing or inconsistent")
-    if "[简体中文](README.zh-CN.md)" not in readme:
+    if "[简体中文](README.md)" not in readme:
         errors.append("English README is missing the Simplified Chinese language link")
     if "## Install the Skill" not in readme or "~/.agents/skills/onechartlab-slides/" not in readme:
         errors.append("English README is missing concrete Skill installation instructions")
     if (
-        "[English](README.md)" not in readme_zh
+        "[English](README.en.md)" not in readme_zh
         or "OneChartLab Slides 是一个用于制作 HTML 演示文稿的 Agent Skill" not in readme_zh
         or "## 安装 Skill" not in readme_zh
         or "## 快速开始" not in readme_zh
