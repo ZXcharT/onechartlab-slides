@@ -1,5 +1,7 @@
 # OneChartLab Slides
 
+**English** | [简体中文](README.zh-CN.md)
+
 OneChartLab Slides v0.1.0 is an agent-friendly HTML presentation system and an independent project in the OneChartLab open-source ecosystem by ZXcharT. It provides a portable, single-file slide seed with the ZXcharT visual theme; it is not the OneChartLab brand hub or website source tree.
 
 ## Features

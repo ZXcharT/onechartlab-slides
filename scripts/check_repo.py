@@ -11,6 +11,7 @@ ROOT = Path(__file__).resolve().parent.parent
 
 REQUIRED = [
     "README.md",
+    "README.zh-CN.md",
     "LICENSE",
     "THIRD_PARTY_NOTICES.md",
     "TRADEMARKS.md",
@@ -85,6 +86,7 @@ TEXT_SUFFIXES = {
 
 LAYOUT_DOCS = [
     "README.md",
+    "README.zh-CN.md",
     "SKILL.md",
     "AGENTS.md",
     "themes/zxchart/design.md",
@@ -168,6 +170,7 @@ def main() -> int:
     shell = (ROOT / "scripts/new-project.sh").read_text(encoding="utf-8")
     python_script = (ROOT / "scripts/new-project.py").read_text(encoding="utf-8")
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    readme_zh = (ROOT / "README.zh-CN.md").read_text(encoding="utf-8")
     pages = (ROOT / ".github/workflows/pages.yml").read_text(encoding="utf-8")
     license_text = (ROOT / "LICENSE").read_text(encoding="utf-8")
     trademarks = (ROOT / "TRADEMARKS.md").read_text(encoding="utf-8")
@@ -180,6 +183,10 @@ def main() -> int:
         errors.append("README must invoke the POSIX generator through sh")
     if "# OneChartLab Slides" not in readme or "onechartlab-slides" not in readme:
         errors.append("README product name or repository slug is inconsistent")
+    if "[简体中文](README.zh-CN.md)" not in readme:
+        errors.append("English README is missing the Simplified Chinese language link")
+    if "[English](README.md)" not in readme_zh or "## 快速开始" not in readme_zh:
+        errors.append("Simplified Chinese README is incomplete or missing the English language link")
     skill_text = (ROOT / "SKILL.md").read_text(encoding="utf-8")
     if "name: onechartlab-slides" not in skill_text:
         errors.append("SKILL.md must use the onechartlab-slides identifier")
