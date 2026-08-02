@@ -185,8 +185,13 @@ def main() -> int:
         errors.append("README product name or repository slug is inconsistent")
     if "[简体中文](README.zh-CN.md)" not in readme:
         errors.append("English README is missing the Simplified Chinese language link")
-    if "[English](README.md)" not in readme_zh or "## 快速开始" not in readme_zh:
-        errors.append("Simplified Chinese README is incomplete or missing the English language link")
+    if (
+        "[English](README.md)" not in readme_zh
+        or "## 最快体验" not in readme_zh
+        or "不需要。" not in readme_zh
+        or "脚本不会上传文件" not in readme_zh
+    ):
+        errors.append("Simplified Chinese README is incomplete or missing user-first onboarding")
     skill_text = (ROOT / "SKILL.md").read_text(encoding="utf-8")
     if "name: onechartlab-slides" not in skill_text:
         errors.append("SKILL.md must use the onechartlab-slides identifier")

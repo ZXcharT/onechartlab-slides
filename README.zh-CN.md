@@ -2,81 +2,127 @@
 
 [English](README.md) | **简体中文**
 
-OneChartLab Slides v0.1.0 是一套面向 AI Agent 的 HTML 演示文稿系统，也是 ZXcharT 旗下 OneChartLab 开源生态中的独立项目。它提供采用 ZXcharT 视觉主题、可移植的单文件幻灯片模板；本仓库不是 OneChartLab 品牌总入口，也不是网站源码仓库。
+> 一套可以直接在浏览器中运行的 HTML 幻灯片模板。既可以手动制作，也可以交给 AI Agent 生成。
 
-## 功能特性
+OneChartLab Slides 内置 16 种常用版式和一套完整的 ZXcharT 深色视觉主题，适合制作研究报告、方案汇报、数据展示和视频分镜。每份演示文稿以一个 HTML 文件为主体，不需要安装专用演示软件，也不依赖前端工程环境，使用浏览器即可打开和播放。
 
-- 在一个可编辑的 HTML 文件中提供 16 种经过审查的页面布局
-- 采用深色 ZXcharT 主题、金色强调色和响应式布局
-- 支持键盘、触控和按钮导航
-- 支持卡片点击聚焦和条形图动画，并兼容 `prefers-reduced-motion`
-- 提供 POSIX Shell 和仅依赖 Python 3 标准库的项目生成器
-- 提供通用 Agent 工作流示例和平台适配指南
+## 它适合做什么
 
-## 页面布局
+- 将研究文章或报告整理成结构清晰的演示文稿
+- 制作数据看板、指标对比、时间轴和观点页
+- 为视频内容设计画面结构与分镜
+- 快速搭建风格统一的项目汇报或产品介绍
+- 让 AI Agent 根据材料生成可继续编辑的 HTML Slides
 
-`layout-cover`、`layout-agenda`、`layout-metrics`、`layout-dashboard`、`layout-split`、`layout-bars`、`layout-quote`、`layout-timeline`、`layout-detail`、`layout-stack`、`layout-compare`、`layout-timeline-3col`、`layout-hook`、`layout-statement`、`layout-outro` 和 `layout-closing`。
+## 主要特点
 
-各布局的适用场景与约束参见 [docs/layouts.md](docs/layouts.md)。
+- 16 种常用版式，覆盖封面、目录、数据、对比、时间轴、观点和收尾等场景
+- 单个 HTML 文件即可保存主要内容、样式和交互，便于复制、修改与分享
+- 采用 ZXcharT 深色主题，以金色作为重点强调色
+- 支持键盘、触控和页面按钮切换幻灯片
+- 支持卡片聚焦、条形图动画和减少动态效果的系统设置
+- 不绑定特定 AI 平台，也不要求使用任何私有工具
 
-## 快速开始
+## 是否必须使用 AI Agent？
+
+**不需要。** OneChartLab Slides 本身就是一套普通的 HTML 模板，没有 Agent 也可以独立使用。
+
+| 使用方式 | 怎么用 | 适合谁 |
+|---|---|---|
+| 直接修改模板 | 复制 `template.html`，使用文本或代码编辑器替换内容 | 熟悉一点 HTML，想完全手动控制内容的人 |
+| 使用生成脚本 | 运行一条命令，自动创建新的项目文件夹和模板副本 | 想快速开始并保持项目目录整洁的人 |
+| 交给 AI Agent | 提供材料、受众和页数，让 Agent 生成并检查演示文稿 | 想提高整理与排版效率的人 |
+
+三种方式生成的是同一种 HTML 演示文稿，可以自由切换，也可以先让 Agent 生成，再手动修改。
+
+## 最快体验
+
+无需安装依赖，也无需使用 AI Agent：
+
+1. 下载或克隆本仓库。
+2. 双击打开 `index.html`，浏览全部版式和交互效果。
+3. 复制一份 `template.html`，例如重命名为 `my-deck.html`。
+4. 使用任意文本或代码编辑器修改标题、正文、数据和页面顺序。
+5. 用浏览器打开修改后的文件，刷新页面即可查看效果。
+
+如果只是想先看看它长什么样，完成前两步就够了。
+
+## 可选：用脚本创建新项目
+
+生成脚本只是一个“复制模板”的快捷工具。它会在 `projects/` 下新建文件夹，并把 `template.html` 复制为该项目的 `index.html`。脚本不会上传文件、不会连接 AI 服务，也不会修改原模板。
 
 ### macOS / Linux
 
 ```sh
 sh scripts/new-project.sh "my-deck"
-# 然后使用现代浏览器打开 projects/my-deck/index.html。
+```
+
+生成结果：
+
+```text
+projects/my-deck/index.html
 ```
 
 ### Windows
 
 ```powershell
 py scripts/new-project.py "my-deck"
-# 然后使用现代浏览器打开 projects\my-deck\index.html。
 ```
 
-在 macOS/Linux 上使用 Shell 脚本时不需要安装 Python。两个生成器都会根据自身路径定位仓库，并默认在 `projects/` 下创建项目。
+生成完成后，用浏览器打开 `projects/my-deck/index.html`，再使用编辑器修改其中的内容即可。macOS/Linux 用户使用 Shell 脚本时不需要安装 Python；Windows 示例需要本机已安装 Python 3。
 
-## 与 AI Agent 配合使用
+## 可选：与 AI Agent 配合使用
 
-向 Agent 提供仓库根目录（或用户指定的输出目录）、任务简报、参考材料和所需的幻灯片顺序，并要求它：
+你可以把仓库目录、参考材料和制作要求交给支持文件编辑的 AI Agent，例如：
 
-1. 对齐受众、目标与约束；
-2. 使用 16 种布局规划内容；
-3. 在适当时机请求确认大纲；
-4. 复制 `template.html` 生成演示文稿；
-5. 预览并核验事实、链接和可读性；
-6. 迭代内容并记录尚未解决的问题。
+```text
+请使用 OneChartLab Slides 制作一份 12 页演示文稿。
+受众：个人投资者
+目标：解释某个产业趋势
+要求：先给出页面大纲，确认后再生成 HTML；所有数据注明来源。
+```
 
-可移植工作流程参见 [AGENTS.md](AGENTS.md) 和 [SKILL.md](SKILL.md)。通用 Agent 示例刻意将执行角色与独立验证角色分开。
+一个稳妥的制作流程是：
 
-## 在线演示 / GitHub Pages
+1. 明确受众、目标、页数和视觉要求；
+2. 从 16 种版式中选择合适的页面结构；
+3. 确认大纲后复制 `template.html`；
+4. 写入内容并预览；
+5. 检查事实、链接、文字溢出和页面可读性；
+6. 根据反馈继续修改。
 
-`index.html` 是一个轻量级布局画廊入口，其中嵌入了中性的模板页面。仓库在 `.github/workflows/pages.yml` 中提供仅允许手动触发的 Pages 工作流。只有仓库所有者主动选择 **Run workflow** 时才会运行；克隆或推送仓库都不会自动部署。
+更完整的 Agent 操作说明参见 [AGENTS.md](AGENTS.md) 和 [SKILL.md](SKILL.md)。
 
-项目预期访问地址为 <https://zxchart.github.io/onechartlab-slides/>。本仓库不占用 `onechart.top` 或 `onechartlab.com`。
+## 内置版式
 
-## 主题定制
+- **开场与收尾**：`layout-cover`、`layout-outro`、`layout-closing`
+- **目录与内容结构**：`layout-agenda`、`layout-split`、`layout-detail`、`layout-stack`
+- **数据与比较**：`layout-metrics`、`layout-dashboard`、`layout-bars`、`layout-compare`
+- **叙事与观点**：`layout-quote`、`layout-timeline`、`layout-timeline-3col`、`layout-hook`、`layout-statement`
 
-在复制出的演示文稿中修改 `:root` 下的 CSS 自定义属性。请继续使用变量表达语义颜色、保持足够的对比度，并在减少动态效果的系统设置下进行测试。[docs/customization.md](docs/customization.md) 介绍了主题变量和字体行为。
+各版式的详细用途与限制参见 [docs/layouts.md](docs/layouts.md)。
 
-## 目标浏览器
-
-本设计面向当前版本的 Chrome、Edge、Firefox 和 Safari，但 v0.1.0 尚未完成正式的四浏览器兼容性矩阵测试。JavaScript 用于导航和可选交互；即使禁用 JavaScript，幻灯片结构仍可查看。Google Fonts 仅作为网络资源引用，无法访问时会回退到系统字体。
-
-## 目录结构
+## 关键文件
 
 ```text
 .
-├── template.html                 中性模板与布局的唯一事实来源
-├── index.html                    布局画廊入口
-├── themes/zxchart/design.md      设计变量与布局清单
-├── docs/                         布局、定制和平台说明
+├── index.html                    版式预览入口，下载后可直接打开
+├── template.html                 制作新演示文稿时使用的基础模板
+├── themes/zxchart/design.md      主题规范与版式清单
+├── docs/                         布局、定制和平台使用说明
 ├── examples/agent-workflow/      通用 Agent 工作流示例
-├── scripts/                      可移植生成器与仓库检查器
-├── projects/.gitkeep             本地生成项目的占位目录
-└── assets/.gitkeep               有意保持为空的预览素材目录
+├── scripts/                      可选的项目生成脚本和仓库检查器
+├── projects/                     脚本生成的新项目默认保存在这里
+└── assets/                       可自行放置图片等素材
 ```
+
+## 修改主题
+
+复制模板后，可以在 HTML 文件的 `:root` 区域修改背景色、强调色、正文色和边框色等 CSS 变量。建议保持足够的文字对比度，并检查小屏幕和减少动态效果设置下的显示效果。详细说明参见 [docs/customization.md](docs/customization.md)。
+
+## 浏览器兼容性
+
+建议使用当前版本的 Chrome、Edge、Firefox 或 Safari。页面中的 JavaScript 用于切换幻灯片和部分交互；即使无法加载 Google Fonts，也会自动使用系统字体。
 
 ## 致谢
 
