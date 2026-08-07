@@ -41,8 +41,8 @@
 
 - Motion uses shared `--motion-*` and `--ease-*` tokens and is evaluated individually, not cleared wholesale.
 - Presentation focus follows one contract: pointer hover previews the focal item; click, Enter, or Space locks it; a second activation, blank click, slide change, or Escape clears it.
-- Pointer preview is state-driven rather than raw CSS `:hover`: crossing gaps inside a group preserves the previous preview until the next item is reached, preventing full-bright flashes. The old proximity `mousemove` opacity loop is prohibited.
-- Only one locked focus may exist at a time. A 220ms transition moves between a subtle and stronger brass-tinted matte surface while peers dim; no tight focus border surrounds text. Row-like content shifts horizontally and card-like content lifts vertically by at most 6px.
+- Pointer preview is local and state-driven rather than raw CSS `:hover`: only the current item changes; peer opacity remains untouched. Crossing gaps preserves the previous preview until the next item is reached. The old proximity `mousemove` opacity loop and any hover-driven peer dimming are prohibited.
+- Only click/keyboard lock may dim peers. A 220ms transition moves from local preview to a stronger brass-tinted locked surface; no tight focus border surrounds text. Row-like content shifts horizontally and card-like content lifts vertically by at most 6px.
 - Agenda, Metrics, Dashboard, Split mini-stats, Bars, Timeline, Detail, Compare, and the three-column timeline use the shared focus system. Stack and Outro retain their authored click states.
 - Bars retain a measured entry transition; Timeline and Stack retain restrained proximity on fine pointers only.
 - Decorative cover pulses, blurred orbs, gradient timeline flow, and closing rings remain suppressed.

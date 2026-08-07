@@ -197,6 +197,9 @@ def main() -> int:
         errors.append("presentation focus must expose stable preview and locked states")
     if ':has(.focus-item:hover)' in template or 'addEventListener("mousemove"' in template:
         errors.append("presentation focus must not reintroduce gap-flicker or proximity opacity loops")
+    preview_peer_dimming = re.search(r"has-preview-focus[^}]*opacity", template, re.S)
+    if preview_peer_dimming:
+        errors.append("pointer preview must remain local and must not animate peer opacity")
     focused_rule = re.search(r"\.focus-item\.is-focused\s*\{([^}]*)\}", template)
     if not focused_rule or "box-shadow" in focused_rule.group(1) or "border" in focused_rule.group(1):
         errors.append("locked focus must not place a tight border around content")
