@@ -12,7 +12,7 @@ Give each page one primary message. Use the fine `evidence-rail` only when it id
 
 ## Motion and interaction
 
-Slides retain short transitions and bar reveals; none carry required meaning. The `prefers-reduced-motion: reduce` media query removes animation and scaling. Non-current slides are made `aria-hidden` and inert by the navigation script. Keep controls as real buttons or links, with visible keyboard focus.
+Motion is reviewed effect by effect rather than removed as a category. The seed retains short transitions, a small cover data pulse, bar reveals, keyboard-accessible Stack focus, restrained Timeline/Stack pointer proximity, and an optional Outro focus shift. None carries required meaning, and `prefers-reduced-motion: reduce` removes animation and scaling. Non-current slides are made `aria-hidden` and inert by the navigation script. Keep controls as real buttons or links, with visible keyboard focus.
 
 ## Content rules
 

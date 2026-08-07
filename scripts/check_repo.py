@@ -105,6 +105,11 @@ VISUAL_PRIMITIVES = [
     "touchstart",
     "aria-hidden",
     "slide.inert",
+    "expandedBlock",
+    "focus-sub",
+    "mousemove",
+    "aria-pressed",
+    "compare-scroll",
 ]
 
 
@@ -160,14 +165,32 @@ def main() -> int:
         errors.append("core layouts must not use gradient text")
     if ".text-gradient {\n      background:" in template:
         errors.append("core layouts must not use a gradient text treatment")
+    if "--text-muted: #88889c" not in template:
+        errors.append("informational muted text must retain readable contrast")
+    if "width: 44px;\n      height: 44px;" not in template:
+        errors.append("navigation controls must retain a 44px touch target")
     pressure = ROOT / "projects/v2-pressure-test/index.html"
     if not pressure.is_file():
         errors.append("missing V2 Phase 1 pressure test")
     else:
         pressure_text = pressure.read_text(encoding="utf-8")
-        for layout in ["layout-cover", "layout-agenda", "layout-metrics", "layout-dashboard", "layout-split", "layout-detail", "layout-compare"]:
-            if layout not in pressure_text:
-                errors.append(f"pressure test missing {layout}")
+        pressure_slides = {
+            "layout-cover": 1,
+            "layout-agenda": 2,
+            "layout-metrics": 3,
+            "layout-dashboard": 4,
+            "layout-split": 5,
+            "layout-detail": 9,
+            "layout-compare": 11,
+        }
+        for layout, slide_no in pressure_slides.items():
+            case_id = layout.removeprefix("layout-")
+            if f'id="case-{case_id}"' not in pressure_text:
+                errors.append(f"pressure test missing content for {layout}")
+            if f"../../template.html?slide={slide_no}&amp;embed=1" not in pressure_text:
+                errors.append(f"pressure test must render {layout} through template.html")
+        if "applyCase(this" not in pressure_text or "frame.contentDocument" not in pressure_text:
+            errors.append("pressure test must inject content into the real template runtime")
         if "合成演示" not in pressure_text:
             errors.append("pressure test must identify synthetic/demo content")
 

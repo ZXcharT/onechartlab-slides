@@ -21,7 +21,7 @@
       --red: #e3392a;
       --text: #ededf5;
       --text-secondary: #9898a8;
-      --text-muted: #646478;
+      --text-muted: #88889c;
       --border: rgba(255, 255, 255, 0.07);
       --border-strong: rgba(255, 255, 255, 0.12);
       --positive: #00b894;
@@ -173,10 +173,11 @@
     .cover-deco { position: absolute; top: 13%; right: 7vw; bottom: 13%; width: 1px; background: var(--accent-border); }
     .cover-deco::before, .cover-deco::after { position: absolute; right: -3px; width: 7px; height: 7px; border: 1px solid var(--accent); border-radius: 50%; background: var(--bg); content: ""; }
     .cover-deco::before { top: 12%; } .cover-deco::after { bottom: 18%; }
-    .cover-datastream { position: absolute; right: 10vw; bottom: 15%; display: flex; gap: 0.55rem; color: var(--text-muted); font: 0.72rem/1.5 "Space Grotesk", sans-serif; letter-spacing: .1em; opacity: .8; }
-    .cover-datastream span { width: 3px; height: 3px; border-radius: 50%; background: var(--accent); }
-    .cover-datastream span:nth-child(2) { opacity: .55; } .cover-datastream span:nth-child(3) { opacity: .25; }
-    @keyframes dataDrift { to { opacity: .55; } }
+    .cover-datastream { position: absolute; right: 10vw; bottom: 15%; display: flex; gap: 0.55rem; pointer-events: none; }
+    .cover-datastream span { width: 4px; height: 4px; border-radius: 50%; background: var(--accent); opacity: .35; animation: dataDrift 3.6s ease-in-out infinite alternate; }
+    .cover-datastream span:nth-child(2) { animation-delay: -1.2s; }
+    .cover-datastream span:nth-child(3) { animation-delay: -2.4s; }
+    @keyframes dataDrift { to { opacity: .9; transform: translateY(-4px); } }
 
     /* 02 · agenda */
     .agenda-grid { display: grid; max-width: 980px; border-top: 1px solid var(--border-strong); }
@@ -314,8 +315,15 @@
       gap: 1rem;
       align-items: center;
       padding: 0.85rem 1rem;
+      border: 1px solid transparent;
       border-radius: 12px;
+      cursor: pointer;
+      transition: opacity .2s ease, transform .2s ease, border-color .2s ease, background .2s ease;
     }
+
+    .stack-tier:hover,
+    .stack-tier:focus-visible { border-color: var(--accent-border); background: var(--accent-subtle); }
+    .stack-tier.expanded { border-color: var(--accent); background: var(--bg-elevated); transform: scale(1.02); }
 
     .stack-icon {
       display: grid;
@@ -332,6 +340,7 @@
     .stack-desc { color: var(--text-secondary); font-size: 0.95rem; line-height: 1.45; }
 
     /* 11 · compare */
+    .compare-scroll { max-width: 100%; overflow-x: auto; overscroll-behavior-inline: contain; }
     .compare-table { width: 100%; border-collapse: collapse; table-layout: fixed; font-variant-numeric: tabular-nums; }
     .compare-table th, .compare-table td { padding: .9rem 1rem; border-bottom: 1px solid var(--border); text-align: left; vertical-align: top; overflow-wrap: anywhere; }
     .compare-table th { color: var(--text-muted); font-size: .78rem; font-weight: 600; letter-spacing: .07em; text-transform: uppercase; }
@@ -340,6 +349,7 @@
     .compare-table tbody tr:first-child td { color: var(--text); border-bottom-color: var(--accent-border); }
     .compare-table tbody tr:first-child td:first-child { color: var(--accent-light); }
     .compare-table th:first-child, .compare-table td:first-child { width: 19%; }
+    .compare-hint { display: none; margin: .55rem 0 0; color: var(--text-muted); font-size: .82rem; }
 
     /* 12 · three-column timeline */
     .tl3-header,
@@ -432,8 +442,8 @@
     .nav-controls { right: 3vw; display: flex; gap: 0.55rem; }
     .nav-btn {
       display: grid;
-      width: 34px;
-      height: 34px;
+      width: 44px;
+      height: 44px;
       border: 1px solid var(--border);
       border-radius: 8px;
       background: var(--bg-surface);
@@ -448,7 +458,10 @@
 
     @media (max-width: 780px) {
       .slide { padding: 7vh 7vw 9vh; overflow-y: auto; }
+      .slide-header { align-items: flex-start; flex-wrap: wrap; gap: .65rem 1rem; }
+      .tag { max-width: 100%; white-space: normal; }
       .layout-cover { padding-left: 8vw; }
+      .layout-cover .meta { flex-wrap: wrap; }
       .layout-cover h1,
       .layout-cover .subtitle { max-width: 100%; }
       .agenda-grid,
@@ -458,11 +471,18 @@
       .detail-body,
       .timeline-track { grid-template-columns: 1fr; }
       .agenda-grid { grid-template-rows: none; }
+      .agenda-item { grid-template-columns: 3rem minmax(0, 1fr); align-items: start; }
+      .agenda-item p { grid-column: 2; }
+      .metric-value,
+      .metric-card:not(:first-child) .metric-value { font-size: clamp(2.4rem, 13vw, 4rem); overflow-wrap: anywhere; }
       .timeline-track::before { display: none; }
       .stack-tier,
       .tl3-header,
       .tl3-row { grid-template-columns: 1fr; }
       .mini-stat-row { grid-template-columns: 1fr; }
+      .compare-scroll { margin-inline: -2vw; padding: 0 2vw .75rem; }
+      .compare-table { min-width: 720px; }
+      .compare-hint { display: block; }
       .keyboard-hint { display: none; }
     }
 
@@ -639,7 +659,8 @@
       <div class="slide-content">
         <h2>Make the trade-off legible before choosing.</h2>
         <p class="evidence-rail">Recommended row is signalled by type and a fine gold rule, not a heavy header</p>
-        <table class="compare-table"><thead><tr><th>Option</th><th>Strength</th><th>Constraint</th><th>Validation</th></tr></thead><tbody><tr><td>Option A · recommend</td><td>Directly addresses the decision criterion.</td><td>Requires an explicit threshold.</td><td>Test against the stated baseline.</td></tr><tr><td>Option B</td><td>Preserves optionality.</td><td>Delays a conclusive result.</td><td>Review new evidence at the next checkpoint.</td></tr><tr><td>Option C</td><td>Limits immediate exposure.</td><td>May not resolve the core question.</td><td>Pilot with defined exit criteria.</td></tr></tbody></table>
+        <div class="compare-scroll" role="region" aria-label="Comparison table" tabindex="0"><table class="compare-table"><thead><tr><th>Option</th><th>Strength</th><th>Constraint</th><th>Validation</th></tr></thead><tbody><tr><td>Option A · recommend</td><td>Directly addresses the decision criterion.</td><td>Requires an explicit threshold.</td><td>Test against the stated baseline.</td></tr><tr><td>Option B</td><td>Preserves optionality.</td><td>Delays a conclusive result.</td><td>Review new evidence at the next checkpoint.</td></tr><tr><td>Option C</td><td>Limits immediate exposure.</td><td>May not resolve the core question.</td><td>Pilot with defined exit criteria.</td></tr></tbody></table></div>
+        <p class="compare-hint">Swipe horizontally to compare every criterion.</p>
         <p class="source-note">Illustrative comparison form — replace all option content with attributable project material before use.</p>
       </div>
     </section>
@@ -685,13 +706,42 @@
     const prevBtn = document.getElementById("prevBtn");
     const nextBtn = document.getElementById("nextBtn");
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const pointerFine = window.matchMedia("(pointer: fine)").matches;
     const params = new URLSearchParams(window.location.search);
     const requestedSlide = Number.parseInt(params.get("slide") || "1", 10);
+    const stackTiers = [...document.querySelectorAll(".stack-tier")];
+    const outroSub = document.getElementById("outroSub");
     let current = Number.isFinite(requestedSlide)
       ? Math.max(0, Math.min(slides.length - 1, requestedSlide - 1))
       : 0;
+    let expandedBlock = null;
+
     if (params.get("embed") === "1") document.body.classList.add("embed");
     totalEl.textContent = slides.length;
+
+    function setExpandedBlock(block) {
+      if (expandedBlock && expandedBlock !== block) {
+        expandedBlock.classList.remove("expanded");
+        expandedBlock.setAttribute("aria-pressed", "false");
+      }
+      block.classList.toggle("expanded");
+      const expanded = block.classList.contains("expanded");
+      block.setAttribute("aria-pressed", String(expanded));
+      expandedBlock = expanded ? block : null;
+    }
+
+    function clearFocusEffects() {
+      if (expandedBlock) {
+        expandedBlock.classList.remove("expanded");
+        expandedBlock.setAttribute("aria-pressed", "false");
+        expandedBlock = null;
+      }
+      document.querySelectorAll(".timeline-step, .stack-tier").forEach(item => { item.style.opacity = ""; });
+      if (outroSub) {
+        outroSub.closest(".layout-outro").classList.remove("focus-sub");
+        outroSub.setAttribute("aria-pressed", "false");
+      }
+    }
 
     function animateBars(slide) {
       if (reduceMotion) return;
@@ -704,6 +754,7 @@
     }
 
     function updateSlide() {
+      clearFocusEffects();
       slides.forEach((slide, index) => {
         const isActive = index === current;
         slide.classList.toggle("active", isActive);
@@ -727,6 +778,8 @@
     nextBtn.addEventListener("click", () => changeSlide(1));
 
     document.addEventListener("keydown", event => {
+      if (event.key === "Escape") { clearFocusEffects(); return; }
+      if (event.target.closest("button, a, input, textarea, select, [role='button']")) return;
       if (["ArrowRight", " ", "PageDown"].includes(event.key)) { event.preventDefault(); changeSlide(1); }
       if (["ArrowLeft", "PageUp"].includes(event.key)) { event.preventDefault(); changeSlide(-1); }
       if (event.key === "Home") { current = 0; updateSlide(); }
@@ -734,11 +787,66 @@
     });
 
     let touchStartX = 0;
-    document.addEventListener("touchstart", event => { touchStartX = event.changedTouches[0].screenX; }, { passive: true });
-    document.addEventListener("touchend", event => {
-      const touchEndX = event.changedTouches[0].screenX;
-      if (Math.abs(touchStartX - touchEndX) > 50) changeSlide(touchStartX > touchEndX ? 1 : -1);
+    let touchStartY = 0;
+    let touchStartedInScroller = false;
+    document.addEventListener("touchstart", event => {
+      touchStartX = event.changedTouches[0].screenX;
+      touchStartY = event.changedTouches[0].screenY;
+      touchStartedInScroller = Boolean(event.target.closest(".compare-scroll"));
     }, { passive: true });
+    document.addEventListener("touchend", event => {
+      const deltaX = touchStartX - event.changedTouches[0].screenX;
+      const deltaY = touchStartY - event.changedTouches[0].screenY;
+      if (!touchStartedInScroller && Math.abs(deltaX) > 50 && Math.abs(deltaX) > Math.abs(deltaY) * 1.2) changeSlide(deltaX > 0 ? 1 : -1);
+      touchStartedInScroller = false;
+    }, { passive: true });
+    document.addEventListener("touchcancel", () => { touchStartedInScroller = false; }, { passive: true });
+
+    stackTiers.forEach(block => {
+      block.tabIndex = 0;
+      block.setAttribute("role", "button");
+      block.setAttribute("aria-pressed", "false");
+      block.addEventListener("click", event => { event.stopPropagation(); setExpandedBlock(block); });
+      block.addEventListener("keydown", event => {
+        if (["Enter", " "].includes(event.key)) { event.preventDefault(); event.stopPropagation(); setExpandedBlock(block); }
+      });
+    });
+    document.addEventListener("click", event => {
+      if (!event.target.closest(".stack-tier, #outroSub")) clearFocusEffects();
+    });
+
+    if (!reduceMotion && pointerFine) {
+      document.querySelectorAll(".timeline-track, .stack-body").forEach(group => {
+        const items = [...group.children];
+        group.addEventListener("mousemove", event => {
+          const horizontal = group.classList.contains("timeline-track");
+          items.forEach(item => {
+            const rect = item.getBoundingClientRect();
+            const pointer = horizontal ? event.clientX : event.clientY;
+            const center = horizontal ? rect.left + rect.width / 2 : rect.top + rect.height / 2;
+            const scale = horizontal ? group.clientWidth : group.clientHeight;
+            item.style.opacity = Math.max(.55, 1 - (Math.abs(pointer - center) / scale));
+          });
+        });
+        group.addEventListener("mouseleave", () => items.forEach(item => { item.style.opacity = ""; }));
+      });
+    }
+
+    if (outroSub) {
+      outroSub.tabIndex = 0;
+      outroSub.setAttribute("role", "button");
+      outroSub.setAttribute("aria-pressed", "false");
+      const toggleOutro = event => {
+        event.stopPropagation();
+        const slide = outroSub.closest(".layout-outro");
+        slide.classList.toggle("focus-sub");
+        outroSub.setAttribute("aria-pressed", String(slide.classList.contains("focus-sub")));
+      };
+      outroSub.addEventListener("click", toggleOutro);
+      outroSub.addEventListener("keydown", event => {
+        if (["Enter", " "].includes(event.key)) { event.preventDefault(); toggleOutro(event); }
+      });
+    }
 
     updateSlide();
   </script>

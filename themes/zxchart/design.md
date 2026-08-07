@@ -19,7 +19,7 @@ The ZXcharT theme uses a dark blue-gray base and restrained gold emphasis. It is
 --red: #e3392a;
 --text: #ededf5;
 --text-secondary: #9898a8;
---text-muted: #646478;
+--text-muted: #88889c;
 --border: rgba(255,255,255,.07);
 --border-strong: rgba(255,255,255,.12);
 --positive: #00b894;
@@ -37,7 +37,7 @@ Use `--accent` for emphasis, sequence marks, and fine evidence rails—not body 
 
 ## Interaction and accessibility
 
-Keyboard, touch, and visible controls navigate slides. Non-current slides are `aria-hidden` and inert, so hidden content cannot receive focus. Focus-visible rings, selection, and scrollbars follow the theme. Existing bar animation is optional; the seed honors `prefers-reduced-motion: reduce` and does not encode meaning solely in motion or color.
+Keyboard, touch, and visible controls navigate slides. Non-current slides are `aria-hidden` and inert, so hidden content cannot receive focus. Focus-visible rings, selection, and scrollbars follow the theme. Motion is reviewed effect by effect: the cover keeps a small local data pulse, bars reveal on entry, Stack retains keyboard-accessible focus, Timeline and Stack retain restrained pointer proximity, and Outro retains an optional focus shift. None carries required meaning; `prefers-reduced-motion: reduce` removes the motion.
 
 ## Audited layout inventory (16)
 

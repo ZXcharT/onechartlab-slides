@@ -14,7 +14,7 @@ The audited seed contains 16 layout classes in a fixed order. Use only the layou
 | `layout-timeline` | Four-step horizontal workflow |
 | `layout-detail` | Structured annotation rail |
 | `layout-stack` | Layered system or dependency model |
-| `layout-compare` | Flat, criteria-based decision table |
+| `layout-compare` | Flat, criteria-based decision table with a labelled narrow-screen scroll region |
 | `layout-timeline-3col` | Event, sequence, response alignment |
 | `layout-hook` | A concrete framing question |
 | `layout-statement` | A concise thesis |
