@@ -31,7 +31,8 @@ Use `--accent` for emphasis, sequence marks, and fine evidence rails—not body 
 
 - Headings and numeric emphasis: Space Grotesk with Noto Sans SC fallback; body: Inter with Noto Sans SC fallback.
 - The remote font reference is optional at runtime; system fallbacks remain usable offline.
-- Slide padding begins at `5.5vw 7vw 8vh`; compact heights reduce padding without hiding content.
+- All core layouts share responsive stage insets through `--stage-inline`, `--stage-top`, and `--stage-bottom`; compact heights reduce them without hiding content.
+- Core bodies use the full available stage width rather than unrelated fixed content caps. Titles, evidence rails, and content share common anchors.
 - Body text uses responsive sizing. A page has one primary message, then evidence, then source or limitation.
 - Do not use large-area gradients, gradient text, decorative glass, or all-equal card arrays. Fine rules and annotation rails should encode a source, sequence, unit, or interpretation.
 

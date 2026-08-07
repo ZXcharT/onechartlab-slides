@@ -7,9 +7,16 @@
 - Quality comes from typography, asymmetry, spacing, fine rules, aligned data, and a conclusion → evidence → source reading order.
 - Informational muted text uses `#88889c`, which remains readable on both the base and surface backgrounds.
 
+## Stage and alignment
+
+- Every core layout uses the same responsive stage insets: `--stage-inline`, `--stage-top`, and `--stage-bottom`.
+- Core content spans the available stage width instead of stopping at unrelated 980–1120px caps.
+- Titles, evidence rails, and primary content share common left and right anchors; wide-screen empty space must be intentional and assigned to a secondary evidence or metadata column.
+- Core content bodies use viewport-relative minimum height on landscape screens and release that height on compact or narrow screens.
+
 ## Core layout rules
 
-- Cover establishes title, scope, and authorship as a three-level reading order.
+- Cover uses a two-column composition so title and metadata occupy the full stage instead of leaving an accidental empty right half.
 - Agenda is a weighted narrative list, not a card grid.
 - Metrics and Dashboard establish one primary signal before supporting evidence.
 - Split, Detail, and Compare expose reasoning through rails, annotations, and flat structures rather than equal rounded-card piles.

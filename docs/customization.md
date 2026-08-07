@@ -8,7 +8,7 @@ A copied deck exposes its visual system in `:root`: `--bg`, `--bg-surface`, `--b
 
 The seed remotely references Space Grotesk, Inter, and Noto Sans SC through Google Fonts. The deck remains usable when offline because its font stacks include system fallbacks. This repository distributes no font files.
 
-Give each page one primary message. Use the fine `evidence-rail` only when it identifies sequence, unit, source, or interpretive context. Do not use it as decoration. Use plain type emphasis rather than gradient text, and avoid large gradients because they can band in recordings.
+Give each page one primary message. Keep the shared stage insets and alignment anchors unless a layout has a deliberate full-bleed reason; do not add arbitrary per-layout max-width caps that leave unused wide-screen space. Use the fine `evidence-rail` only when it identifies sequence, unit, source, or interpretive context. Do not use it as decoration. Use plain type emphasis rather than gradient text, and avoid large gradients because they can band in recordings.
 
 ## Motion and interaction
 

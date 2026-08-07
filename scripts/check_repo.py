@@ -94,6 +94,7 @@ LAYOUT_DOCS = [
 ]
 
 VISUAL_PRIMITIVES = [
+    "--stage-inline",
     "evidence-rail",
     "cover-datastream",
     "text-gradient { color: var(--accent); }",
