@@ -25,35 +25,35 @@ The ZXcharT theme uses a dark blue-gray base and restrained gold emphasis. It is
 --positive: #00b894;
 ```
 
-Use `--accent` for emphasis, not for body copy. Reserve `--red` and `--positive` for semantic negative and positive states. Preserve readable contrast after customization.
+Use `--accent` for emphasis, sequence marks, and fine evidence rails—not body copy or broad surfaces. Reserve `--red` and `--positive` for semantic negative and positive states. Preserve readable contrast after customization.
 
-## Typography and spacing
+## Typography, spacing, and surfaces
 
-- Headings and numeric emphasis: Space Grotesk with Noto Sans SC fallback.
-- Body: Inter with Noto Sans SC fallback.
+- Headings and numeric emphasis: Space Grotesk with Noto Sans SC fallback; body: Inter with Noto Sans SC fallback.
 - The remote font reference is optional at runtime; system fallbacks remain usable offline.
-- Slide padding: `5.5vw 7vw 8vh`; cover left padding: `16vw` on wide screens.
-- Body text uses responsive sizing and a 1.75 line height.
+- Slide padding begins at `5.5vw 7vw 8vh`; compact heights reduce padding without hiding content.
+- Body text uses responsive sizing. A page has one primary message, then evidence, then source or limitation.
+- Do not use large-area gradients, gradient text, decorative glass, or all-equal card arrays. Fine rules and annotation rails should encode a source, sequence, unit, or interpretation.
 
 ## Interaction and accessibility
 
-Keyboard, touch, and visible controls navigate slides. Cards can be focused by click. The cover includes animated light orbs and a data stream; bars reveal on entry; timeline and stack items respond to pointer proximity; the outro supports a focused closing line; and the closing page retains decorative rings. Motion is optional: the seed honors `prefers-reduced-motion: reduce` by removing animation and scaling. Do not encode essential information solely in color, hover, or motion.
+Keyboard, touch, and visible controls navigate slides. Non-current slides are `aria-hidden` and inert, so hidden content cannot receive focus. Focus-visible rings, selection, and scrollbars follow the theme. Existing bar animation is optional; the seed honors `prefers-reduced-motion: reduce` and does not encode meaning solely in motion or color.
 
 ## Audited layout inventory (16)
 
 | Class | Purpose |
 |---|---|
-| `layout-cover` | Cover |
-| `layout-agenda` | Agenda grid |
-| `layout-metrics` | Three metric cards |
-| `layout-dashboard` | Six-cell dashboard |
-| `layout-split` | Two-column argument |
+| `layout-cover` | Content-first cover |
+| `layout-agenda` | Weighted narrative agenda |
+| `layout-metrics` | Primary metric with supporting measures |
+| `layout-dashboard` | Primary status with evidence |
+| `layout-split` | Asymmetric evidence and conclusion |
 | `layout-bars` | Bar ranking |
 | `layout-quote` | Attributable quote |
 | `layout-timeline` | Four-step timeline |
-| `layout-detail` | Detail cards |
+| `layout-detail` | Annotation rail |
 | `layout-stack` | Layered model |
-| `layout-compare` | Comparison table |
+| `layout-compare` | Flat comparison table |
 | `layout-timeline-3col` | Three-column sequence |
 | `layout-hook` | Framing prompt |
 | `layout-statement` | Thesis statement |

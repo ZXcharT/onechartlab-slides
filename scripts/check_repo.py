@@ -94,17 +94,17 @@ LAYOUT_DOCS = [
 ]
 
 VISUAL_PRIMITIVES = [
-    "cover-orbs",
+    "evidence-rail",
     "cover-datastream",
-    "text-gradient",
+    "text-gradient { color: var(--accent); }",
     "closing-ring-outer",
-    "focus-sub",
     "statement-cursor",
     "prefers-reduced-motion",
     "max-height: 720px",
     "nav-btn:disabled",
     "touchstart",
-    "mousemove",
+    "aria-hidden",
+    "slide.inert",
 ]
 
 
@@ -154,6 +154,22 @@ def main() -> int:
         errors.append("gallery title or live-preview description is missing")
     if "URLSearchParams" not in template or 'classList.add("embed")' not in template:
         errors.append("template must support direct slide links and embedded gallery previews")
+    if 'slide.setAttribute("aria-hidden", String(!isActive))' not in template or "slide.inert = !isActive" not in template:
+        errors.append("non-current slides must be aria-hidden and inert")
+    if ".text-gradient { color: var(--accent); }" not in template:
+        errors.append("core layouts must not use gradient text")
+    if ".text-gradient {\n      background:" in template:
+        errors.append("core layouts must not use a gradient text treatment")
+    pressure = ROOT / "projects/v2-pressure-test/index.html"
+    if not pressure.is_file():
+        errors.append("missing V2 Phase 1 pressure test")
+    else:
+        pressure_text = pressure.read_text(encoding="utf-8")
+        for layout in ["layout-cover", "layout-agenda", "layout-metrics", "layout-dashboard", "layout-split", "layout-detail", "layout-compare"]:
+            if layout not in pressure_text:
+                errors.append(f"pressure test missing {layout}")
+        if "合成演示" not in pressure_text:
+            errors.append("pressure test must identify synthetic/demo content")
 
     for doc in LAYOUT_DOCS:
         text = (ROOT / doc).read_text(encoding="utf-8")

@@ -55,7 +55,8 @@
       display: flex;
       flex-direction: column;
       padding: 5.5vw 7vw 8vh;
-      overflow: hidden;
+      overflow: auto;
+      overscroll-behavior: contain;
       opacity: 0;
       pointer-events: none;
       transform: translateX(42px);
@@ -133,244 +134,88 @@
       background: var(--accent);
     }
 
-    .text-gradient {
-      background: linear-gradient(135deg, var(--accent) 0%, #ffe9a0 52%, #fff 100%);
-      background-clip: text;
-      -webkit-background-clip: text;
-      color: transparent;
-      -webkit-text-fill-color: transparent;
+    .text-gradient { color: var(--accent); }
+
+    :focus-visible {
+      outline: 3px solid var(--accent-light);
+      outline-offset: 4px;
     }
 
-    .agenda-item,
-    .metric-card,
-    .stat-cell,
-    .detail-block,
-    .stack-tier {
-      border: 1px solid var(--border);
-      background: var(--bg-surface);
-      transition: border-color 0.3s ease, background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
-      cursor: pointer;
-    }
+    ::selection { background: var(--accent); color: var(--bg); }
+    ::-webkit-scrollbar { width: 10px; height: 10px; }
+    ::-webkit-scrollbar-thumb { background: var(--border-strong); border: 3px solid var(--bg); border-radius: 999px; }
 
-    .agenda-item:hover,
-    .metric-card:hover,
-    .stat-cell:hover,
-    .detail-block:hover,
-    .stack-tier:hover {
-      border-color: var(--accent-border);
-      background: var(--bg-elevated);
-    }
+    .layout-agenda .slide-content,
+    .layout-metrics .slide-content,
+    .layout-dashboard .slide-content,
+    .layout-split .slide-content,
+    .layout-detail .slide-content,
+    .layout-compare .slide-content { justify-content: flex-start; }
 
-    .agenda-item.expanded,
-    .metric-card.expanded,
-    .stat-cell.expanded,
-    .detail-block.expanded,
-    .stack-tier.expanded {
-      border-color: var(--accent);
-      background: var(--bg);
-      box-shadow: 0 0 0 1px var(--accent), 0 8px 32px rgba(0, 0, 0, 0.4);
-      transform: scale(1.04);
+    .evidence-rail {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      margin: 0 0 1.35rem;
+      color: var(--text-muted);
+      font-size: 0.76rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
     }
+    .evidence-rail::before { width: 3.5rem; height: 1px; background: var(--accent); content: ""; }
+    .source-note { margin: 1rem 0 0; color: var(--text-muted); font-size: clamp(0.72rem, 0.9vw, 0.9rem); line-height: 1.45; }
 
     /* 01 · cover */
-    .layout-cover {
-      justify-content: center;
-      padding-left: 16vw;
-    }
-
-    .layout-cover h1 {
-      position: relative;
-      z-index: 2;
-      max-width: 70vw;
-      margin-bottom: 1.5rem;
-      font-size: clamp(3.5rem, 6.2vw, 5.2rem);
-    }
-
-    .layout-cover .subtitle {
-      position: relative;
-      z-index: 2;
-      max-width: 66vw;
-      margin-bottom: 2rem;
-      font-size: clamp(1.35rem, 2vw, 1.9rem);
-    }
-
-    .layout-cover .meta {
-      position: relative;
-      z-index: 2;
-      color: var(--text-muted);
-      font-size: 0.95rem;
-    }
-
-    .cover-deco {
-      position: absolute;
-      inset: 0 0 0 auto;
-      width: 38vw;
-      background: var(--accent-subtle);
-      clip-path: polygon(28% 0, 100% 0, 100% 100%, 0 100%);
-    }
-
-    .cover-orbs,
-    .cover-datastream {
-      position: absolute;
-      inset: 0;
-      overflow: hidden;
-      pointer-events: none;
-    }
-
-    .cover-orb {
-      position: absolute;
-      border-radius: 50%;
-      filter: blur(100px);
-    }
-
-    .cover-orb-1 {
-      top: -15%;
-      right: -10%;
-      width: 55vw;
-      height: 55vw;
-      background: rgba(var(--accent-rgb), 0.35);
-      animation: orbFloat1 18s ease-in-out infinite alternate;
-    }
-
-    .cover-orb-2 {
-      bottom: -18%;
-      left: 8%;
-      width: 40vw;
-      height: 40vw;
-      background: rgba(var(--accent-rgb), 0.2);
-      animation: orbFloat2 22s ease-in-out infinite alternate;
-    }
-
-    .cover-datastream {
-      display: flex;
-      gap: 3vw;
-      opacity: 0.06;
-    }
-
-    .cover-datastream span {
-      color: var(--accent);
-      font: 12px/2.1 "JetBrains Mono", monospace;
-      writing-mode: vertical-rl;
-      animation: dataDrift 18s linear infinite;
-    }
-
-    .cover-datastream span:nth-child(even) { animation-direction: reverse; }
-
-    @keyframes orbFloat1 { to { transform: translate(-10%, 9%) scale(1.08); } }
-    @keyframes orbFloat2 { to { transform: translate(14%, -10%) scale(0.94); } }
-    @keyframes dataDrift { to { transform: translateY(-30%); } }
+    .layout-cover { justify-content: center; padding-left: 13vw; }
+    .layout-cover h1 { max-width: min(76vw, 1080px); margin: 0 0 1.25rem; font-size: clamp(3.2rem, 6.1vw, 6rem); letter-spacing: -0.045em; }
+    .layout-cover .subtitle { max-width: 58rem; margin: 0 0 2.25rem; font-size: clamp(1.1rem, 1.75vw, 1.55rem); }
+    .layout-cover .meta { display: flex; gap: 1.25rem; color: var(--text-muted); font-size: 0.88rem; }
+    .cover-deco { position: absolute; top: 13%; right: 7vw; bottom: 13%; width: 1px; background: var(--accent-border); }
+    .cover-deco::before, .cover-deco::after { position: absolute; right: -3px; width: 7px; height: 7px; border: 1px solid var(--accent); border-radius: 50%; background: var(--bg); content: ""; }
+    .cover-deco::before { top: 12%; } .cover-deco::after { bottom: 18%; }
+    .cover-datastream { position: absolute; right: 10vw; bottom: 15%; display: flex; gap: 0.55rem; color: var(--text-muted); font: 0.72rem/1.5 "Space Grotesk", sans-serif; letter-spacing: .1em; opacity: .8; }
+    .cover-datastream span { width: 3px; height: 3px; border-radius: 50%; background: var(--accent); }
+    .cover-datastream span:nth-child(2) { opacity: .55; } .cover-datastream span:nth-child(3) { opacity: .25; }
+    @keyframes dataDrift { to { opacity: .55; } }
 
     /* 02 · agenda */
-    .agenda-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      grid-template-rows: repeat(3, 1fr);
-      gap: 1.25rem;
-      min-height: 0;
-    }
-
-    .agenda-item {
-      display: grid;
-      grid-template-columns: 68px 1fr;
-      grid-template-rows: auto auto;
-      align-content: center;
-      padding: 1.15rem 1.4rem;
-      border-radius: 12px;
-    }
-
-    .agenda-num {
-      grid-row: 1 / 3;
-      align-self: center;
-      color: var(--accent);
-      font-size: 1.4rem;
-      font-weight: 600;
-    }
-
-    .agenda-item h3,
-    .agenda-item p { margin-bottom: 0; }
-    .agenda-item p { font-size: clamp(0.9rem, 1.1vw, 1.05rem); }
+    .agenda-grid { display: grid; max-width: 980px; border-top: 1px solid var(--border-strong); }
+    .agenda-item { display: grid; grid-template-columns: 4.5rem minmax(11rem, .9fr) 1.6fr; gap: 1rem; align-items: baseline; padding: 1rem 0; border-bottom: 1px solid var(--border); }
+    .agenda-item:first-child { border-color: var(--accent-border); }
+    .agenda-num { color: var(--accent); font-size: .82rem; font-weight: 700; letter-spacing: .08em; }
+    .agenda-item h3, .agenda-item p { margin: 0; }
+    .agenda-item p { font-size: clamp(.88rem, 1.1vw, 1.05rem); line-height: 1.45; }
+    .agenda-item:first-child h3 { color: var(--accent-light); }
 
     /* 03 · metrics */
-    .metrics-row {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1.5rem;
-    }
-
-    .metric-card {
-      min-height: 330px;
-      padding: 1.5rem;
-      border-radius: 14px;
-    }
-
-    .metric-value {
-      margin-bottom: 0.35rem;
-      color: var(--accent);
-      font-size: clamp(2.8rem, 4.8vw, 4.6rem);
-      font-weight: 700;
-    }
-
-    .metric-label { margin-bottom: 0.8rem; font-weight: 600; }
-    .metric-desc,
-    .metric-supports li { font-size: clamp(0.92rem, 1.12vw, 1.06rem); }
-    .metric-supports { padding-left: 1.25rem; }
+    .metrics-row { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(15rem, .75fr); gap: clamp(1.5rem, 5vw, 5rem); max-width: 1100px; }
+    .metric-card { border-top: 1px solid var(--border-strong); padding: 1rem 0 0; }
+    .metric-card:first-child { grid-row: span 2; border-top-color: var(--accent); }
+    .metric-value { margin-bottom: .35rem; color: var(--accent); font-size: clamp(4rem, 8vw, 7.4rem); font-weight: 700; letter-spacing: -.06em; line-height: .95; }
+    .metric-card:not(:first-child) .metric-value { font-size: clamp(2rem, 3vw, 3.15rem); }
+    .metric-label { margin-bottom: .45rem; color: var(--text); font-weight: 600; }
+    .metric-desc, .metric-supports li { font-size: clamp(.88rem, 1.1vw, 1.02rem); line-height: 1.45; }
+    .metric-supports { margin: .9rem 0 0; padding-left: 1.1rem; }
 
     /* 04 · dashboard */
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1.25rem;
-    }
-
-    .stat-cell {
-      min-height: 168px;
-      padding: 1.3rem 1.45rem;
-      border-radius: 12px;
-    }
-
+    .stats-grid { display: grid; grid-template-columns: minmax(0, 1.2fr) repeat(2, minmax(0, .8fr)); gap: 0; max-width: 1120px; border-top: 1px solid var(--border-strong); border-left: 1px solid var(--border); }
+    .stat-cell { min-height: 8.3rem; padding: 1.1rem 1.25rem; border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .stat-cell:first-child { grid-row: span 2; display: flex; flex-direction: column; justify-content: center; border-color: var(--accent-border); }
     .stat-num { color: var(--accent); font-size: 2.1rem; font-weight: 700; }
-    .stat-unit { margin-left: 0.35rem; color: var(--text-muted); font-size: 0.85rem; }
-    .stat-name { margin-top: 0.55rem; font-weight: 600; }
-    .stat-context { margin: 0.35rem 0 0; font-size: 0.94rem; line-height: 1.5; }
+    .stat-cell:first-child .stat-num { font-size: clamp(3.6rem, 6vw, 5.4rem); letter-spacing: -.05em; }
+    .stat-unit { margin-left: .35rem; color: var(--text-muted); font-size: .85rem; }
+    .stat-name { margin-top: .55rem; font-weight: 600; }
+    .stat-context { margin: .35rem 0 0; font-size: .94rem; line-height: 1.5; }
 
     /* 05 · split */
-    .split-body {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 3rem;
-      align-items: center;
-    }
-
-    .insight-list { padding-left: 1.35rem; }
-    .insight-list li { margin-bottom: 1rem; }
-
-    .split-highlight {
-      padding: 1.8rem;
-      border: 1px solid var(--accent-border);
-      border-radius: 12px;
-      background: var(--bg-surface);
-      color: var(--text);
-      font-size: clamp(1.25rem, 1.75vw, 1.65rem);
-      line-height: 1.55;
-    }
-
-    .mini-stat-row {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 0.8rem;
-      margin-top: 1rem;
-    }
-
-    .mini-stat {
-      padding: 0.85rem;
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      background: var(--bg-surface);
-      text-align: center;
-    }
-
-    .mini-val { color: var(--accent); font-size: 1.25rem; font-weight: 600; }
-    .mini-label { margin-top: 0.25rem; color: var(--text-muted); font-size: 0.78rem; }
+    .split-body { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(17rem, .78fr); gap: clamp(2rem, 7vw, 7rem); align-items: start; max-width: 1120px; }
+    .insight-list { display: grid; gap: 1rem; margin: 0; padding: 0; list-style: none; }
+    .insight-list li { position: relative; margin: 0; padding-left: 1.5rem; }
+    .insight-list li::before { position: absolute; top: .65em; left: 0; width: .55rem; height: 1px; background: var(--accent); content: ""; }
+    .split-highlight { padding: 0 0 1.25rem; border-bottom: 1px solid var(--accent-border); color: var(--text); font-size: clamp(1.25rem, 1.75vw, 1.65rem); line-height: 1.5; }
+    .mini-stat-row { display: grid; gap: .8rem; margin-top: 1.25rem; }
+    .mini-stat { display: grid; grid-template-columns: 3.5rem 1fr; gap: .7rem; align-items: baseline; padding-bottom: .7rem; border-bottom: 1px solid var(--border); }
+    .mini-val { color: var(--accent); font-size: 1rem; font-weight: 600; } .mini-label { color: var(--text-muted); font-size: .86rem; }
 
     /* 06 · bars */
     .bars-container { display: grid; gap: 1rem; }
@@ -454,15 +299,12 @@
     @keyframes timelineFlow { to { background-position: -200% 0; } }
 
     /* 09 · detail */
-    .detail-body {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 1.5rem;
-    }
-
-    .detail-col { display: grid; gap: 1.25rem; }
-    .detail-block { padding: 1.35rem 1.5rem; border-radius: 12px; }
-    .detail-block p { margin-bottom: 0; font-size: 1rem; }
+    .detail-body { display: grid; grid-template-columns: minmax(10rem, .52fr) minmax(0, 1.48fr); gap: clamp(1.5rem, 5vw, 5rem); max-width: 1100px; }
+    .detail-col { display: grid; align-content: start; gap: 0; }
+    .detail-block { position: relative; padding: 0 0 1.1rem 1.4rem; border-bottom: 1px solid var(--border); }
+    .detail-block + .detail-block { padding-top: 1.1rem; }
+    .detail-block::before { position: absolute; top: .55rem; left: 0; width: .55rem; height: .55rem; border: 1px solid var(--accent); border-radius: 50%; background: var(--bg); content: ""; }
+    .detail-block h3 { margin-bottom: .25rem; } .detail-block p { margin: 0; font-size: 1rem; line-height: 1.5; }
 
     /* 10 · stack */
     .stack-body { display: grid; gap: 0.8rem; }
@@ -490,14 +332,14 @@
     .stack-desc { color: var(--text-secondary); font-size: 0.95rem; line-height: 1.45; }
 
     /* 11 · compare */
-    .compare-table { width: 100%; border-collapse: separate; border-spacing: 0; overflow: hidden; border-radius: 12px; }
-    .compare-table th,
-    .compare-table td { padding: 0.95rem 1.1rem; border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); }
-    .compare-table th { background: var(--accent); color: var(--bg); text-align: left; }
-    .compare-table td { background: var(--bg-surface); color: var(--text-secondary); }
-    .compare-table tr:last-child td { border-bottom: 0; }
-    .compare-table th:last-child,
-    .compare-table td:last-child { border-right: 0; }
+    .compare-table { width: 100%; border-collapse: collapse; table-layout: fixed; font-variant-numeric: tabular-nums; }
+    .compare-table th, .compare-table td { padding: .9rem 1rem; border-bottom: 1px solid var(--border); text-align: left; vertical-align: top; overflow-wrap: anywhere; }
+    .compare-table th { color: var(--text-muted); font-size: .78rem; font-weight: 600; letter-spacing: .07em; text-transform: uppercase; }
+    .compare-table td { color: var(--text-secondary); font-size: clamp(.82rem, 1vw, .98rem); line-height: 1.45; }
+    .compare-table td:first-child { color: var(--text); font-weight: 600; }
+    .compare-table tbody tr:first-child td { color: var(--text); border-bottom-color: var(--accent-border); }
+    .compare-table tbody tr:first-child td:first-child { color: var(--accent-light); }
+    .compare-table th:first-child, .compare-table td:first-child { width: 19%; }
 
     /* 12 · three-column timeline */
     .tl3-header,
@@ -660,74 +502,70 @@
   <main class="deck" aria-label="OneChartLab Slides layout gallery">
     <!-- 01 · Cover -->
     <section class="slide layout-cover active">
-      <div class="cover-orbs" aria-hidden="true">
-        <div class="cover-orb cover-orb-1"></div>
-        <div class="cover-orb cover-orb-2"></div>
-      </div>
-      <div class="cover-datastream" id="cover-datastream" aria-hidden="true"></div>
       <div class="cover-deco" aria-hidden="true"></div>
+      <div class="cover-datastream" aria-hidden="true"><span></span><span></span><span></span></div>
       <div class="accent-line"></div>
-      <h1><span class="text-gradient">OneChartLab Slides</span><br>agent-first HTML presentations</h1>
-      <p class="subtitle">A neutral seed deck for layout exploration. Replace every placeholder with attributable project material.</p>
-      <p class="meta">ZXcharT theme · layout gallery</p>
+      <h1><span class="text-gradient">OneChartLab Slides</span><br>content-first HTML presentations</h1>
+      <p class="subtitle">A neutral, browser-ready seed for clear claims, attributable evidence, and deliberate presentation pacing.</p>
+      <p class="meta"><span>ZXcharT theme</span><span>Layout gallery</span><span>2026</span></p>
     </section>
 
     <!-- 02 · Agenda -->
     <section class="slide layout-agenda">
-      <header class="slide-header"><h4>01 / Agenda</h4><span class="tag">Grid</span></header>
+      <header class="slide-header"><h4>Agenda</h4><span class="tag">Narrative order</span></header>
       <div class="slide-content">
-        <h2>Six places for a narrative</h2>
+        <h2>Start with the decision, then earn it.</h2>
+        <p class="evidence-rail">Sequence signals relative weight, not six equal topics</p>
         <div class="agenda-grid">
-          <article class="agenda-item"><span class="agenda-num">01</span><h3>Context</h3><p>What changed?</p></article>
-          <article class="agenda-item"><span class="agenda-num">02</span><h3>Question</h3><p>What matters?</p></article>
-          <article class="agenda-item"><span class="agenda-num">03</span><h3>Evidence</h3><p>What supports it?</p></article>
-          <article class="agenda-item"><span class="agenda-num">04</span><h3>Options</h3><p>What can happen?</p></article>
-          <article class="agenda-item"><span class="agenda-num">05</span><h3>Decision</h3><p>What follows?</p></article>
-          <article class="agenda-item"><span class="agenda-num">06</span><h3>Next step</h3><p>What should be verified?</p></article>
+          <article class="agenda-item"><span class="agenda-num">01</span><h3>Decision frame</h3><p>The audience, decision owner, and outcome that make the work relevant.</p></article>
+          <article class="agenda-item"><span class="agenda-num">02</span><h3>What changed</h3><p>The smallest context needed to understand urgency without manufacturing it.</p></article>
+          <article class="agenda-item"><span class="agenda-num">03</span><h3>Evidence</h3><p>Observed signals, source period, and the limits of what they establish.</p></article>
+          <article class="agenda-item"><span class="agenda-num">04</span><h3>Interpretation</h3><p>Trade-offs, alternatives, and assumptions separated from the record.</p></article>
+          <article class="agenda-item"><span class="agenda-num">05</span><h3>Recommendation</h3><p>The action, threshold, or unresolved question that follows.</p></article>
+          <article class="agenda-item"><span class="agenda-num">06</span><h3>Next check</h3><p>Owner, timing, and the evidence that could change the conclusion.</p></article>
         </div>
       </div>
     </section>
 
     <!-- 03 · Metrics -->
     <section class="slide layout-metrics">
-      <header class="slide-header"><h4>02 / Metrics</h4><span class="tag">Three cards</span></header>
+      <header class="slide-header"><h4>Metrics</h4><span class="tag">Primary signal</span></header>
       <div class="slide-content">
-        <h2>Use labeled placeholders, not invented facts</h2>
+        <h2>One number carries the claim; the rest explain it.</h2>
+        <p class="evidence-rail">Use real values only with unit · period · source</p>
         <div class="metrics-row">
-          <article class="metric-card"><div class="metric-value">—</div><div class="metric-label">Primary measure</div><p class="metric-desc">State the unit, source, and period before using a number.</p><ul class="metric-supports"><li>Definition</li><li>Time window</li><li>Source link</li></ul></article>
-          <article class="metric-card"><div class="metric-value">—</div><div class="metric-label">Comparison</div><p class="metric-desc">Define the baseline and comparison method.</p><ul class="metric-supports"><li>Reference group</li><li>Calculation</li><li>Known limits</li></ul></article>
-          <article class="metric-card"><div class="metric-value">—</div><div class="metric-label">Decision signal</div><p class="metric-desc">Explain what threshold would change the decision.</p><ul class="metric-supports"><li>Trigger</li><li>Owner</li><li>Review date</li></ul></article>
+          <article class="metric-card"><div class="metric-value">—</div><div class="metric-label">Primary measure</div><p class="metric-desc">Name the measure, unit, source, and time window before asking the audience to act on it.</p><ul class="metric-supports"><li>Definition and denominator</li><li>Comparison baseline</li><li>Decision threshold</li></ul></article>
+          <article class="metric-card"><div class="metric-value">—</div><div class="metric-label">Supporting measure</div><p class="metric-desc">Use one signal that helps explain the direction.</p></article>
+          <article class="metric-card"><div class="metric-value">—</div><div class="metric-label">Interpretation</div><p class="metric-desc">State the limit that prevents over-reading the number.</p></article>
         </div>
       </div>
     </section>
 
     <!-- 04 · Dashboard -->
     <section class="slide layout-dashboard">
-      <header class="slide-header"><h4>03 / Dashboard</h4><span class="tag">Six cells</span></header>
+      <header class="slide-header"><h4>Dashboard</h4><span class="tag">Decision status</span></header>
       <div class="slide-content">
-        <h2>Compact status overview</h2>
+        <h2>Lead with the status that changes the next move.</h2>
+        <p class="evidence-rail">Primary state · evidence · limitation · owner</p>
         <div class="stats-grid">
+          <article class="stat-cell"><div><span class="stat-num">Ready</span><span class="stat-unit">status</span></div><div class="stat-name">Decision condition</div><p class="stat-context">The central state is readable before the supporting evidence.</p></article>
           <article class="stat-cell"><div><span class="stat-num">A</span><span class="stat-unit">input</span></div><div class="stat-name">Source</div><p class="stat-context">Verified and attributable.</p></article>
           <article class="stat-cell"><div><span class="stat-num">B</span><span class="stat-unit">scope</span></div><div class="stat-name">Boundary</div><p class="stat-context">Included and excluded items.</p></article>
-          <article class="stat-cell"><div><span class="stat-num">C</span><span class="stat-unit">method</span></div><div class="stat-name">Process</div><p class="stat-context">A reproducible transformation.</p></article>
-          <article class="stat-cell"><div><span class="stat-num">D</span><span class="stat-unit">result</span></div><div class="stat-name">Output</div><p class="stat-context">Observed, not inferred.</p></article>
-          <article class="stat-cell"><div><span class="stat-num">E</span><span class="stat-unit">risk</span></div><div class="stat-name">Limitation</div><p class="stat-context">Known uncertainty or conflict.</p></article>
-          <article class="stat-cell"><div><span class="stat-num">F</span><span class="stat-unit">action</span></div><div class="stat-name">Next step</div><p class="stat-context">Owner and review point.</p></article>
+          <article class="stat-cell"><div><span class="stat-num">C</span><span class="stat-unit">risk</span></div><div class="stat-name">Limitation</div><p class="stat-context">Known uncertainty or conflict.</p></article>
+          <article class="stat-cell"><div><span class="stat-num">D</span><span class="stat-unit">owner</span></div><div class="stat-name">Next check</div><p class="stat-context">Owner and review point.</p></article>
         </div>
       </div>
     </section>
 
     <!-- 05 · Split -->
     <section class="slide layout-split">
-      <header class="slide-header"><h4>04 / Split</h4><span class="tag">Two columns</span></header>
+      <header class="slide-header"><h4>Split</h4><span class="tag">Evidence → conclusion</span></header>
       <div class="slide-content">
-        <h2>Separate evidence from interpretation</h2>
+        <h2>Keep the record visible; make interpretation accountable.</h2>
+        <p class="evidence-rail">Evidence on the left · conclusion and decision rule on the right</p>
         <div class="split-body">
-          <ul class="insight-list"><li>Record the source and time window.</li><li>State what the evidence directly supports.</li><li>Mark assumptions and alternatives explicitly.</li></ul>
-          <div>
-            <div class="split-highlight">Use this panel for a synthesis, decision rule, or unresolved question. It is not a quotation unless a real source is supplied.</div>
-            <div class="mini-stat-row"><div class="mini-stat"><div class="mini-val">01</div><div class="mini-label">Observation</div></div><div class="mini-stat"><div class="mini-val">02</div><div class="mini-label">Inference</div></div><div class="mini-stat"><div class="mini-val">03</div><div class="mini-label">Decision</div></div></div>
-          </div>
+          <ul class="insight-list"><li>Record source, period, and what was directly observed.</li><li>State the evidence without smuggling in a conclusion.</li><li>Mark assumptions, alternatives, and missing information explicitly.</li></ul>
+          <div><div class="split-highlight">Use this smaller column for the synthesis: what the evidence permits us to decide now, and what would reverse that decision.</div><div class="mini-stat-row"><div class="mini-stat"><div class="mini-val">01</div><div class="mini-label">Observation</div></div><div class="mini-stat"><div class="mini-val">02</div><div class="mini-label">Inference</div></div><div class="mini-stat"><div class="mini-val">03</div><div class="mini-label">Decision</div></div></div></div>
         </div>
       </div>
     </section>
@@ -770,12 +608,13 @@
 
     <!-- 09 · Detail -->
     <section class="slide layout-detail">
-      <header class="slide-header"><h4>07 / Detail</h4><span class="tag">Two groups</span></header>
+      <header class="slide-header"><h4>Detail</h4><span class="tag">Annotation rail</span></header>
       <div class="slide-content">
-        <h2>Keep detail blocks independently reviewable</h2>
+        <h2>Detail should read like an argument, not a pile of containers.</h2>
+        <p class="evidence-rail">Label the claim, evidence, constraint, and decision in reading order</p>
         <div class="detail-body">
-          <div class="detail-col"><article class="detail-block"><h3>Claim</h3><p>Use a short statement with a supporting note.</p></article><article class="detail-block"><h3>Evidence</h3><p>Link a source or mark the claim as pending.</p></article></div>
-          <div class="detail-col"><article class="detail-block"><h3>Constraint</h3><p>Describe limits that affect interpretation.</p></article><article class="detail-block"><h3>Decision</h3><p>Connect the conclusion to a next action.</p></article></div>
+          <div class="detail-col"><article class="detail-block"><h3>Claim</h3><p>State the conclusion in language the audience can test.</p></article><article class="detail-block"><h3>Decision</h3><p>Connect the conclusion to the owner and next action.</p></article></div>
+          <div class="detail-col"><article class="detail-block"><h3>Evidence</h3><p>Link the source, unit, and period; say what the record directly supports.</p></article><article class="detail-block"><h3>Constraint</h3><p>Describe uncertainty, alternative explanations, or information that is still missing.</p></article></div>
         </div>
       </div>
     </section>
@@ -796,10 +635,12 @@
 
     <!-- 11 · Compare -->
     <section class="slide layout-compare">
-      <header class="slide-header"><h4>09 / Compare</h4><span class="tag">Table</span></header>
+      <header class="slide-header"><h4>Compare</h4><span class="tag">Decision table</span></header>
       <div class="slide-content">
-        <h2>Compare options on stated criteria</h2>
-        <table class="compare-table"><thead><tr><th>Option</th><th>Strength</th><th>Constraint</th><th>Validation</th></tr></thead><tbody><tr><td>Option A</td><td>Placeholder</td><td>Placeholder</td><td>Test</td></tr><tr><td>Option B</td><td>Placeholder</td><td>Placeholder</td><td>Review</td></tr><tr><td>Option C</td><td>Placeholder</td><td>Placeholder</td><td>Pilot</td></tr></tbody></table>
+        <h2>Make the trade-off legible before choosing.</h2>
+        <p class="evidence-rail">Recommended row is signalled by type and a fine gold rule, not a heavy header</p>
+        <table class="compare-table"><thead><tr><th>Option</th><th>Strength</th><th>Constraint</th><th>Validation</th></tr></thead><tbody><tr><td>Option A · recommend</td><td>Directly addresses the decision criterion.</td><td>Requires an explicit threshold.</td><td>Test against the stated baseline.</td></tr><tr><td>Option B</td><td>Preserves optionality.</td><td>Delays a conclusive result.</td><td>Review new evidence at the next checkpoint.</td></tr><tr><td>Option C</td><td>Limits immediate exposure.</td><td>May not resolve the core question.</td><td>Pilot with defined exit criteria.</td></tr></tbody></table>
+        <p class="source-note">Illustrative comparison form — replace all option content with attributable project material before use.</p>
       </div>
     </section>
 
@@ -849,15 +690,8 @@
     let current = Number.isFinite(requestedSlide)
       ? Math.max(0, Math.min(slides.length - 1, requestedSlide - 1))
       : 0;
-    let expandedBlock = null;
-
     if (params.get("embed") === "1") document.body.classList.add("embed");
     totalEl.textContent = slides.length;
-
-    function clearExpanded() {
-      if (expandedBlock) expandedBlock.classList.remove("expanded");
-      expandedBlock = null;
-    }
 
     function animateBars(slide) {
       if (reduceMotion) return;
@@ -870,10 +704,12 @@
     }
 
     function updateSlide() {
-      clearExpanded();
       slides.forEach((slide, index) => {
-        slide.classList.toggle("active", index === current);
+        const isActive = index === current;
+        slide.classList.toggle("active", isActive);
         slide.classList.toggle("prev", index < current);
+        slide.setAttribute("aria-hidden", String(!isActive));
+        slide.inert = !isActive;
       });
       currentEl.textContent = current + 1;
       progressEl.style.width = `${((current + 1) / slides.length) * 100}%`;
@@ -895,7 +731,6 @@
       if (["ArrowLeft", "PageUp"].includes(event.key)) { event.preventDefault(); changeSlide(-1); }
       if (event.key === "Home") { current = 0; updateSlide(); }
       if (event.key === "End") { current = slides.length - 1; updateSlide(); }
-      if (event.key === "Escape") clearExpanded();
     });
 
     let touchStartX = 0;
@@ -904,43 +739,6 @@
       const touchEndX = event.changedTouches[0].screenX;
       if (Math.abs(touchStartX - touchEndX) > 50) changeSlide(touchStartX > touchEndX ? 1 : -1);
     }, { passive: true });
-
-    document.querySelectorAll(".agenda-item, .metric-card, .stat-cell, .detail-block, .stack-tier").forEach(block => {
-      block.addEventListener("click", event => {
-        event.stopPropagation();
-        if (expandedBlock && expandedBlock !== block) expandedBlock.classList.remove("expanded");
-        block.classList.toggle("expanded");
-        expandedBlock = block.classList.contains("expanded") ? block : null;
-      });
-    });
-    document.addEventListener("click", clearExpanded);
-
-    document.querySelectorAll(".timeline-track, .stack-body").forEach(group => {
-      const items = [...group.children];
-      group.addEventListener("mousemove", event => {
-        const horizontal = group.classList.contains("timeline-track");
-        items.forEach(item => {
-          const rect = item.getBoundingClientRect();
-          const pointer = horizontal ? event.clientX : event.clientY;
-          const center = horizontal ? rect.left + rect.width / 2 : rect.top + rect.height / 2;
-          const scale = horizontal ? group.clientWidth : group.clientHeight;
-          item.style.opacity = Math.max(0.4, 1 - (Math.abs(pointer - center) / scale) * 1.2);
-        });
-      });
-      group.addEventListener("mouseleave", () => items.forEach(item => { item.style.opacity = ""; }));
-    });
-
-    const outroSub = document.getElementById("outroSub");
-    if (outroSub) outroSub.addEventListener("click", event => { event.stopPropagation(); outroSub.closest(".layout-outro").classList.toggle("focus-sub"); });
-
-    const dataStream = document.getElementById("cover-datastream");
-    if (dataStream && !reduceMotion) {
-      for (let column = 0; column < 14; column += 1) {
-        const span = document.createElement("span");
-        span.textContent = Array.from({ length: 30 }, (_, row) => `LAYOUT ${column + 1}.${row + 1}`).join(" ");
-        dataStream.appendChild(span);
-      }
-    }
 
     updateSlide();
   </script>
