@@ -28,6 +28,7 @@
       --control-border: rgba(243, 240, 232, 0.35);
       --positive: #3cc59e;
       --motion-fast: 160ms;
+      --motion-focus: 220ms;
       --motion-base: 360ms;
       --motion-slow: 720ms;
       --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
@@ -186,18 +187,34 @@
     .source-note { margin: 1rem 0 0; color: var(--text-muted); font-size: clamp(0.72rem, 0.9vw, 0.9rem); font-weight: 500; line-height: 1.45; }
 
     /* Presentation focus feedback */
-    .focus-item {
+    .focus-item,
+    .stack-tier {
       cursor: pointer;
       transition:
-        opacity var(--motion-fast) var(--ease-soft),
-        color var(--motion-fast) var(--ease-soft),
-        background var(--motion-fast) var(--ease-soft),
-        transform var(--motion-fast) var(--ease-out),
-        box-shadow var(--motion-fast) var(--ease-soft);
+        opacity var(--motion-focus) var(--ease-soft),
+        color var(--motion-focus) var(--ease-soft),
+        background var(--motion-focus) var(--ease-soft),
+        transform var(--motion-focus) var(--ease-out),
+        border-color var(--motion-focus) var(--ease-soft);
     }
 
-    .focus-group.has-locked-focus .focus-item:not(.is-focused) { opacity: .42; }
-    .focus-item.is-focused { background: var(--accent-soft); box-shadow: inset 0 0 0 1px var(--accent-border); color: var(--text); }
+    .focus-group.has-preview-focus:not(.has-locked-focus) .focus-item:not(.is-previewed),
+    .stack-body.has-preview-focus:not(.has-locked-focus) .stack-tier:not(.is-previewed) { opacity: .62; }
+    .focus-item.is-previewed,
+    .stack-tier.is-previewed { background: var(--accent-subtle); color: var(--text); }
+    .agenda-item.is-previewed,
+    .bar-item.is-previewed,
+    .tl3-row.is-previewed,
+    .stack-tier.is-previewed { transform: translateX(4px); }
+    .metric-card.is-previewed,
+    .stat-cell.is-previewed,
+    .detail-block.is-previewed,
+    .timeline-step.is-previewed { transform: translateY(-2px); }
+    .compare-table tbody tr.focus-item.is-previewed td { background: var(--accent-subtle); color: var(--text); }
+
+    .focus-group.has-locked-focus .focus-item:not(.is-focused),
+    .stack-body.has-locked-focus .stack-tier:not(.expanded) { opacity: .42; }
+    .focus-item.is-focused { background: var(--accent-soft); color: var(--text); }
     .agenda-item.is-focused,
     .bar-item.is-focused,
     .tl3-row.is-focused { transform: translateX(6px); }
@@ -206,20 +223,6 @@
     .detail-block.is-focused,
     .timeline-step.is-focused { transform: translateY(-3px); }
     .compare-table tbody tr.focus-item.is-focused td { background: var(--accent-soft); color: var(--text); }
-    .focus-item:active { transform: scale(.992); }
-
-    @media (hover: hover) and (pointer: fine) {
-      .focus-group:not(.has-locked-focus):has(.focus-item:hover) .focus-item:not(:hover) { opacity: .62; }
-      .focus-item:hover { background: var(--accent-subtle); color: var(--text); }
-      .agenda-item:hover,
-      .bar-item:hover,
-      .tl3-row:hover { transform: translateX(4px); }
-      .metric-card:hover,
-      .stat-cell:hover,
-      .detail-block:hover,
-      .timeline-step:hover { transform: translateY(-3px); }
-      .compare-table tbody tr.focus-item:hover td { background: var(--accent-subtle); color: var(--text); }
-    }
 
     /* 01 · cover */
     .layout-cover {
@@ -361,8 +364,7 @@
       animation: none;
     }
 
-    .timeline-step { position: relative; transition: opacity var(--motion-fast) var(--ease-soft), transform var(--motion-fast) var(--ease-out); }
-    .timeline-step:hover { transform: translateY(-4px); }
+    .timeline-step { position: relative; }
     .step-circle {
       position: relative;
       z-index: 1;
@@ -400,13 +402,11 @@
       padding: 0.85rem 1rem;
       border: 1px solid transparent;
       border-radius: 12px;
-      cursor: pointer;
-      transition: opacity var(--motion-fast) var(--ease-soft), transform var(--motion-fast) var(--ease-out), border-color var(--motion-fast) var(--ease-soft), background var(--motion-fast) var(--ease-soft);
     }
 
-    .stack-tier:hover,
-    .stack-tier:focus-visible { border-color: var(--accent-border); background: var(--accent-subtle); }
-    .stack-tier.expanded { border-color: var(--accent-border); background: var(--accent-soft); box-shadow: inset 0 0 0 1px var(--accent-border); transform: scale(1.015); }
+    .stack-tier.is-previewed,
+    .stack-tier:focus-visible { border-color: var(--accent-border); }
+    .stack-tier.expanded { border-color: var(--accent-border); background: var(--accent-soft); transform: scale(1.015); }
 
     .stack-icon {
       display: grid;
@@ -616,8 +616,9 @@
       .slide,
       .slide.prev,
       .focus-item,
-      .focus-item:hover,
+      .focus-item.is-previewed,
       .focus-item.is-focused,
+      .stack-tier.is-previewed,
       .nav-btn:hover:not(:disabled) { transform: none !important; }
       .expanded { transform: none !important; }
     }
@@ -837,8 +838,10 @@
 
     function clearExpandedBlock() {
       if (!expandedBlock) return;
+      const group = expandedBlock.closest(".stack-body");
       expandedBlock.classList.remove("expanded");
       expandedBlock.setAttribute("aria-pressed", "false");
+      if (group) group.classList.remove("has-locked-focus");
       expandedBlock = null;
     }
 
@@ -854,6 +857,11 @@
       clearOutroFocus();
       clearExpandedBlock();
       if (wasExpanded) return;
+      const group = block.closest(".stack-body");
+      if (group) {
+        clearPreviewFocus(group);
+        group.classList.add("has-locked-focus");
+      }
       block.classList.add("expanded");
       block.setAttribute("aria-pressed", "true");
       expandedBlock = block;
@@ -864,6 +872,25 @@
       item.setAttribute(tableRow ? "aria-selected" : "aria-pressed", String(active));
     }
 
+    function clearPreviewFocus(group) {
+      if (!group) return;
+      group.classList.remove("has-preview-focus");
+      group.querySelectorAll(".is-previewed").forEach(item => item.classList.remove("is-previewed"));
+    }
+
+    function clearAllPreviewFocus() {
+      document.querySelectorAll(".has-preview-focus").forEach(clearPreviewFocus);
+    }
+
+    function setPreviewFocus(group, item) {
+      if (!group || !item || group.classList.contains("has-locked-focus")) return;
+      const currentPreview = group.querySelector(".is-previewed");
+      if (currentPreview === item) return;
+      clearPreviewFocus(group);
+      group.classList.add("has-preview-focus");
+      item.classList.add("is-previewed");
+    }
+
     function clearLockedFocus() {
       if (!lockedFocus) return;
       const group = lockedFocus.closest(".focus-group");
@@ -871,6 +898,7 @@
       setFocusState(lockedFocus, false);
       if (group) {
         group.classList.remove("has-locked-focus");
+        clearPreviewFocus(group);
         group.querySelectorAll(".focus-item").forEach(item => { item.style.opacity = ""; });
       }
       lockedFocus = null;
@@ -884,6 +912,7 @@
       if (wasFocused) return;
       const group = item.closest(".focus-group");
       if (!group) return;
+      clearPreviewFocus(group);
       group.classList.add("has-locked-focus");
       item.classList.add("is-focused");
       setFocusState(item, true);
@@ -895,6 +924,7 @@
       clearLockedFocus();
       clearExpandedBlock();
       clearOutroFocus();
+      clearAllPreviewFocus();
       document.querySelectorAll(".timeline-step, .stack-tier").forEach(item => { item.style.opacity = ""; });
     }
 
@@ -980,6 +1010,17 @@
       });
     });
 
+    if (pointerFine) {
+      document.querySelectorAll(".focus-group, .stack-body").forEach(group => {
+        const itemSelector = group.classList.contains("stack-body") ? ".stack-tier" : ".focus-item";
+        group.addEventListener("pointerover", event => {
+          const item = event.target.closest(itemSelector);
+          if (item && group.contains(item)) setPreviewFocus(group, item);
+        });
+        group.addEventListener("pointerleave", () => clearPreviewFocus(group));
+      });
+    }
+
     stackTiers.forEach(block => {
       block.tabIndex = 0;
       block.setAttribute("role", "button");
@@ -992,24 +1033,6 @@
     document.addEventListener("click", event => {
       if (!event.target.closest(".stack-tier, #outroSub, .focus-item")) clearFocusEffects();
     });
-
-    if (!reduceMotion && pointerFine) {
-      document.querySelectorAll(".timeline-track, .stack-body").forEach(group => {
-        const items = [...group.children];
-        group.addEventListener("mousemove", event => {
-          if (group.classList.contains("has-locked-focus")) return;
-          const horizontal = group.classList.contains("timeline-track");
-          items.forEach(item => {
-            const rect = item.getBoundingClientRect();
-            const pointer = horizontal ? event.clientX : event.clientY;
-            const center = horizontal ? rect.left + rect.width / 2 : rect.top + rect.height / 2;
-            const scale = horizontal ? group.clientWidth : group.clientHeight;
-            item.style.opacity = Math.max(.55, 1 - (Math.abs(pointer - center) / scale));
-          });
-        });
-        group.addEventListener("mouseleave", () => items.forEach(item => { item.style.opacity = ""; }));
-      });
-    }
 
     if (outroSub) {
       outroSub.tabIndex = 0;

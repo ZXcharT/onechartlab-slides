@@ -108,7 +108,9 @@ VISUAL_PRIMITIVES = [
     "slide.inert",
     "expandedBlock",
     "focus-sub",
-    "mousemove",
+    "pointerover",
+    "has-preview-focus",
+    "is-previewed",
     "aria-pressed",
     "focusConfigs",
     "has-locked-focus",
@@ -191,8 +193,15 @@ def main() -> int:
         errors.append("shared presentation focus must cover the audited evidence groups")
     if 'if (["Enter", " "].includes(event.key))' not in template:
         errors.append("presentation focus items must support Enter and Space")
-    if ".focus-item:hover" not in template or ".focus-item.is-focused" not in template:
-        errors.append("presentation focus must expose hover preview and locked states")
+    if ".focus-item.is-previewed" not in template or ".focus-item.is-focused" not in template:
+        errors.append("presentation focus must expose stable preview and locked states")
+    if ':has(.focus-item:hover)' in template or 'addEventListener("mousemove"' in template:
+        errors.append("presentation focus must not reintroduce gap-flicker or proximity opacity loops")
+    focused_rule = re.search(r"\.focus-item\.is-focused\s*\{([^}]*)\}", template)
+    if not focused_rule or "box-shadow" in focused_rule.group(1) or "border" in focused_rule.group(1):
+        errors.append("locked focus must not place a tight border around content")
+    if "--motion-focus: 220ms" not in template:
+        errors.append("presentation focus must retain the audited smooth transition duration")
 
     interaction_contract = {
         "single global locked focus": [
@@ -223,8 +232,14 @@ def main() -> int:
             'if (["Enter", " "].includes(event.key))',
             "toggleLockedFocus(item);",
         ],
+        "stable pointer preview": [
+            'document.querySelectorAll(".focus-group, .stack-body")',
+            'group.addEventListener("pointerover"',
+            'group.addEventListener("pointerleave"',
+            "clearPreviewFocus(group);",
+        ],
         "reduced motion focus guard": [
-            ".focus-item:hover,\n      .focus-item.is-focused,",
+            ".focus-item.is-previewed,\n      .focus-item.is-focused,",
             "transform: none !important;",
         ],
     }
