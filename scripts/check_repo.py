@@ -110,6 +110,10 @@ VISUAL_PRIMITIVES = [
     "focus-sub",
     "mousemove",
     "aria-pressed",
+    "focusConfigs",
+    "has-locked-focus",
+    "Enter lock focus",
+    "aria-selected",
     "compare-scroll",
 ]
 
@@ -182,6 +186,52 @@ def main() -> int:
         errors.append("header tags must remain quieter than gold section indexes")
     if 'font-feature-settings: "lnum" 1, "tnum" 1;' not in template:
         errors.append("real numeric roles must retain lining tabular numerals")
+    focus_config = re.search(r"const focusConfigs = \[(.*?)\];", template, re.S)
+    if not focus_config or focus_config.group(1).count('["') < 9:
+        errors.append("shared presentation focus must cover the audited evidence groups")
+    if 'if (["Enter", " "].includes(event.key))' not in template:
+        errors.append("presentation focus items must support Enter and Space")
+    if ".focus-item:hover" not in template or ".focus-item.is-focused" not in template:
+        errors.append("presentation focus must expose hover preview and locked states")
+
+    interaction_contract = {
+        "single global locked focus": [
+            "let lockedFocus = null;",
+            "const wasFocused = lockedFocus === item;",
+            "lockedFocus = item;",
+        ],
+        "mutually exclusive focus modes": [
+            "clearExpandedBlock();\n      clearOutroFocus();\n      clearLockedFocus();",
+            "clearLockedFocus();\n      clearOutroFocus();\n      clearExpandedBlock();",
+            "clearLockedFocus();\n        clearExpandedBlock();\n        clearOutroFocus();",
+        ],
+        "unified clear paths": [
+            'if (event.key === "Escape") { clearFocusEffects(); return; }',
+            "function updateSlide() {\n      clearFocusEffects();",
+            'if (!event.target.closest(".stack-tier, #outroSub, .focus-item")) clearFocusEffects();',
+        ],
+        "compare touch isolation": [
+            'touchStartedInScroller = Boolean(event.target.closest(".compare-scroll"));',
+            "if (!touchStartedInScroller &&",
+        ],
+        "table row semantics": [
+            'const tableRow = item.matches("tr");',
+            'tableRow ? "aria-selected" : "aria-pressed"',
+            "item.tabIndex = 0;",
+        ],
+        "keyboard activation": [
+            'if (["Enter", " "].includes(event.key))',
+            "toggleLockedFocus(item);",
+        ],
+        "reduced motion focus guard": [
+            ".focus-item:hover,\n      .focus-item.is-focused,",
+            "transform: none !important;",
+        ],
+    }
+    for contract, markers in interaction_contract.items():
+        missing = [marker for marker in markers if marker not in template]
+        if missing:
+            errors.append(f"interaction contract missing {contract}: {missing}")
     if "width: 44px;\n      height: 44px;" not in template:
         errors.append("navigation controls must retain a 44px touch target")
     pressure = ROOT / "projects/v2-pressure-test/index.html"

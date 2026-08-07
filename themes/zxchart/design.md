@@ -46,7 +46,7 @@ Use `--accent` for emphasis and meaningful sequence marks—not body copy, broad
 
 ## Interaction and accessibility
 
-Keyboard, touch, and visible controls navigate slides. Non-current slides are `aria-hidden` and inert, so hidden content cannot receive focus. Focus-visible rings, selection, scrollbars, and control borders follow the theme. Motion uses shared duration and easing tokens: bars reveal on entry, Stack retains keyboard-accessible focus, Timeline and Stack retain restrained pointer proximity, and Outro retains an optional focus shift. Decorative pulses, glow, gradient flow, and rings are suppressed. None carries required meaning; `prefers-reduced-motion: reduce` removes the motion.
+Keyboard, touch, and visible controls navigate slides. Non-current slides are `aria-hidden` and inert, so hidden content cannot receive focus. Focus-visible rings, selection, scrollbars, and control borders follow the theme. Motion uses shared duration and easing tokens. In evidence groups, hover previews one item, click/Enter/Space locks it, and Escape, blank click, or slide navigation clears it; only one locked focus exists at a time. Rows may shift horizontally by at most 6px and cards vertically by at most 3px. Stack and Outro retain their authored click states, while Timeline and Stack keep restrained pointer proximity. Decorative pulses, glow, gradient flow, and rings remain suppressed. None carries required meaning; `prefers-reduced-motion: reduce` preserves color and opacity feedback while removing displacement and animation.
 
 ## Audited layout inventory (16)
 

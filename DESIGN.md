@@ -40,10 +40,12 @@
 ## Motion and interaction
 
 - Motion uses shared `--motion-*` and `--ease-*` tokens and is evaluated individually, not cleared wholesale.
-- Bars retain a measured entry transition. Stack retains keyboard-accessible click focus; Timeline and Stack retain restrained proximity on fine pointers only; Outro retains its optional focus shift.
-- Decorative cover pulses, blurred orbs, gradient timeline flow, and closing rings are suppressed.
-- Escape clears temporary focus effects. No information depends on hover, focus animation, or motion.
-- `prefers-reduced-motion` keeps the complete static presentation.
+- Presentation focus follows one contract: hover previews the focal item; click, Enter, or Space locks it; a second activation, blank click, slide change, or Escape clears it.
+- Only one locked focus may exist at a time. The selected item receives a brass-tinted matte surface while peers dim; row-like content shifts horizontally and card-like content lifts vertically by at most 6px.
+- Agenda, Metrics, Dashboard, Split mini-stats, Bars, Timeline, Detail, Compare, and the three-column timeline use the shared focus system. Stack and Outro retain their authored click states.
+- Bars retain a measured entry transition; Timeline and Stack retain restrained proximity on fine pointers only.
+- Decorative cover pulses, blurred orbs, gradient timeline flow, and closing rings remain suppressed.
+- No information depends on hover, focus animation, or motion. `prefers-reduced-motion` preserves color/opacity feedback while removing displacement and animation.
 
 ## Accessibility facts
 

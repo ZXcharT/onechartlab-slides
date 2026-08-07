@@ -185,6 +185,42 @@
     }
     .source-note { margin: 1rem 0 0; color: var(--text-muted); font-size: clamp(0.72rem, 0.9vw, 0.9rem); font-weight: 500; line-height: 1.45; }
 
+    /* Presentation focus feedback */
+    .focus-item {
+      cursor: pointer;
+      transition:
+        opacity var(--motion-fast) var(--ease-soft),
+        color var(--motion-fast) var(--ease-soft),
+        background var(--motion-fast) var(--ease-soft),
+        transform var(--motion-fast) var(--ease-out),
+        box-shadow var(--motion-fast) var(--ease-soft);
+    }
+
+    .focus-group.has-locked-focus .focus-item:not(.is-focused) { opacity: .42; }
+    .focus-item.is-focused { background: var(--accent-soft); box-shadow: inset 0 0 0 1px var(--accent-border); color: var(--text); }
+    .agenda-item.is-focused,
+    .bar-item.is-focused,
+    .tl3-row.is-focused { transform: translateX(6px); }
+    .metric-card.is-focused,
+    .stat-cell.is-focused,
+    .detail-block.is-focused,
+    .timeline-step.is-focused { transform: translateY(-3px); }
+    .compare-table tbody tr.focus-item.is-focused td { background: var(--accent-soft); color: var(--text); }
+    .focus-item:active { transform: scale(.992); }
+
+    @media (hover: hover) and (pointer: fine) {
+      .focus-group:not(.has-locked-focus):has(.focus-item:hover) .focus-item:not(:hover) { opacity: .62; }
+      .focus-item:hover { background: var(--accent-subtle); color: var(--text); }
+      .agenda-item:hover,
+      .bar-item:hover,
+      .tl3-row:hover { transform: translateX(4px); }
+      .metric-card:hover,
+      .stat-cell:hover,
+      .detail-block:hover,
+      .timeline-step:hover { transform: translateY(-3px); }
+      .compare-table tbody tr.focus-item:hover td { background: var(--accent-subtle); color: var(--text); }
+    }
+
     /* 01 · cover */
     .layout-cover {
       display: grid;
@@ -370,7 +406,7 @@
 
     .stack-tier:hover,
     .stack-tier:focus-visible { border-color: var(--accent-border); background: var(--accent-subtle); }
-    .stack-tier.expanded { border-color: var(--accent); background: var(--bg-elevated); transform: scale(1.02); }
+    .stack-tier.expanded { border-color: var(--accent-border); background: var(--accent-soft); box-shadow: inset 0 0 0 1px var(--accent-border); transform: scale(1.015); }
 
     .stack-icon {
       display: grid;
@@ -578,7 +614,11 @@
         transition-duration: 0.01ms !important;
       }
       .slide,
-      .slide.prev { transform: none; }
+      .slide.prev,
+      .focus-item,
+      .focus-item:hover,
+      .focus-item.is-focused,
+      .nav-btn:hover:not(:disabled) { transform: none !important; }
       .expanded { transform: none !important; }
     }
   </style>
@@ -758,7 +798,7 @@
   </main>
 
   <div class="slide-counter"><span id="current">1</span> / <span id="total">16</span></div>
-  <div class="keyboard-hint">← → navigate · Space next · Home first · End last · Esc clear focus</div>
+  <div class="keyboard-hint">← → navigate · Enter lock focus · Esc clear</div>
   <div class="progress-bar" id="progress"></div>
   <nav class="nav-controls" aria-label="Slide controls"><button class="nav-btn" id="prevBtn" aria-label="Previous slide">←</button><button class="nav-btn" id="nextBtn" aria-label="Next slide">→</button></nav>
 
@@ -774,37 +814,88 @@
     const params = new URLSearchParams(window.location.search);
     const requestedSlide = Number.parseInt(params.get("slide") || "1", 10);
     const stackTiers = [...document.querySelectorAll(".stack-tier")];
+    const focusConfigs = [
+      [".agenda-grid", ".agenda-item"],
+      [".metrics-row", ".metric-card"],
+      [".stats-grid", ".stat-cell"],
+      [".mini-stat-row", ".mini-stat"],
+      [".bars-container", ".bar-item"],
+      [".timeline-track", ".timeline-step"],
+      [".detail-body", ".detail-block"],
+      [".compare-table tbody", "tr"],
+      [".tl3-body", ".tl3-row"]
+    ];
     const outroSub = document.getElementById("outroSub");
     let current = Number.isFinite(requestedSlide)
       ? Math.max(0, Math.min(slides.length - 1, requestedSlide - 1))
       : 0;
     let expandedBlock = null;
+    let lockedFocus = null;
 
     if (params.get("embed") === "1") document.body.classList.add("embed");
     totalEl.textContent = slides.length;
 
+    function clearExpandedBlock() {
+      if (!expandedBlock) return;
+      expandedBlock.classList.remove("expanded");
+      expandedBlock.setAttribute("aria-pressed", "false");
+      expandedBlock = null;
+    }
+
+    function clearOutroFocus() {
+      if (!outroSub) return;
+      outroSub.closest(".layout-outro").classList.remove("focus-sub");
+      outroSub.setAttribute("aria-pressed", "false");
+    }
+
     function setExpandedBlock(block) {
-      if (expandedBlock && expandedBlock !== block) {
-        expandedBlock.classList.remove("expanded");
-        expandedBlock.setAttribute("aria-pressed", "false");
+      const wasExpanded = expandedBlock === block && block.classList.contains("expanded");
+      clearLockedFocus();
+      clearOutroFocus();
+      clearExpandedBlock();
+      if (wasExpanded) return;
+      block.classList.add("expanded");
+      block.setAttribute("aria-pressed", "true");
+      expandedBlock = block;
+    }
+
+    function setFocusState(item, active) {
+      const tableRow = item.matches("tr");
+      item.setAttribute(tableRow ? "aria-selected" : "aria-pressed", String(active));
+    }
+
+    function clearLockedFocus() {
+      if (!lockedFocus) return;
+      const group = lockedFocus.closest(".focus-group");
+      lockedFocus.classList.remove("is-focused");
+      setFocusState(lockedFocus, false);
+      if (group) {
+        group.classList.remove("has-locked-focus");
+        group.querySelectorAll(".focus-item").forEach(item => { item.style.opacity = ""; });
       }
-      block.classList.toggle("expanded");
-      const expanded = block.classList.contains("expanded");
-      block.setAttribute("aria-pressed", String(expanded));
-      expandedBlock = expanded ? block : null;
+      lockedFocus = null;
+    }
+
+    function toggleLockedFocus(item) {
+      const wasFocused = lockedFocus === item;
+      clearExpandedBlock();
+      clearOutroFocus();
+      clearLockedFocus();
+      if (wasFocused) return;
+      const group = item.closest(".focus-group");
+      if (!group) return;
+      group.classList.add("has-locked-focus");
+      item.classList.add("is-focused");
+      setFocusState(item, true);
+      group.querySelectorAll(".focus-item").forEach(peer => { peer.style.opacity = ""; });
+      lockedFocus = item;
     }
 
     function clearFocusEffects() {
-      if (expandedBlock) {
-        expandedBlock.classList.remove("expanded");
-        expandedBlock.setAttribute("aria-pressed", "false");
-        expandedBlock = null;
-      }
+      clearLockedFocus();
+      clearExpandedBlock();
+      clearOutroFocus();
       document.querySelectorAll(".timeline-step, .stack-tier").forEach(item => { item.style.opacity = ""; });
-      if (outroSub) {
-        outroSub.closest(".layout-outro").classList.remove("focus-sub");
-        outroSub.setAttribute("aria-pressed", "false");
-      }
     }
 
     function animateBars(slide) {
@@ -866,6 +957,29 @@
     }, { passive: true });
     document.addEventListener("touchcancel", () => { touchStartedInScroller = false; }, { passive: true });
 
+    focusConfigs.forEach(([groupSelector, itemSelector]) => {
+      document.querySelectorAll(groupSelector).forEach(group => {
+        group.classList.add("focus-group");
+        group.querySelectorAll(itemSelector).forEach(item => {
+          item.classList.add("focus-item");
+          item.tabIndex = 0;
+          if (!item.matches("tr")) item.setAttribute("role", "button");
+          setFocusState(item, false);
+          const toggle = event => {
+            event.stopPropagation();
+            toggleLockedFocus(item);
+          };
+          item.addEventListener("click", toggle);
+          item.addEventListener("keydown", event => {
+            if (["Enter", " "].includes(event.key)) {
+              event.preventDefault();
+              toggle(event);
+            }
+          });
+        });
+      });
+    });
+
     stackTiers.forEach(block => {
       block.tabIndex = 0;
       block.setAttribute("role", "button");
@@ -876,13 +990,14 @@
       });
     });
     document.addEventListener("click", event => {
-      if (!event.target.closest(".stack-tier, #outroSub")) clearFocusEffects();
+      if (!event.target.closest(".stack-tier, #outroSub, .focus-item")) clearFocusEffects();
     });
 
     if (!reduceMotion && pointerFine) {
       document.querySelectorAll(".timeline-track, .stack-body").forEach(group => {
         const items = [...group.children];
         group.addEventListener("mousemove", event => {
+          if (group.classList.contains("has-locked-focus")) return;
           const horizontal = group.classList.contains("timeline-track");
           items.forEach(item => {
             const rect = item.getBoundingClientRect();
@@ -903,8 +1018,13 @@
       const toggleOutro = event => {
         event.stopPropagation();
         const slide = outroSub.closest(".layout-outro");
-        slide.classList.toggle("focus-sub");
-        outroSub.setAttribute("aria-pressed", String(slide.classList.contains("focus-sub")));
+        const wasFocused = slide.classList.contains("focus-sub");
+        clearLockedFocus();
+        clearExpandedBlock();
+        clearOutroFocus();
+        if (wasFocused) return;
+        slide.classList.add("focus-sub");
+        outroSub.setAttribute("aria-pressed", "true");
       };
       outroSub.addEventListener("click", toggleOutro);
       outroSub.addEventListener("keydown", event => {

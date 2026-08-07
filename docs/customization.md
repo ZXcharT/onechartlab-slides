@@ -12,7 +12,7 @@ Give each page one primary message. Keep the shared stage insets and alignment a
 
 ## Motion and interaction
 
-Motion is reviewed effect by effect rather than removed as a category. The seed retains tokenized short transitions, bar reveals, keyboard-accessible Stack focus, restrained Timeline/Stack pointer proximity, and an optional Outro focus shift. Decorative cover pulses, blurred orbs, gradient flow, and rings are suppressed. None carries required meaning, and `prefers-reduced-motion: reduce` removes animation and scaling. Non-current slides are made `aria-hidden` and inert by the navigation script. Keep controls as real buttons or links, with visible keyboard focus.
+Motion is reviewed effect by effect rather than removed as a category. The seed provides a shared presentation-focus contract: hover previews an item; click, Enter, or Space locks it; Escape, blank click, or slide navigation clears it. Only one locked focus exists at a time, and no content is hidden. Bars retain entry feedback, Stack retains an authored click state, Timeline/Stack retain restrained pointer proximity, and Outro retains an optional focus shift. Decorative cover pulses, blurred orbs, gradient flow, and rings are suppressed. `prefers-reduced-motion: reduce` preserves color/opacity acknowledgement while removing displacement and animation. Non-current slides are made `aria-hidden` and inert by the navigation script. Keep focusable presentation items keyboard-operable with visible focus.
 
 ## Content rules
 
