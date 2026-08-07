@@ -1,6 +1,15 @@
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="assets/brand/onechart-symbol-white.svg">
+    <img src="assets/brand/onechart-symbol-black.svg" width="88" height="88" alt="OneChart">
+  </picture>
+</p>
+
 # OneChartLab Slides
 
 **简体中文** | [English](README.en.md)
+
+<p align="center">OneChart 开源项目 · 将内容转化为可直接演示的网页</p>
 
 OneChartLab Slides 是一个用于制作 HTML 演示文稿的 Agent Skill。它内置两套共享 16 种版式与公共交互运行时的模板：默认的 **ZXcharT Briefing** 用于研究、策略、数据和决策汇报；可选的 **ZXcharT Showcase** 用于发布会、提案、演讲和故事化展示。
 
@@ -158,4 +167,4 @@ projects/my-deck/index.html
 
 ## 许可证与商标
 
-代码、文档和通用示例采用 [MIT 许可证](LICENSE)。OneChartLab、OneChartLab Slides、ZXcharT 名称及其 Logo 的相关权利保留，详见 [TRADEMARKS.md](TRADEMARKS.md)。
+代码、文档和通用示例采用 [MIT 许可证](LICENSE)。OneChart、OneChartLab、OneChartLab Slides、ZXcharT 名称及其 Logo 的相关权利保留，详见 [TRADEMARKS.md](TRADEMARKS.md)。

@@ -1,6 +1,15 @@
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="assets/brand/onechart-symbol-white.svg">
+    <img src="assets/brand/onechart-symbol-black.svg" width="88" height="88" alt="OneChart">
+  </picture>
+</p>
+
 # OneChartLab Slides
 
 [简体中文](README.md) | **English**
+
+<p align="center">An open-source OneChart project for content-first HTML presentations</p>
 
 OneChartLab Slides is an Agent Skill for creating browser-ready HTML presentations. It includes two template families that share 16 layouts and one interaction runtime: default **ZXcharT Briefing** for research, strategy, data, and decisions; optional **ZXcharT Showcase** for launches, proposals, keynotes, and narrative stage work.
 
@@ -159,4 +168,4 @@ The template basis is [beautiful-html-templates](https://github.com/zarazhangrui
 
 ## License and trademarks
 
-Code, documentation, and generic demos are [MIT licensed](LICENSE). The OneChartLab, OneChartLab Slides, and ZXcharT names and logos are reserved; see [TRADEMARKS.md](TRADEMARKS.md).
+Code, documentation, and generic demos are [MIT licensed](LICENSE). The OneChart, OneChartLab, OneChartLab Slides, and ZXcharT names and logos are reserved; see [TRADEMARKS.md](TRADEMARKS.md).

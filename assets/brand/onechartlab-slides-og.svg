@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="640" viewBox="0 0 1280 640" role="img" aria-labelledby="title desc">
+  <title id="title">OneChartLab Slides</title>
+  <desc id="desc">Social sharing image for the OneChartLab Slides open-source project.</desc>
+  <rect width="1280" height="640" fill="#11131b"/>
+  <path d="M80 96H1200M80 544H1200" stroke="#343744" stroke-width="1"/>
+  <g transform="translate(96 160) scale(.625)" fill="none" stroke="#f3f0e8" stroke-width="20">
+    <defs><clipPath id="horizontal-terminal-cut"><rect x="0" y="101" width="512" height="310"/></clipPath></defs>
+    <circle cx="256" cy="256" r="160"/>
+    <path d="M 105.266900 445.243850 L 234 232 L 278 280 L 406.733100 66.756150" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="4" clip-path="url(#horizontal-terminal-cut)"/>
+  </g>
+  <text x="478" y="288" fill="#f3f0e8" font-family="Futura, Avenir Next, Helvetica Neue, sans-serif" font-size="78" font-weight="500" letter-spacing="-2">OneChartLab</text>
+  <text x="482" y="364" fill="#d9a441" font-family="Futura, Avenir Next, Helvetica Neue, sans-serif" font-size="54" font-weight="500" letter-spacing="1">SLIDES</text>
+  <text x="484" y="420" fill="#a8a6ad" font-family="Inter, Helvetica Neue, sans-serif" font-size="25">Content-first HTML presentations</text>
+</svg>

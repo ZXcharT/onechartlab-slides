@@ -4,6 +4,13 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="OneChartLab Slides 模板目录与实时 HTML 预览。">
+  <link rel="icon" type="image/svg+xml" href="assets/brand/onechart-favicon.svg">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="OneChartLab">
+  <meta property="og:title" content="OneChartLab Slides · 模板目录">
+  <meta property="og:description" content="两套面向研究、决策、发布与叙事表达的 HTML 演示模板。">
+  <meta property="og:image" content="https://raw.githubusercontent.com/ZXcharT/onechartlab-slides/main/assets/brand/onechartlab-slides-og.png">
+  <meta name="twitter:card" content="summary_large_image">
   <title>OneChartLab Slides · 模板目录</title>
   <style>
     :root {
@@ -43,13 +50,17 @@
     }
 
     .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.65rem;
       color: var(--text);
       text-decoration: none;
       font-size: 0.92rem;
       font-weight: 760;
       letter-spacing: 0.04em;
     }
-    .brand span { color: var(--accent); }
+    .brand-mark { width: 26px; height: 26px; flex: none; }
+    .brand-label strong { color: var(--accent); font-weight: inherit; }
 
     .site-nav { display: flex; gap: 1.2rem; align-items: center; }
     .site-nav a {
@@ -259,7 +270,10 @@
 </head>
 <body>
   <header class="shell site-header">
-    <a class="brand" href="./">OneChartLab <span>Slides</span></a>
+    <a class="brand" href="./" aria-label="OneChartLab Slides 首页">
+      <img class="brand-mark" src="assets/brand/onechart-symbol-white.svg" alt="">
+      <span class="brand-label">OneChartLab <strong>Slides</strong></span>
+    </a>
     <nav class="site-nav" aria-label="主导航">
       <a href="https://github.com/ZXcharT/onechartlab-slides#readme">文档</a>
       <a href="https://github.com/ZXcharT/onechartlab-slides">GitHub ↗</a>
