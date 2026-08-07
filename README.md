@@ -2,16 +2,16 @@
 
 **简体中文** | [English](README.en.md)
 
-OneChartLab Slides 是一个用于制作 HTML 演示文稿的 Agent Skill。它内置 16 种常用版式和 ZXcharT 深色视觉主题，适合研究报告、项目汇报、产品介绍、数据展示和视频分镜。
+OneChartLab Slides 是一个用于制作 HTML 演示文稿的 Agent Skill。它内置两套共享 16 种版式与公共交互运行时的模板：默认的 **ZXcharT Briefing** 用于研究、策略、数据和决策汇报；可选的 **ZXcharT Showcase** 用于发布会、提案、演讲和故事化展示。
 
-安装后，向 Agent 提供主题、材料、受众和制作要求，即可生成可在浏览器中播放并继续修改的演示文稿。
+安装后，向 Agent 提供主题、材料、受众和制作要求，即可生成可在浏览器中播放并继续修改的演示文稿。未指定模板时默认使用 Briefing。
 
 ## 主要功能
 
 - 根据文章、报告、数据或提纲规划演示结构
 - 在生成前提供逐页大纲供用户确认
-- 根据内容自动选择封面、目录、数据、对比、时间轴和观点等版式
-- 生成包含样式与交互的 HTML 演示文稿
+- 根据沟通任务选择 Briefing 或 Showcase，并自动匹配封面、目录、数据、对比、时间轴和观点等版式
+- 生成包含样式与交互的独立 HTML 演示文稿
 - 支持键盘、触控和页面按钮翻页
 - 支持卡片聚焦、条形图动画和减少动态效果设置
 - 检查文字溢出、页面可读性、来源链接和内容完整性
@@ -76,7 +76,7 @@ onechartlab-slides/
 1. Agent 阅读材料并确认主题、受众、页数和输出位置；
 2. Agent 生成逐页大纲并匹配版式；
 3. 用户确认大纲；
-4. Agent 创建 HTML 文件并写入内容；
+4. Agent 确认模板（未指定时使用 Briefing），创建 HTML 文件并写入内容；
 5. Agent 在浏览器中检查排版、翻页和交互；
 6. Agent 根据反馈修改并返回文件位置。
 
@@ -91,7 +91,14 @@ projects/项目名称/index.html
 - 需要能够读取和写入本地文件的 AI Agent
 - 建议 Agent 具备浏览器预览能力
 - 演示文稿使用当前版本的 Chrome、Edge、Firefox 或 Safari 播放
-- 只有在运行可选 Python 生成脚本时才需要 Python 3
+- 手动复制模板不需要 Python；运行任一可选命令行生成器时需要 Python 3
+
+## 模板选择
+
+- **ZXcharT Briefing（默认）**：研究报告、策略推演、数据分析、项目复盘和内部决策。视觉克制、层级平面、适合证据密集内容。
+- **ZXcharT Showcase（可选）**：产品发布、商业提案、主题演讲和叙事展示。使用模块化卡片、舞台化构图和受控氛围动效。
+
+两套模板不是新旧版本或质量等级；它们共享相同版式标识、键盘/触控导航、聚焦交互、无障碍和 reduced-motion 契约。
 
 ## 内置版式
 
@@ -108,9 +115,12 @@ projects/项目名称/index.html
 .
 ├── SKILL.md                       Skill 入口与执行要求
 ├── AGENTS.md                      制作和检查流程
-├── template.html                  演示文稿基础模板
-├── index.html                     16 种版式预览
-├── themes/zxchart/design.md       视觉规范与版式清单
+├── template.html                  默认 ZXcharT Briefing 模板
+├── templates/showcase.html        可选 ZXcharT Showcase 模板
+├── templates/briefing.manifest.json  Briefing 验收摘要锁
+├── index.html                     两套模板与精选版式预览
+├── themes/zxchart/design.md       Briefing 视觉规范
+├── themes/showcase/design.md      Showcase 视觉规范
 ├── docs/                          布局、定制和平台说明
 ├── examples/agent-workflow/       通用 Agent 工作流示例
 ├── scripts/                       可选项目生成脚本和检查器
@@ -123,16 +133,20 @@ projects/项目名称/index.html
 ### macOS / Linux
 
 ```sh
-sh scripts/new-project.sh "my-deck"
+sh scripts/new-project.sh "my-deck"                         # 默认 Briefing
+sh scripts/new-project.sh --template briefing "my-briefing"
+sh scripts/new-project.sh --template showcase "my-showcase"
 ```
 
 ### Windows
 
 ```powershell
-py scripts/new-project.py "my-deck"
+py scripts/new-project.py "my-deck"                         # 默认 Briefing
+py scripts/new-project.py --template briefing "my-briefing"
+py scripts/new-project.py --template showcase "my-showcase"
 ```
 
-两个命令都会创建：
+Shell 是 Python 生成器的薄包装；两种入口共享相同参数、错误码和默认模板。所有命令都会创建：
 
 ```text
 projects/my-deck/index.html

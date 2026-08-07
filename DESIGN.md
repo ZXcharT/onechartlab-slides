@@ -1,4 +1,6 @@
-# V2 Phase 1 design facts
+# ZXcharT Briefing design facts
+
+ZXcharT Briefing is the default OneChartLab Slides template at `template.html`. Its accepted source is locked by `templates/briefing.manifest.json`. The optional ZXcharT Showcase visual contract lives in `themes/showcase/design.md`.
 
 ## Visual world
 

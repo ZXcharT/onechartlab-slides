@@ -122,6 +122,18 @@
     .stat strong { display: block; font-size: 1rem; }
     .stat span { color: var(--muted); font-size: 0.72rem; }
 
+    .template-section { padding: 0 0 clamp(4rem, 8vw, 7rem); }
+    .template-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.2rem; }
+    .template-option { display: grid; min-height: 280px; align-content: space-between; padding: clamp(1.4rem, 3vw, 2.2rem); border: 1px solid var(--line); border-radius: 12px; background: var(--surface); }
+    .template-option.default { border-color: rgba(217, 164, 65, 0.42); }
+    .template-meta { display: flex; justify-content: space-between; gap: 1rem; color: var(--muted); font-size: .72rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+    .template-meta span:last-child { color: var(--accent); }
+    .template-option h2 { max-width: 13ch; margin: 2rem 0 1rem; font-size: clamp(2rem, 4vw, 3.4rem); line-height: 1; }
+    .template-option p { max-width: 56ch; margin: 0; color: var(--muted); line-height: 1.65; }
+    .template-links { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 2rem; }
+    .template-links a { color: var(--text); font-size: .82rem; font-weight: 700; text-decoration: none; }
+    .template-links a:hover { color: var(--accent); }
+
     .gallery-section { padding: 0 0 7rem; }
     .section-head {
       display: flex;
@@ -209,6 +221,7 @@
     @media (max-width: 850px) {
       .hero { grid-template-columns: 1fr; align-items: start; }
       .hero-side { max-width: 540px; }
+      .template-grid,
       .gallery-grid { grid-template-columns: 1fr; }
     }
     @media (max-width: 560px) {
@@ -241,74 +254,92 @@
       <div>
         <p class="eyebrow">Open source · Agent Skill</p>
         <h1>From brief to browser-ready deck.</h1>
-        <p class="hero-copy">A focused HTML presentation system with the ZXcharT visual language, reusable layouts, and an Agent-ready production workflow.</p>
+        <p class="hero-copy">Two browser-ready presentation systems: Briefing for research and decisions, Showcase for launches and narrative stage work.</p>
       </div>
       <div class="hero-side">
         <div class="hero-actions">
-          <a class="button button-primary" href="template.html" target="_blank" rel="noopener">View full deck</a>
+          <a class="button button-primary" href="template.html" target="_blank" rel="noopener">Open Briefing</a>
+          <a class="button" href="templates/showcase.html" target="_blank" rel="noopener">Open Showcase</a>
           <a class="button" href="https://github.com/ZXcharT/onechartlab-slides#install-the-skill">Install the Skill</a>
         </div>
         <div class="hero-stats" aria-label="Project highlights">
-          <div class="stat"><strong>16</strong><span>layout patterns</span></div>
-          <div class="stat"><strong>01</strong><span>HTML deliverable</span></div>
-          <div class="stat"><strong>MIT</strong><span>open source</span></div>
+          <div class="stat"><strong>02</strong><span>template families</span></div>
+          <div class="stat"><strong>16</strong><span>layouts each</span></div>
+          <div class="stat"><strong>HTML</strong><span>portable output</span></div>
         </div>
+      </div>
+    </section>
+
+    <section class="shell template-section" aria-labelledby="template-title">
+      <div class="section-head">
+        <div><p class="eyebrow">Choose by communication job</p><h2 id="template-title">Two templates, one runtime contract</h2></div>
+        <p>Briefing is the default</p>
+      </div>
+      <div class="template-grid">
+        <article class="template-option default">
+          <div><div class="template-meta"><span>ZXcharT Briefing</span><span>Default</span></div><h2>Research, strategy, and decisions.</h2><p>Matte editorial hierarchy, full-stage evidence, stable presenter focus, and restrained motion for work that must be understood and reviewed.</p></div>
+          <div class="template-links"><a href="template.html" target="_blank" rel="noopener">Open full template ↗</a><a href="README.md#可选使用命令行创建项目">Generate Briefing</a></div>
+        </article>
+        <article class="template-option">
+          <div><div class="template-meta"><span>ZXcharT Showcase</span><span>Optional</span></div><h2>Launches, proposals, and narrative stage work.</h2><p>Cinematic pacing, modular cards, bounded light and motion, with the same adaptive, keyboard, touch, and reduced-motion standards.</p></div>
+          <div class="template-links"><a href="templates/showcase.html" target="_blank" rel="noopener">Open full template ↗</a><a href="README.md#可选使用命令行创建项目">Generate Showcase</a></div>
+        </article>
       </div>
     </section>
 
     <section class="shell gallery-section" aria-labelledby="gallery-title">
       <div class="section-head">
-        <div><p class="eyebrow">Selected gallery</p><h2 id="gallery-title">Content-first layout views</h2></div>
-        <p>Live HTML previews · clear hierarchy at every scale</p>
+        <div><p class="eyebrow">Selected gallery</p><h2 id="gallery-title">Briefing and Showcase views</h2></div>
+        <p>Three live previews from each template</p>
       </div>
 
       <div class="gallery-grid">
         <article class="gallery-card">
           <div class="preview">
-            <iframe src="template.html?slide=1&amp;embed=1" title="Cover layout preview" loading="lazy" tabindex="-1" sandbox="allow-scripts allow-same-origin"></iframe>
-            <a class="preview-hit" href="template.html?slide=1" target="_blank" rel="noopener" aria-label="Open cover layout"></a>
+            <iframe src="template.html?slide=1&amp;embed=1" title="Briefing cover layout preview" loading="lazy" tabindex="-1" sandbox="allow-scripts allow-same-origin"></iframe>
+            <a class="preview-hit" href="template.html?slide=1" target="_blank" rel="noopener" aria-label="Open Briefing cover layout"></a>
           </div>
-          <div class="card-body"><span class="card-index">01</span><div><h3 class="card-title">Opening statement</h3><p class="card-description">A typographic cover with title, scope, and authorship in a clear reading order.</p></div><a class="open-link" href="template.html?slide=1" target="_blank" rel="noopener">Open ↗</a></div>
+          <div class="card-body"><span class="card-index">BR / 01</span><div><h3 class="card-title">Briefing · Opening statement</h3><p class="card-description">A typographic cover with title, scope, and authorship in a clear reading order.</p></div><a class="open-link" href="template.html?slide=1" target="_blank" rel="noopener">Open ↗</a></div>
         </article>
 
         <article class="gallery-card">
           <div class="preview">
-            <iframe src="template.html?slide=4&amp;embed=1" title="Dashboard layout preview" loading="lazy" tabindex="-1" sandbox="allow-scripts allow-same-origin"></iframe>
-            <a class="preview-hit" href="template.html?slide=4" target="_blank" rel="noopener" aria-label="Open dashboard layout"></a>
+            <iframe src="template.html?slide=4&amp;embed=1" title="Briefing dashboard layout preview" loading="lazy" tabindex="-1" sandbox="allow-scripts allow-same-origin"></iframe>
+            <a class="preview-hit" href="template.html?slide=4" target="_blank" rel="noopener" aria-label="Open Briefing dashboard layout"></a>
           </div>
-          <div class="card-body"><span class="card-index">02</span><div><h3 class="card-title">Data dashboard</h3><p class="card-description">One decision state with supporting evidence, limits, and next ownership.</p></div><a class="open-link" href="template.html?slide=4" target="_blank" rel="noopener">Open ↗</a></div>
+          <div class="card-body"><span class="card-index">BR / 02</span><div><h3 class="card-title">Briefing · Data dashboard</h3><p class="card-description">One decision state with supporting evidence, limits, and next ownership.</p></div><a class="open-link" href="template.html?slide=4" target="_blank" rel="noopener">Open ↗</a></div>
         </article>
 
         <article class="gallery-card">
           <div class="preview">
-            <iframe src="template.html?slide=6&amp;embed=1" title="Bar ranking layout preview" loading="lazy" tabindex="-1" sandbox="allow-scripts allow-same-origin"></iframe>
-            <a class="preview-hit" href="template.html?slide=6" target="_blank" rel="noopener" aria-label="Open bar ranking layout"></a>
+            <iframe src="template.html?slide=6&amp;embed=1" title="Briefing bar ranking layout preview" loading="lazy" tabindex="-1" sandbox="allow-scripts allow-same-origin"></iframe>
+            <a class="preview-hit" href="template.html?slide=6" target="_blank" rel="noopener" aria-label="Open Briefing bar ranking layout"></a>
           </div>
-          <div class="card-body"><span class="card-index">03</span><div><h3 class="card-title">Ranked evidence</h3><p class="card-description">Animated bars for ordered values with visible units and labels.</p></div><a class="open-link" href="template.html?slide=6" target="_blank" rel="noopener">Open ↗</a></div>
+          <div class="card-body"><span class="card-index">BR / 03</span><div><h3 class="card-title">Briefing · Ranked evidence</h3><p class="card-description">Animated bars for ordered values with visible units and labels.</p></div><a class="open-link" href="template.html?slide=6" target="_blank" rel="noopener">Open ↗</a></div>
         </article>
 
         <article class="gallery-card">
           <div class="preview">
-            <iframe src="template.html?slide=11&amp;embed=1" title="Comparison layout preview" loading="lazy" tabindex="-1" sandbox="allow-scripts allow-same-origin"></iframe>
-            <a class="preview-hit" href="template.html?slide=11" target="_blank" rel="noopener" aria-label="Open comparison layout"></a>
+            <iframe src="templates/showcase.html?slide=1&amp;embed=1" title="Showcase cover layout preview" loading="lazy" tabindex="-1" sandbox="allow-scripts allow-same-origin"></iframe>
+            <a class="preview-hit" href="templates/showcase.html?slide=1" target="_blank" rel="noopener" aria-label="Open Showcase cover layout"></a>
           </div>
-          <div class="card-body"><span class="card-index">04</span><div><h3 class="card-title">Structured comparison</h3><p class="card-description">A flat decision table that exposes trade-offs without a heavy gold header.</p></div><a class="open-link" href="template.html?slide=11" target="_blank" rel="noopener">Open ↗</a></div>
+          <div class="card-body"><span class="card-index">SH / 01</span><div><h3 class="card-title">Showcase · Cinematic opening</h3><p class="card-description">A stage-led cover with bounded light, title hierarchy, and narrative presence.</p></div><a class="open-link" href="templates/showcase.html?slide=1" target="_blank" rel="noopener">Open ↗</a></div>
         </article>
 
         <article class="gallery-card">
           <div class="preview">
-            <iframe src="template.html?slide=12&amp;embed=1" title="Three-column timeline preview" loading="lazy" tabindex="-1" sandbox="allow-scripts allow-same-origin"></iframe>
-            <a class="preview-hit" href="template.html?slide=12" target="_blank" rel="noopener" aria-label="Open timeline layout"></a>
+            <iframe src="templates/showcase.html?slide=3&amp;embed=1" title="Showcase metrics layout preview" loading="lazy" tabindex="-1" sandbox="allow-scripts allow-same-origin"></iframe>
+            <a class="preview-hit" href="templates/showcase.html?slide=3" target="_blank" rel="noopener" aria-label="Open Showcase metrics layout"></a>
           </div>
-          <div class="card-body"><span class="card-index">05</span><div><h3 class="card-title">Three-part sequence</h3><p class="card-description">Align events, interpretation, and response across a timeline.</p></div><a class="open-link" href="template.html?slide=12" target="_blank" rel="noopener">Open ↗</a></div>
+          <div class="card-body"><span class="card-index">SH / 02</span><div><h3 class="card-title">Showcase · Three focal metrics</h3><p class="card-description">A modular stage for three measures with presenter-controlled emphasis.</p></div><a class="open-link" href="templates/showcase.html?slide=3" target="_blank" rel="noopener">Open ↗</a></div>
         </article>
 
         <article class="gallery-card">
           <div class="preview">
-            <iframe src="template.html?slide=14&amp;embed=1" title="Statement layout preview" loading="lazy" tabindex="-1" sandbox="allow-scripts allow-same-origin"></iframe>
-            <a class="preview-hit" href="template.html?slide=14" target="_blank" rel="noopener" aria-label="Open statement layout"></a>
+            <iframe src="templates/showcase.html?slide=14&amp;embed=1" title="Showcase statement layout preview" loading="lazy" tabindex="-1" sandbox="allow-scripts allow-same-origin"></iframe>
+            <a class="preview-hit" href="templates/showcase.html?slide=14" target="_blank" rel="noopener" aria-label="Open Showcase statement layout"></a>
           </div>
-          <div class="card-body"><span class="card-index">06</span><div><h3 class="card-title">Thesis statement</h3><p class="card-description">A single high-conviction idea with deliberate pacing and space.</p></div><a class="open-link" href="template.html?slide=14" target="_blank" rel="noopener">Open ↗</a></div>
+          <div class="card-body"><span class="card-index">SH / 03</span><div><h3 class="card-title">Showcase · Thesis statement</h3><p class="card-description">A single high-conviction idea with deliberate pacing and bounded atmosphere.</p></div><a class="open-link" href="templates/showcase.html?slide=14" target="_blank" rel="noopener">Open ↗</a></div>
         </article>
       </div>
     </section>

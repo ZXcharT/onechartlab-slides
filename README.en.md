@@ -2,16 +2,16 @@
 
 [简体中文](README.md) | **English**
 
-OneChartLab Slides is an Agent Skill for creating browser-ready HTML presentations. It includes 16 reusable layouts and the dark ZXcharT visual theme for research reports, project updates, product introductions, data presentations, and video storyboards.
+OneChartLab Slides is an Agent Skill for creating browser-ready HTML presentations. It includes two template families that share 16 layouts and one interaction runtime: default **ZXcharT Briefing** for research, strategy, data, and decisions; optional **ZXcharT Showcase** for launches, proposals, keynotes, and narrative stage work.
 
-After installation, give the Agent a topic, source material, audience, and production requirements. The Agent will produce an editable presentation that runs in a modern browser.
+After installation, give the Agent a topic, source material, audience, and production requirements. The Agent will produce an editable presentation that runs in a modern browser. Briefing is used when no template is specified.
 
 ## Features
 
 - Plan a presentation from articles, reports, data, or an outline
 - Present a page-by-page outline for approval before generation
-- Select layouts for openings, agendas, data, comparisons, timelines, arguments, and closing pages
-- Generate an HTML presentation with built-in styling and interactions
+- Choose Briefing or Showcase by communication job, then select layouts for openings, agendas, data, comparisons, timelines, arguments, and closing pages
+- Generate a standalone HTML presentation with built-in styling and interactions
 - Support keyboard, touch, and button navigation
 - Support focused cards, animated bars, and reduced-motion settings
 - Check overflow, readability, source links, and content completeness
@@ -77,7 +77,7 @@ Standard workflow:
 1. The Agent confirms the topic, audience, slide count, sources, and output location.
 2. The Agent creates a page-by-page outline and selects layouts.
 3. The user approves the outline.
-4. The Agent creates the HTML presentation and writes the content.
+4. The Agent confirms the template (Briefing by default), creates the HTML presentation, and writes the content.
 5. The Agent previews the result and checks layout, navigation, and interactions.
 6. The Agent applies feedback and reports the output path.
 
@@ -92,7 +92,14 @@ projects/project-name/index.html
 - An AI Agent with local file read/write access
 - Browser preview capability is recommended
 - A current version of Chrome, Edge, Firefox, or Safari for playback
-- Python 3 only when using the optional Python generator
+- Manual template copying does not require Python; either optional command-line generator requires Python 3
+
+## Template choice
+
+- **ZXcharT Briefing (default):** research reports, strategy, data analysis, project reviews, and internal decisions. Matte, editorial, and suited to evidence-dense work.
+- **ZXcharT Showcase (optional):** launches, proposals, keynotes, and narrative presentations. Modular cards, stage-led composition, and bounded atmospheric motion.
+
+They are not old/new versions or quality tiers. Both use the same layout identifiers, keyboard/touch navigation, presenter focus, accessibility, and reduced-motion contract.
 
 ## Layout system
 
@@ -109,9 +116,12 @@ See [docs/layouts.md](docs/layouts.md) for detailed guidance.
 .
 ├── SKILL.md                       Skill entrypoint and execution requirements
 ├── AGENTS.md                      production and review workflow
-├── template.html                  presentation seed
-├── index.html                     preview of the 16 layouts
-├── themes/zxchart/design.md       visual rules and layout inventory
+├── template.html                  default ZXcharT Briefing seed
+├── templates/showcase.html        optional ZXcharT Showcase seed
+├── templates/briefing.manifest.json  accepted Briefing digest lock
+├── index.html                     template chooser and live previews
+├── themes/zxchart/design.md       Briefing visual rules
+├── themes/showcase/design.md      Showcase visual rules
 ├── docs/                          layout, customization, and platform notes
 ├── examples/agent-workflow/       generic Agent workflow example
 ├── scripts/                       optional generators and repository checker
@@ -124,16 +134,20 @@ See [docs/layouts.md](docs/layouts.md) for detailed guidance.
 ### macOS / Linux
 
 ```sh
-sh scripts/new-project.sh "my-deck"
+sh scripts/new-project.sh "my-deck"                         # default Briefing
+sh scripts/new-project.sh --template briefing "my-briefing"
+sh scripts/new-project.sh --template showcase "my-showcase"
 ```
 
 ### Windows
 
 ```powershell
-py scripts/new-project.py "my-deck"
+py scripts/new-project.py "my-deck"                         # default Briefing
+py scripts/new-project.py --template briefing "my-briefing"
+py scripts/new-project.py --template showcase "my-showcase"
 ```
 
-Both commands create:
+The shell command is a thin wrapper around the Python generator; both entry points share options, exit codes, and the Briefing default. Every command creates:
 
 ```text
 projects/my-deck/index.html

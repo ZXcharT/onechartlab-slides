@@ -16,7 +16,14 @@ OneChartLab Slides is an HTML presentation / slide-deck Agent Skill. Its first d
 
 ## Positioning
 
-It combines a portable single-file HTML deck, reusable presentation layouts, and an Agent workflow that keeps content hierarchy, source attribution, and visual consistency explicit.
+It combines portable single-file HTML decks, reusable presentation layouts, and an Agent workflow that keeps content hierarchy, source attribution, and visual consistency explicit.
+
+## Template Families
+
+- **ZXcharT Briefing** is the default template at `template.html`. It serves research, strategy, data analysis, reporting, and decision communication through matte editorial hierarchy and restrained presenter focus.
+- **ZXcharT Showcase** is the optional template at `templates/showcase.html`. It serves launches, proposals, keynotes, and narrative stage work through cinematic pacing, modular cards, and bounded decorative motion.
+
+Both templates expose the same 16 layout classes and the same URL, embed, navigation, accessibility, touch, Compare, focus, overflow, and reduced-motion contracts. The choice is a communication decision, not a quality tier or version number.
 
 ## Operating Context
 
@@ -27,13 +34,14 @@ Decks are generated or adapted from source material, previewed in a modern brows
 - Playback is not restricted to one platform; layouts should adapt across common screen shapes.
 - A deck must not become cluttered, unfocused, or more decorative than informative.
 - Motion must never be required to understand the content; reduced-motion rendering remains complete.
-- The output remains a browser-ready, portable HTML presentation.
+- The output remains a browser-ready, portable HTML presentation with no local build or runtime dependency; remote fonts fall back to system fonts when offline.
+- If no template is requested, use ZXcharT Briefing.
 
 ## Brand Commitments
 
 - Preserve the OneChartLab Slides and ZXcharT names and the established deep blue-gray field with restrained gold emphasis.
-- Avoid large-area gradients because they can band in screen recordings. Small, local gradients are neither required nor prohibited.
-- Review and improve existing motion: keep useful, restrained details; remove only effects that distract, create recording defects, or have no practical purpose.
+- Briefing avoids large-area gradients and glow; Showcase permits bounded gradients and light fields only on statement-led slides.
+- Review and improve existing motion: keep useful, restrained details; remove effects that distract, create recording defects, or have no practical purpose.
 
 ## Evidence on Hand
 

@@ -1,8 +1,8 @@
-# ZXcharT design system
+# ZXcharT Briefing design system
 
 ## Intent
 
-The ZXcharT theme uses an ink-like blue-black field, warm paper-white typography, and muted brass emphasis. Its character is a matte research briefing: precise, editorial, and quiet enough for evidence to remain primary. It is the default visual theme of OneChartLab Slides, an independent project in the OneChartLab ecosystem, and does not require any platform or personal workflow.
+ZXcharT Briefing is the default OneChartLab Slides template at `template.html`. It uses an ink-like blue-black field, warm paper-white typography, and muted brass emphasis. Its character is a matte research briefing: precise, editorial, and quiet enough for evidence to remain primary. The optional presentation-led companion is ZXcharT Showcase; its distinct visual contract is documented in `themes/showcase/design.md`. Neither template requires a platform or personal workflow.
 
 ## Tokens
 

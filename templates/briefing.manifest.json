@@ -1,0 +1,9 @@
+{
+  "template": "briefing",
+  "displayName": "ZXcharT Briefing",
+  "entry": "../template.html",
+  "default": true,
+  "lockedAtCommit": "ceb1589",
+  "sha256": "4f52815430045d38038f72ab062ddf6ef025d492aed8fb7dc766cb9a9d26e44c",
+  "note": "Update this digest only after an explicit Briefing review and acceptance."
+}

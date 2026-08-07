@@ -1,6 +1,11 @@
 # Layouts
 
-The audited seed contains 16 layout classes in a fixed order. Use only the layouts needed for the story.
+Both audited templates contain the same 16 layout classes in a fixed order. Use only the layouts needed for the story.
+
+- Choose **ZXcharT Briefing** by default for research, strategy, reporting, data, and decision work.
+- Choose **ZXcharT Showcase** for launches, proposals, keynotes, and narrative stage work where modular pacing and bounded atmosphere are useful.
+
+Template choice does not change layout identifiers or the content evidence standard.
 
 | Class | Use |
 |---|---|

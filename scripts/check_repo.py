@@ -4,6 +4,10 @@
 from __future__ import annotations
 
 from pathlib import Path
+import contextlib
+import hashlib
+import io
+import json
 import re
 import sys
 
@@ -21,8 +25,13 @@ REQUIRED = [
     "SKILL.md",
     "AGENTS.md",
     "template.html",
+    "templates/showcase.html",
+    "templates/briefing.manifest.json",
     "index.html",
+    "PRODUCT.md",
+    "DESIGN.md",
     "themes/zxchart/design.md",
+    "themes/showcase/design.md",
     "docs/layouts.md",
     "docs/customization.md",
     "docs/platforms/hanaagent.md",
@@ -90,10 +99,35 @@ LAYOUT_DOCS = [
     "SKILL.md",
     "AGENTS.md",
     "themes/zxchart/design.md",
+    "themes/showcase/design.md",
     "docs/layouts.md",
 ]
 
-VISUAL_PRIMITIVES = [
+PUBLIC_RUNTIME_MARKERS = [
+    "URLSearchParams",
+    'classList.add("embed")',
+    'slide.setAttribute("aria-hidden", String(!isActive))',
+    "slide.inert = !isActive",
+    "width: 44px;",
+    "height: 44px;",
+    "touchStartedInScroller",
+    'event.target.closest(".compare-scroll")',
+    "touchcancel",
+    "prefers-reduced-motion",
+    "focusConfigs",
+    "pointerover",
+    "pointerleave",
+    "aria-selected",
+    "aria-pressed",
+    "compare-scroll",
+    "min-width: 720px",
+    "overflow: auto",
+    "overscroll-behavior: contain",
+]
+
+BRIEFING_ACCEPTED_SHA256 = "4f52815430045d38038f72ab062ddf6ef025d492aed8fb7dc766cb9a9d26e44c"
+
+BRIEFING_VISUAL_PRIMITIVES = [
     "--stage-inline",
     "evidence-rail",
     "text-gradient { color: var(--accent); }",
@@ -143,31 +177,72 @@ def main() -> int:
         print("\n".join(f"FAIL: {error}" for error in errors))
         return 1
 
-    template = (ROOT / "template.html").read_text(encoding="utf-8")
-    slide_layouts = re.findall(r'<section\s+class="slide\s+(layout-[a-z0-9-]+)', template)
-    if slide_layouts != LAYOUTS:
-        errors.append(f"template slide order mismatch: {slide_layouts}")
-    if len(slide_layouts) != len(set(slide_layouts)):
-        errors.append("template contains duplicate slide layouts")
+    template_paths = {
+        "briefing": ROOT / "template.html",
+        "showcase": ROOT / "templates/showcase.html",
+    }
+    templates = {
+        name: path.read_text(encoding="utf-8")
+        for name, path in template_paths.items()
+    }
+    template = templates["briefing"]
+    showcase = templates["showcase"]
+
+    for name, source in templates.items():
+        slide_layouts = re.findall(r'<section\s+class="slide\s+(layout-[a-z0-9-]+)', source)
+        if slide_layouts != LAYOUTS:
+            errors.append(f"{name} slide order mismatch: {slide_layouts}")
+        if len(slide_layouts) != len(set(slide_layouts)):
+            errors.append(f"{name} contains duplicate slide layouts")
+        for marker in PUBLIC_RUNTIME_MARKERS:
+            if marker not in source:
+                errors.append(f"{name} missing public runtime marker: {marker}")
+
+    manifest = json.loads((ROOT / "templates/briefing.manifest.json").read_text(encoding="utf-8"))
+    briefing_digest = hashlib.sha256((ROOT / "template.html").read_bytes()).hexdigest()
+    if manifest.get("entry") != "../template.html" or manifest.get("default") is not True:
+        errors.append("Briefing manifest must lock template.html as the default entry")
+    if manifest.get("sha256") != BRIEFING_ACCEPTED_SHA256:
+        errors.append("Briefing manifest does not match the explicitly accepted digest")
+    if briefing_digest != BRIEFING_ACCEPTED_SHA256:
+        errors.append(
+            f"Briefing bytes changed without explicit acceptance: {briefing_digest}"
+        )
 
     gallery = (ROOT / "index.html").read_text(encoding="utf-8")
     gallery_cards = gallery.count('class="gallery-card"')
-    gallery_previews = [
+    briefing_previews = [
         int(value)
-        for value in re.findall(r"template\.html\?slide=(\d+)&amp;embed=1", gallery)
+        for value in re.findall(r'<iframe src="template\.html\?slide=(\d+)&amp;embed=1"', gallery)
     ]
+    showcase_previews = [
+        int(value)
+        for value in re.findall(r'<iframe src="templates/showcase\.html\?slide=(\d+)&amp;embed=1"', gallery)
+    ]
+    gallery_previews = briefing_previews + showcase_previews
     if not 4 <= gallery_cards <= 8:
         errors.append(f"gallery must stay curated at 4-8 cards, found {gallery_cards}")
-    if len(gallery_previews) != gallery_cards or len(gallery_previews) != len(set(gallery_previews)):
-        errors.append(f"gallery live previews are missing or duplicated: {gallery_previews}")
+    if len(gallery_previews) != gallery_cards:
+        errors.append(f"gallery live previews are missing: {gallery_previews}")
+    if len(briefing_previews) != 3 or len(showcase_previews) != 3:
+        errors.append(
+            f"gallery must show three Briefing and three Showcase previews: "
+            f"{briefing_previews} / {showcase_previews}"
+        )
+    if len(briefing_previews) != len(set(briefing_previews)) or len(showcase_previews) != len(set(showcase_previews)):
+        errors.append("gallery must not duplicate a preview within one template")
     if any(value < 1 or value > len(LAYOUTS) for value in gallery_previews):
         errors.append(f"gallery references an invalid slide number: {gallery_previews}")
-    if "Selected Gallery" not in gallery or "Live HTML previews" not in gallery:
-        errors.append("gallery title or live-preview description is missing")
-    if "URLSearchParams" not in template or 'classList.add("embed")' not in template:
-        errors.append("template must support direct slide links and embedded gallery previews")
-    if 'slide.setAttribute("aria-hidden", String(!isActive))' not in template or "slide.inert = !isActive" not in template:
-        errors.append("non-current slides must be aria-hidden and inert")
+    for marker in [
+        "ZXcharT Briefing",
+        "ZXcharT Showcase",
+        "Briefing is the default",
+        'href="template.html"',
+        'href="templates/showcase.html"',
+        "Three live previews from each template",
+    ]:
+        if marker not in gallery:
+            errors.append(f"dual-template gallery marker missing: {marker}")
     if ".text-gradient { color: var(--accent); }" not in template:
         errors.append("core layouts must not use gradient text")
     if ".text-gradient {\n      background:" in template:
@@ -205,6 +280,50 @@ def main() -> int:
         errors.append("locked focus must not place a tight border around content")
     if "--motion-focus: 220ms" not in template:
         errors.append("presentation focus must retain the audited smooth transition duration")
+
+    showcase_design = (ROOT / "themes/showcase/design.md").read_text(encoding="utf-8")
+    showcase_markers = [
+        "ZXcharT Showcase · Layout Gallery",
+        "--bg: #171824",
+        "--accent: #f0b93c",
+        "--text-muted: #9695a0",
+        "--red: #e66b60",
+        "cover-orb",
+        "text-gradient",
+        "hookOrbBreathe",
+        "statement-cursor",
+        "closing-ring-outer",
+        "compare-scroll",
+        "min-width: 720px",
+        "overflow: auto",
+        "overflow-wrap: anywhere",
+        ".slide-content { flex: 0 0 auto; justify-content: flex-start; min-height: 0; }",
+        "width: 44px;",
+        "height: 44px;",
+    ]
+    for marker in showcase_markers:
+        if marker not in showcase:
+            errors.append(f"Showcase visual/runtime marker missing: {marker}")
+    if "accent-line" in showcase:
+        errors.append("Showcase must not restore isolated decorative short rules")
+    if re.search(r'<div class="metric-value"[^>]*>—</div>', showcase):
+        errors.append("Showcase metric placeholders must be explicit numeric forms")
+    for marker in [
+        "Gradient text and blurred light fields are allowed only",
+        "Pointer preview changes only the current item",
+        "Body content must never be silently clipped",
+        "Layout minimums",
+        "Runtime contract",
+    ]:
+        if marker not in showcase_design:
+            errors.append(f"Showcase design contract missing: {marker}")
+
+    for name, source in templates.items():
+        focus_config = re.search(r"const focusConfigs = \[(.*?)\];", source, re.S)
+        if not focus_config or focus_config.group(1).count('["') < 9:
+            errors.append(f"{name} focus coverage is incomplete")
+        if 'if (["Enter", " "].includes(event.key))' not in source:
+            errors.append(f"{name} focus items must support Enter and Space")
 
     interaction_contract = {
         "single global locked focus": [
@@ -246,12 +365,11 @@ def main() -> int:
             "transform: none !important;",
         ],
     }
-    for contract, markers in interaction_contract.items():
-        missing = [marker for marker in markers if marker not in template]
-        if missing:
-            errors.append(f"interaction contract missing {contract}: {missing}")
-    if "width: 44px;\n      height: 44px;" not in template:
-        errors.append("navigation controls must retain a 44px touch target")
+    for name, source in templates.items():
+        for contract, markers in interaction_contract.items():
+            missing = [marker for marker in markers if marker not in source]
+            if missing:
+                errors.append(f"{name} interaction contract missing {contract}: {missing}")
     pressure = ROOT / "projects/v2-pressure-test/index.html"
     if not pressure.is_file():
         errors.append("missing V2 Phase 1 pressure test")
@@ -283,9 +401,9 @@ def main() -> int:
         if missing:
             errors.append(f"{doc} missing layouts: {', '.join(missing)}")
 
-    for marker in VISUAL_PRIMITIVES:
+    for marker in BRIEFING_VISUAL_PRIMITIVES:
         if marker not in template:
-            errors.append(f"template missing visual or interaction primitive: {marker}")
+            errors.append(f"Briefing missing visual or interaction primitive: {marker}")
 
     documented_tokens = [
         "--bg-surface",
@@ -300,11 +418,20 @@ def main() -> int:
         for token in documented_tokens:
             if token not in text:
                 errors.append(f"{doc} missing current theme token: {token}")
+    customization = (ROOT / "docs/customization.md").read_text(encoding="utf-8")
+    for marker in [
+        "Briefing suppresses decorative cover pulses",
+        "Showcase permits only the bounded narrative-page effects",
+        "Showcase may use its documented gradient text",
+    ]:
+        if marker not in customization:
+            errors.append(f"customization guide missing template-specific visual boundary: {marker}")
 
-    if len(template.splitlines()) < 400:
-        errors.append("template is unexpectedly compressed; keep public source formatted and reviewable")
-    if "“" in template or "”" in template:
-        errors.append("template contains a displayed typographic quotation; use an explicit placeholder or sourced quote")
+    for name, source in templates.items():
+        if len(source.splitlines()) < 400:
+            errors.append(f"{name} is unexpectedly compressed; keep public source formatted and reviewable")
+        if "“" in source or "”" in source:
+            errors.append(f"{name} contains a displayed typographic quotation; use an explicit placeholder or sourced quote")
 
     shell = (ROOT / "scripts/new-project.sh").read_text(encoding="utf-8")
     python_script = (ROOT / "scripts/new-project.py").read_text(encoding="utf-8")
@@ -314,12 +441,46 @@ def main() -> int:
     license_text = (ROOT / "LICENSE").read_text(encoding="utf-8")
     trademarks = (ROOT / "TRADEMARKS.md").read_text(encoding="utf-8")
 
-    if "ROOT_DIR" not in shell or "template.html" not in shell:
-        errors.append("shell generator is not self-locating")
+    if 'exec python3 "$SCRIPT_DIR/new-project.py" "$@"' not in shell:
+        errors.append("shell generator must remain a thin Python wrapper")
     if "Path(__file__).resolve()" not in python_script or "third-party" not in python_script:
         errors.append("Python generator portability marker missing")
+    for marker in [
+        '"briefing": ("template.html", "ZXcharT Briefing")',
+        '"showcase": ("templates/showcase.html", "ZXcharT Showcase")',
+        'Usage: scripts/new-project.py [--template briefing|showcase]',
+        "return 64",
+        "return 66",
+        "return 73",
+    ]:
+        if marker not in python_script:
+            errors.append(f"Python generator contract marker missing: {marker}")
+
+    generator_namespace: dict[str, object] = {"__name__": "checker_import"}
+    with contextlib.redirect_stderr(io.StringIO()):
+        exec(compile(python_script, "scripts/new-project.py", "exec"), generator_namespace)
+        parse_args = generator_namespace["parse_args"]
+        cli_cases = {
+            ("demo",): ("briefing", "demo"),
+            ("--template", "briefing", "demo"): ("briefing", "demo"),
+            ("--template", "showcase", "demo"): ("showcase", "demo"),
+            ("--template", "unknown", "demo"): None,
+            ("--template",): None,
+        }
+        for args, expected in cli_cases.items():
+            actual = parse_args(list(args))
+            if actual != expected:
+                errors.append(f"generator CLI parse mismatch for {args}: {actual}")
     if 'sh scripts/new-project.sh "my-deck"' not in readme:
         errors.append("README must invoke the POSIX generator through sh")
+    for marker in [
+        "ZXcharT Briefing",
+        "ZXcharT Showcase",
+        'sh scripts/new-project.sh --template showcase "my-showcase"',
+        'py scripts/new-project.py --template showcase "my-showcase"',
+    ]:
+        if marker not in readme or marker not in readme_zh:
+            errors.append(f"bilingual README missing dual-template marker: {marker}")
     if "# OneChartLab Slides" not in readme or "OneChartLab Slides is an Agent Skill" not in readme:
         errors.append("README product description is missing or inconsistent")
     if "[简体中文](README.md)" not in readme:
@@ -350,9 +511,11 @@ def main() -> int:
     for reference in [
         "AGENTS.md",
         "themes/zxchart/design.md",
+        "themes/showcase/design.md",
         "docs/layouts.md",
         "docs/customization.md",
         "template.html",
+        "templates/showcase.html",
     ]:
         if f"`{reference}`" not in skill_text:
             errors.append(f"SKILL.md missing operational resource link: {reference}")
@@ -383,9 +546,10 @@ def main() -> int:
 
     print(
         "OK: "
-        f"{len(REQUIRED)} required files, {len(LAYOUTS)} ordered layouts, "
-        f"{len(VISUAL_PRIMITIVES)} visual/interaction primitives, full-repository privacy scan, "
-        "portable generators, manual-only Pages, and license boundaries passed."
+        f"{len(REQUIRED)} required files, 2 templates × {len(LAYOUTS)} ordered layouts, "
+        f"{len(PUBLIC_RUNTIME_MARKERS)} public runtime markers, "
+        f"{len(BRIEFING_VISUAL_PRIMITIVES)} Briefing visual/interaction primitives, "
+        "full-repository privacy scan, portable generators, manual-only Pages, and license boundaries passed."
     )
     return 0
 

@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- Added two first-class template families: default ZXcharT Briefing and optional ZXcharT Showcase.
+- Added `--template briefing|showcase` to the shared Python generator contract; the POSIX shell command is now a thin wrapper.
+- Added a Briefing SHA-256 acceptance lock and separate public runtime, Briefing visual, and Showcase visual repository checks.
+- Added a two-template chooser and live previews to the project gallery.
+- Reapplied current keyboard, touch, hidden-slide, Compare, focus, overflow, and reduced-motion contracts to Showcase.
 - Strengthened Skill discovery with English and Chinese trigger contexts.
 - Linked the operational SOP, design system, layout reference, customization guide, and template from `SKILL.md`.
 - Added installation and first-use instructions for HanaAgent, Claude, and OpenAI Codex.
