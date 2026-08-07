@@ -2,7 +2,7 @@
 
 ## Tokens
 
-A copied deck exposes its visual system in `:root`: `--bg`, `--bg-surface`, `--bg-elevated`, `--accent`, `--accent-rgb`, `--accent-light`, `--accent-soft`, `--accent-subtle`, `--accent-border`, `--red`, `--text`, `--text-secondary`, `--text-muted`, `--border`, `--border-strong`, and `--positive`. Change tokens rather than scattering inline colors.
+A copied deck exposes its visual system in `:root`: `--bg`, `--bg-surface`, `--bg-elevated`, `--accent`, `--accent-rgb`, `--accent-light`, `--accent-soft`, `--accent-subtle`, `--accent-border`, `--red`, `--text`, `--text-secondary`, `--text-muted`, `--border`, `--border-strong`, `--control-border`, `--positive`, `--motion-*`, and `--ease-*`. Change tokens rather than scattering inline colors or timing values.
 
 ## Type and evidence
 
@@ -12,7 +12,7 @@ Give each page one primary message. Keep the shared stage insets and alignment a
 
 ## Motion and interaction
 
-Motion is reviewed effect by effect rather than removed as a category. The seed retains short transitions, a small cover data pulse, bar reveals, keyboard-accessible Stack focus, restrained Timeline/Stack pointer proximity, and an optional Outro focus shift. None carries required meaning, and `prefers-reduced-motion: reduce` removes animation and scaling. Non-current slides are made `aria-hidden` and inert by the navigation script. Keep controls as real buttons or links, with visible keyboard focus.
+Motion is reviewed effect by effect rather than removed as a category. The seed retains tokenized short transitions, bar reveals, keyboard-accessible Stack focus, restrained Timeline/Stack pointer proximity, and an optional Outro focus shift. Decorative cover pulses, blurred orbs, gradient flow, and rings are suppressed. None carries required meaning, and `prefers-reduced-motion: reduce` removes animation and scaling. Non-current slides are made `aria-hidden` and inert by the navigation script. Keep controls as real buttons or links, with visible keyboard focus.
 
 ## Content rules
 

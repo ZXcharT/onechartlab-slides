@@ -96,9 +96,9 @@ LAYOUT_DOCS = [
 VISUAL_PRIMITIVES = [
     "--stage-inline",
     "evidence-rail",
-    "cover-datastream",
     "text-gradient { color: var(--accent); }",
-    "closing-ring-outer",
+    "--motion-base",
+    "font-variant-numeric: lining-nums tabular-nums",
     "statement-cursor",
     "prefers-reduced-motion",
     "max-height: 720px",
@@ -170,8 +170,18 @@ def main() -> int:
         errors.append("core layouts must not use isolated short-line decoration")
     if re.search(r'<div class="metric-value"[^>]*>—</div>', template):
         errors.append("metric placeholders must not render as ambiguous short bars")
-    if "--text-muted: #88889c" not in template:
-        errors.append("informational muted text must retain readable contrast")
+    if "--text-muted: #9695a0" not in template:
+        errors.append("informational muted text must retain the audited contrast token")
+    if "--accent: #d9a441" not in template or "--bg: #11131b" not in template:
+        errors.append("template must retain the audited matte briefing palette")
+    if "filter: blur" in template or "linear-gradient" in template or "radial-gradient" in template:
+        errors.append("template must not reintroduce glow or gradient effects")
+    if "h4 { font-weight: 700; }" not in template:
+        errors.append("heading weights must be explicit rather than UA-dependent")
+    if ".tag {" not in template or "color: var(--text-secondary);" not in template:
+        errors.append("header tags must remain quieter than gold section indexes")
+    if 'font-feature-settings: "lnum" 1, "tnum" 1;' not in template:
+        errors.append("real numeric roles must retain lining tabular numerals")
     if "width: 44px;\n      height: 44px;" not in template:
         errors.append("navigation controls must retain a 44px touch target")
     pressure = ROOT / "projects/v2-pressure-test/index.html"

@@ -8,14 +8,15 @@
   <style>
     :root {
       color-scheme: dark;
-      --bg: #10111a;
-      --surface: #171824;
-      --surface-2: #1e2030;
-      --accent: #f0b93c;
-      --accent-soft: rgba(240, 185, 60, 0.14);
-      --text: #f1f1f6;
-      --muted: #a0a0b2;
-      --line: rgba(255, 255, 255, 0.09);
+      --bg: #11131b;
+      --surface: #181b25;
+      --surface-2: #202430;
+      --accent: #d9a441;
+      --accent-light: #edc974;
+      --accent-soft: rgba(217, 164, 65, 0.12);
+      --text: #f3f0e8;
+      --muted: #a8a6ad;
+      --line: rgba(243, 240, 232, 0.12);
       --max: 1180px;
     }
 
@@ -26,6 +27,8 @@
       background: var(--bg);
       color: var(--text);
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-synthesis: none;
+      text-rendering: optimizeLegibility;
     }
 
     a { color: inherit; }
@@ -53,7 +56,7 @@
       color: var(--muted);
       text-decoration: none;
       font-size: 0.86rem;
-      transition: color 160ms ease;
+      transition: color 160ms cubic-bezier(0.2, 0.8, 0.2, 1);
     }
     .site-nav a:hover { color: var(--text); }
 
@@ -104,10 +107,10 @@
       text-decoration: none;
       font-size: 0.86rem;
       font-weight: 700;
-      transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+      transition: transform 160ms cubic-bezier(0.22, 1, 0.36, 1), border-color 160ms cubic-bezier(0.2, 0.8, 0.2, 1), background 160ms cubic-bezier(0.2, 0.8, 0.2, 1);
     }
-    .button:hover { transform: translateY(-2px); border-color: rgba(240, 185, 60, 0.45); }
-    .button-primary { color: #171824; background: var(--accent); border-color: var(--accent); }
+    .button:hover { transform: translateY(-2px); border-color: rgba(217, 164, 65, 0.48); }
+    .button-primary { color: #11131b; background: var(--accent); border-color: var(--accent); }
 
     .hero-stats {
       display: grid;
@@ -141,11 +144,11 @@
       border: 1px solid var(--line);
       border-radius: 12px;
       background: var(--surface);
-      transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+      transition: transform 180ms cubic-bezier(0.22, 1, 0.36, 1), border-color 180ms cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 180ms cubic-bezier(0.2, 0.8, 0.2, 1);
     }
     .gallery-card:hover {
       transform: translateY(-4px);
-      border-color: rgba(240, 185, 60, 0.34);
+      border-color: rgba(217, 164, 65, 0.38);
       box-shadow: 0 22px 55px rgba(0, 0, 0, 0.24);
     }
 
@@ -153,7 +156,7 @@
       position: relative;
       aspect-ratio: 16 / 9;
       overflow: hidden;
-      background: #171824;
+      background: #11131b;
       border-bottom: 1px solid var(--line);
     }
     .preview iframe {
