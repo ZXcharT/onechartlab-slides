@@ -219,7 +219,7 @@ def main() -> int:
             '<html lang="zh-CN">',
             'href="index.en.html" lang="en"',
             "Briefing 为默认模板",
-            "每套模板各 3 个实时预览",
+            "每套模板展示 3 个实时预览",
         ],
         "en": [
             '<html lang="en">',

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="OneChartLab Slides 双模板目录与实时 HTML 版式预览。">
+  <meta name="description" content="OneChartLab Slides 模板目录与实时 HTML 预览。">
   <title>OneChartLab Slides · 模板目录</title>
   <style>
     :root {
@@ -218,6 +218,23 @@
     .site-footer a { text-decoration: none; }
     .site-footer a:hover { color: var(--accent); }
 
+    html[lang="zh-CN"] body {
+      font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", ui-sans-serif, system-ui, sans-serif;
+    }
+    html[lang="zh-CN"] h1 {
+      line-height: 1.06;
+      letter-spacing: -0.035em;
+      text-wrap: balance;
+    }
+    html[lang="zh-CN"] h2 {
+      line-height: 1.12;
+      letter-spacing: -0.02em;
+      text-wrap: balance;
+    }
+    html[lang="zh-CN"] .hero-copy,
+    html[lang="zh-CN"] .template-option p,
+    html[lang="zh-CN"] .card-description { text-wrap: pretty; }
+
     @media (max-width: 850px) {
       .hero { grid-template-columns: 1fr; align-items: start; }
       .hero-side { max-width: 540px; }
@@ -254,8 +271,8 @@
     <section class="shell hero">
       <div>
         <p class="eyebrow">开源 · Agent Skill</p>
-        <h1>从需求到浏览器即用的演示文稿。</h1>
-        <p class="hero-copy">两套可直接在浏览器中使用的演示系统：Briefing 用于研究与决策，Showcase 用于发布与叙事型展示。</p>
+        <h1>将内容转化为可直接演示的网页。</h1>
+        <p class="hero-copy">两套网页演示模板：Briefing 适合研究与决策，Showcase 适合发布、提案与叙事表达。</p>
       </div>
       <div class="hero-side">
         <div class="hero-actions">
@@ -264,25 +281,25 @@
           <a class="button" href="https://github.com/ZXcharT/onechartlab-slides#安装-skill">安装 Skill</a>
         </div>
         <div class="hero-stats" aria-label="项目概览">
-          <div class="stat"><strong>02</strong><span>套模板体系</span></div>
-          <div class="stat"><strong>16</strong><span>种通用版式</span></div>
-          <div class="stat"><strong>HTML</strong><span>便携输出</span></div>
+          <div class="stat"><strong>02</strong><span>套模板</span></div>
+          <div class="stat"><strong>16</strong><span>种版式</span></div>
+          <div class="stat"><strong>HTML</strong><span>单文件输出</span></div>
         </div>
       </div>
     </section>
 
     <section class="shell template-section" aria-labelledby="template-title">
       <div class="section-head">
-        <div><p class="eyebrow">按观众目标选择</p><h2 id="template-title">你希望观众接下来做什么？</h2></div>
+        <div><p class="eyebrow">选择依据</p><h2 id="template-title">根据演示目标选择模板</h2></div>
         <p>Briefing 为默认模板</p>
       </div>
       <div class="template-grid">
         <article class="template-option default">
-          <div><div class="template-meta"><span>ZXcharT Briefing</span><span>默认</span></div><h2>审视证据，做出决策。</h2><p>适合研究报告、策略复盘、数据分析和决策会议。信息密度更高，表达克制，便于仔细审阅。</p></div>
+          <div><div class="template-meta"><span>ZXcharT Briefing</span><span>默认</span></div><h2>梳理证据，支持决策。</h2><p>适合研究报告、策略复盘、数据分析与决策会议。信息密度较高，表达克制，便于审阅和讨论。</p></div>
           <div class="template-links"><a href="template.html" target="_blank" rel="noopener">打开完整模板 ↗</a><a href="README.md#可选使用命令行创建项目">生成 Briefing</a></div>
         </article>
         <article class="template-option">
-          <div><div class="template-meta"><span>ZXcharT Showcase</span><span>叙事优先</span></div><h2>抓住注意，建立认同。</h2><p>适合发布、提案、主题演讲和叙事型展示。用更鲜明的视觉冲击、节奏与氛围突出每个观点。</p></div>
+          <div><div class="template-meta"><span>ZXcharT Showcase</span><span>展示型</span></div><h2>突出观点，留下印象。</h2><p>适合产品发布、方案提案、主题演讲与叙事展示。视觉节奏更强，便于突出重点并建立整体印象。</p></div>
           <div class="template-links"><a href="templates/showcase.html" target="_blank" rel="noopener">打开完整模板 ↗</a><a href="README.md#可选使用命令行创建项目">生成 Showcase</a></div>
         </article>
       </div>
@@ -290,57 +307,57 @@
 
     <section class="shell gallery-section" aria-labelledby="gallery-title">
       <div class="section-head">
-        <div><p class="eyebrow">精选预览</p><h2 id="gallery-title">Briefing 与 Showcase 版式</h2></div>
-        <p>每套模板各 3 个实时预览</p>
+        <div><p class="eyebrow">版式预览</p><h2 id="gallery-title">两套模板的代表版式</h2></div>
+        <p>每套模板展示 3 个实时预览</p>
       </div>
 
       <div class="gallery-grid">
         <article class="gallery-card">
           <div class="preview">
-            <iframe src="template.html?slide=1&amp;embed=1" title="Briefing 封面版式预览" loading="lazy" tabindex="-1" sandbox="allow-scripts allow-same-origin"></iframe>
-            <a class="preview-hit" href="template.html?slide=1" target="_blank" rel="noopener" aria-label="打开 Briefing 封面版式"></a>
+            <iframe src="template.html?slide=1&amp;embed=1" title="Briefing 封面预览" loading="lazy" tabindex="-1" sandbox="allow-scripts allow-same-origin"></iframe>
+            <a class="preview-hit" href="template.html?slide=1" target="_blank" rel="noopener" aria-label="打开 Briefing 封面"></a>
           </div>
-          <div class="card-body"><span class="card-index">BR / 01</span><div><h3 class="card-title">Briefing · 开场陈述</h3><p class="card-description">用清晰的阅读顺序呈现标题、范围与作者信息。</p></div><a class="open-link" href="template.html?slide=1" target="_blank" rel="noopener">打开 ↗</a></div>
+          <div class="card-body"><span class="card-index">BR / 01</span><div><h3 class="card-title">Briefing · 封面</h3><p class="card-description">清晰呈现标题、主题范围和作者信息。</p></div><a class="open-link" href="template.html?slide=1" target="_blank" rel="noopener">打开 ↗</a></div>
         </article>
 
         <article class="gallery-card">
           <div class="preview">
-            <iframe src="template.html?slide=4&amp;embed=1" title="Briefing 数据看板版式预览" loading="lazy" tabindex="-1" sandbox="allow-scripts allow-same-origin"></iframe>
-            <a class="preview-hit" href="template.html?slide=4" target="_blank" rel="noopener" aria-label="打开 Briefing 数据看板版式"></a>
+            <iframe src="template.html?slide=4&amp;embed=1" title="Briefing 决策看板预览" loading="lazy" tabindex="-1" sandbox="allow-scripts allow-same-origin"></iframe>
+            <a class="preview-hit" href="template.html?slide=4" target="_blank" rel="noopener" aria-label="打开 Briefing 决策看板"></a>
           </div>
-          <div class="card-body"><span class="card-index">BR / 02</span><div><h3 class="card-title">Briefing · 数据看板</h3><p class="card-description">围绕一个决策状态组织证据、限制与下一步责任。</p></div><a class="open-link" href="template.html?slide=4" target="_blank" rel="noopener">打开 ↗</a></div>
+          <div class="card-body"><span class="card-index">BR / 02</span><div><h3 class="card-title">Briefing · 决策看板</h3><p class="card-description">围绕决策结论，呈现支持证据、限制条件和后续责任人。</p></div><a class="open-link" href="template.html?slide=4" target="_blank" rel="noopener">打开 ↗</a></div>
         </article>
 
         <article class="gallery-card">
           <div class="preview">
-            <iframe src="template.html?slide=6&amp;embed=1" title="Briefing 排名证据版式预览" loading="lazy" tabindex="-1" sandbox="allow-scripts allow-same-origin"></iframe>
-            <a class="preview-hit" href="template.html?slide=6" target="_blank" rel="noopener" aria-label="打开 Briefing 排名证据版式"></a>
+            <iframe src="template.html?slide=6&amp;embed=1" title="Briefing 数据排名预览" loading="lazy" tabindex="-1" sandbox="allow-scripts allow-same-origin"></iframe>
+            <a class="preview-hit" href="template.html?slide=6" target="_blank" rel="noopener" aria-label="打开 Briefing 数据排名"></a>
           </div>
-          <div class="card-body"><span class="card-index">BR / 03</span><div><h3 class="card-title">Briefing · 排名证据</h3><p class="card-description">用带单位与标签的动态条形图展示有序数值。</p></div><a class="open-link" href="template.html?slide=6" target="_blank" rel="noopener">打开 ↗</a></div>
+          <div class="card-body"><span class="card-index">BR / 03</span><div><h3 class="card-title">Briefing · 数据排名</h3><p class="card-description">按顺序呈现数值，并保留清晰的单位和标签。</p></div><a class="open-link" href="template.html?slide=6" target="_blank" rel="noopener">打开 ↗</a></div>
         </article>
 
         <article class="gallery-card">
           <div class="preview">
-            <iframe src="templates/showcase.html?slide=1&amp;embed=1" title="Showcase 封面版式预览" loading="lazy" tabindex="-1" sandbox="allow-scripts allow-same-origin"></iframe>
-            <a class="preview-hit" href="templates/showcase.html?slide=1" target="_blank" rel="noopener" aria-label="打开 Showcase 封面版式"></a>
+            <iframe src="templates/showcase.html?slide=1&amp;embed=1" title="Showcase 展示型封面预览" loading="lazy" tabindex="-1" sandbox="allow-scripts allow-same-origin"></iframe>
+            <a class="preview-hit" href="templates/showcase.html?slide=1" target="_blank" rel="noopener" aria-label="打开 Showcase 展示型封面"></a>
           </div>
-          <div class="card-body"><span class="card-index">SH / 01</span><div><h3 class="card-title">Showcase · 电影感开场</h3><p class="card-description">用受控光场、标题层级与叙事张力建立舞台感。</p></div><a class="open-link" href="templates/showcase.html?slide=1" target="_blank" rel="noopener">打开 ↗</a></div>
+          <div class="card-body"><span class="card-index">SH / 01</span><div><h3 class="card-title">Showcase · 展示型封面</h3><p class="card-description">通过克制的光影和标题层级，建立鲜明的开场氛围。</p></div><a class="open-link" href="templates/showcase.html?slide=1" target="_blank" rel="noopener">打开 ↗</a></div>
         </article>
 
         <article class="gallery-card">
           <div class="preview">
-            <iframe src="templates/showcase.html?slide=3&amp;embed=1" title="Showcase 三指标版式预览" loading="lazy" tabindex="-1" sandbox="allow-scripts allow-same-origin"></iframe>
-            <a class="preview-hit" href="templates/showcase.html?slide=3" target="_blank" rel="noopener" aria-label="打开 Showcase 三指标版式"></a>
+            <iframe src="templates/showcase.html?slide=3&amp;embed=1" title="Showcase 核心指标预览" loading="lazy" tabindex="-1" sandbox="allow-scripts allow-same-origin"></iframe>
+            <a class="preview-hit" href="templates/showcase.html?slide=3" target="_blank" rel="noopener" aria-label="打开 Showcase 核心指标"></a>
           </div>
-          <div class="card-body"><span class="card-index">SH / 02</span><div><h3 class="card-title">Showcase · 三项核心指标</h3><p class="card-description">用模块化舞台呈现三项指标，并由演讲者控制重点。</p></div><a class="open-link" href="templates/showcase.html?slide=3" target="_blank" rel="noopener">打开 ↗</a></div>
+          <div class="card-body"><span class="card-index">SH / 02</span><div><h3 class="card-title">Showcase · 核心指标</h3><p class="card-description">集中呈现三项关键指标，并支持演讲时切换重点。</p></div><a class="open-link" href="templates/showcase.html?slide=3" target="_blank" rel="noopener">打开 ↗</a></div>
         </article>
 
         <article class="gallery-card">
           <div class="preview">
-            <iframe src="templates/showcase.html?slide=14&amp;embed=1" title="Showcase 核心观点版式预览" loading="lazy" tabindex="-1" sandbox="allow-scripts allow-same-origin"></iframe>
-            <a class="preview-hit" href="templates/showcase.html?slide=14" target="_blank" rel="noopener" aria-label="打开 Showcase 核心观点版式"></a>
+            <iframe src="templates/showcase.html?slide=14&amp;embed=1" title="Showcase 观点页预览" loading="lazy" tabindex="-1" sandbox="allow-scripts allow-same-origin"></iframe>
+            <a class="preview-hit" href="templates/showcase.html?slide=14" target="_blank" rel="noopener" aria-label="打开 Showcase 观点页"></a>
           </div>
-          <div class="card-body"><span class="card-index">SH / 03</span><div><h3 class="card-title">Showcase · 核心观点</h3><p class="card-description">用明确节奏与受控氛围突出一个高确信度观点。</p></div><a class="open-link" href="templates/showcase.html?slide=14" target="_blank" rel="noopener">打开 ↗</a></div>
+          <div class="card-body"><span class="card-index">SH / 03</span><div><h3 class="card-title">Showcase · 观点页</h3><p class="card-description">以简洁的节奏和氛围，集中呈现一个核心观点。</p></div><a class="open-link" href="templates/showcase.html?slide=14" target="_blank" rel="noopener">打开 ↗</a></div>
         </article>
       </div>
     </section>
@@ -348,7 +365,7 @@
 
   <footer class="shell site-footer">
     <span>OneChartLab Slides · ZXcharT</span>
-    <span><a href="LICENSE">MIT 代码</a> · 名称与标识保留权利</span>
+    <span><a href="LICENSE">MIT 代码</a> · 名称及标识受保护</span>
   </footer>
 </body>
 </html>

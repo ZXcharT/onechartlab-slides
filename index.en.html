@@ -218,6 +218,23 @@
     .site-footer a { text-decoration: none; }
     .site-footer a:hover { color: var(--accent); }
 
+    html[lang="zh-CN"] body {
+      font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", ui-sans-serif, system-ui, sans-serif;
+    }
+    html[lang="zh-CN"] h1 {
+      line-height: 1.06;
+      letter-spacing: -0.035em;
+      text-wrap: balance;
+    }
+    html[lang="zh-CN"] h2 {
+      line-height: 1.12;
+      letter-spacing: -0.02em;
+      text-wrap: balance;
+    }
+    html[lang="zh-CN"] .hero-copy,
+    html[lang="zh-CN"] .template-option p,
+    html[lang="zh-CN"] .card-description { text-wrap: pretty; }
+
     @media (max-width: 850px) {
       .hero { grid-template-columns: 1fr; align-items: start; }
       .hero-side { max-width: 540px; }
