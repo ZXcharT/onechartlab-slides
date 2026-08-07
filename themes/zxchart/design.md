@@ -25,7 +25,7 @@ The ZXcharT theme uses a dark blue-gray base and restrained gold emphasis. It is
 --positive: #00b894;
 ```
 
-Use `--accent` for emphasis, sequence marks, and fine evidence rails—not body copy or broad surfaces. Reserve `--red` and `--positive` for semantic negative and positive states. Preserve readable contrast after customization.
+Use `--accent` for emphasis and meaningful sequence marks—not body copy, broad surfaces, or isolated decorative rules. Reserve `--red` and `--positive` for semantic negative and positive states. Preserve readable contrast after customization.
 
 ## Typography, spacing, and surfaces
 
@@ -34,7 +34,7 @@ Use `--accent` for emphasis, sequence marks, and fine evidence rails—not body 
 - All core layouts share responsive stage insets through `--stage-inline`, `--stage-top`, and `--stage-bottom`; compact heights reduce them without hiding content.
 - Core bodies use the full available stage width rather than unrelated fixed content caps. Titles, evidence rails, and content share common anchors.
 - Body text uses responsive sizing. A page has one primary message, then evidence, then source or limitation.
-- Do not use large-area gradients, gradient text, decorative glass, or all-equal card arrays. Fine rules and annotation rails should encode a source, sequence, unit, or interpretation.
+- Do not use large-area gradients, gradient text, decorative glass, all-equal card arrays, or isolated short rules. Lines are reserved for structural divisions; evidence labels should communicate through text and alignment.
 
 ## Interaction and accessibility
 

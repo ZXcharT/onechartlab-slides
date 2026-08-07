@@ -166,6 +166,10 @@ def main() -> int:
         errors.append("core layouts must not use gradient text")
     if ".text-gradient {\n      background:" in template:
         errors.append("core layouts must not use a gradient text treatment")
+    if ".evidence-rail::before" in template or "accent-line" in template:
+        errors.append("core layouts must not use isolated short-line decoration")
+    if re.search(r'<div class="metric-value"[^>]*>—</div>', template):
+        errors.append("metric placeholders must not render as ambiguous short bars")
     if "--text-muted: #88889c" not in template:
         errors.append("informational muted text must retain readable contrast")
     if "width: 44px;\n      height: 44px;" not in template:

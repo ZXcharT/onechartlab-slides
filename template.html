@@ -130,13 +130,6 @@
       letter-spacing: 0.04em;
     }
 
-    .accent-line {
-      width: 64px;
-      height: 4px;
-      margin-bottom: 1.6rem;
-      background: var(--accent);
-    }
-
     .text-gradient { color: var(--accent); }
 
     :focus-visible {
@@ -168,16 +161,12 @@
     }
 
     .evidence-rail {
-      display: flex;
-      align-items: center;
-      gap: 0.65rem;
       margin: 0 0 1.35rem;
       color: var(--text-muted);
       font-size: 0.76rem;
       letter-spacing: 0.08em;
       text-transform: uppercase;
     }
-    .evidence-rail::before { width: 3.5rem; height: 1px; background: var(--accent); content: ""; }
     .source-note { margin: 1rem 0 0; color: var(--text-muted); font-size: clamp(0.72rem, 0.9vw, 0.9rem); line-height: 1.45; }
 
     /* 01 · cover */
@@ -188,7 +177,6 @@
       column-gap: clamp(3rem, 8vw, 9rem);
       align-content: center;
     }
-    .layout-cover .accent-line,
     .layout-cover h1,
     .layout-cover .subtitle { grid-column: 1; }
     .layout-cover h1 { max-width: 12ch; margin: 0 0 1.25rem; font-size: clamp(3.8rem, 6.4vw, 7.25rem); line-height: .98; letter-spacing: -0.055em; }
@@ -235,10 +223,10 @@
 
     /* 05 · split */
     .split-body { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(20rem, .9fr); gap: clamp(3rem, 8vw, 9rem); align-items: stretch; }
-    .insight-list { display: grid; align-content: center; gap: 1rem; margin: 0; padding: 0; list-style: none; }
+    .insight-list { display: grid; align-content: center; gap: 1rem; margin: 0; padding-left: 1.35rem; list-style: disc; }
     .split-body > div { display: flex; flex-direction: column; justify-content: center; }
-    .insight-list li { position: relative; margin: 0; padding-left: 1.5rem; }
-    .insight-list li::before { position: absolute; top: .65em; left: 0; width: .55rem; height: 1px; background: var(--accent); content: ""; }
+    .insight-list li { margin: 0; padding-left: .35rem; }
+    .insight-list li::marker { color: var(--accent); }
     .split-highlight { padding: 0 0 1.25rem; border-bottom: 1px solid var(--accent-border); color: var(--text); font-size: clamp(1.25rem, 1.75vw, 1.65rem); line-height: 1.5; }
     .mini-stat-row { display: grid; gap: .8rem; margin-top: 1.25rem; }
     .mini-stat { display: grid; grid-template-columns: 3.5rem 1fr; gap: .7rem; align-items: baseline; padding-bottom: .7rem; border-bottom: 1px solid var(--border); }
@@ -493,7 +481,6 @@
       .slide-header h4 { flex: 0 0 100%; }
       .slide-header .tag { flex: 0 0 auto; max-width: 100%; white-space: normal; }
       .layout-cover { display: flex; justify-content: center; padding-left: 8vw; }
-      .layout-cover .accent-line,
       .layout-cover h1,
       .layout-cover .subtitle,
       .layout-cover .meta { width: 100%; }
@@ -567,7 +554,6 @@
     <section class="slide layout-cover active">
       <div class="cover-deco" aria-hidden="true"></div>
       <div class="cover-datastream" aria-hidden="true"><span></span><span></span><span></span></div>
-      <div class="accent-line"></div>
       <h1><span class="text-gradient">OneChartLab Slides</span><br>content-first HTML presentations</h1>
       <p class="subtitle">A neutral, browser-ready seed for clear claims, attributable evidence, and deliberate presentation pacing.</p>
       <p class="meta"><span>ZXcharT theme</span><span>Layout gallery</span><span>2026</span></p>
@@ -597,9 +583,9 @@
         <h2>One number carries the claim; the rest explain it.</h2>
         <p class="evidence-rail">Use real values only with unit · period · source</p>
         <div class="metrics-row">
-          <article class="metric-card"><div class="metric-value">—</div><div class="metric-label">Primary measure</div><p class="metric-desc">Name the measure, unit, source, and time window before asking the audience to act on it.</p><ul class="metric-supports"><li>Definition and denominator</li><li>Comparison baseline</li><li>Decision threshold</li></ul></article>
-          <article class="metric-card"><div class="metric-value">—</div><div class="metric-label">Supporting measure</div><p class="metric-desc">Use one signal that helps explain the direction.</p></article>
-          <article class="metric-card"><div class="metric-value">—</div><div class="metric-label">Interpretation</div><p class="metric-desc">State the limit that prevents over-reading the number.</p></article>
+          <article class="metric-card"><div class="metric-value" aria-label="Primary value placeholder">00.0</div><div class="metric-label">Primary measure</div><p class="metric-desc">Name the measure, unit, source, and time window before asking the audience to act on it.</p><ul class="metric-supports"><li>Definition and denominator</li><li>Comparison baseline</li><li>Decision threshold</li></ul></article>
+          <article class="metric-card"><div class="metric-value" aria-label="Supporting value placeholder">00</div><div class="metric-label">Supporting measure</div><p class="metric-desc">Use one signal that helps explain the direction.</p></article>
+          <article class="metric-card"><div class="metric-value" aria-label="Interpretation value placeholder">0.0%</div><div class="metric-label">Interpretation</div><p class="metric-desc">State the limit that prevents over-reading the number.</p></article>
         </div>
       </div>
     </section>

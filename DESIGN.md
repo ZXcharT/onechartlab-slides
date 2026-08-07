@@ -4,7 +4,7 @@
 
 - The deck retains a deep blue-gray field with restrained gold for emphasis, sequence markers, and evidence rails.
 - Large-area gradients and gradient text are absent from the seven Phase 1 layouts. The cover uses a fine vertical evidence line and a small local data pulse instead of light-orb decoration.
-- Quality comes from typography, asymmetry, spacing, fine rules, aligned data, and a conclusion → evidence → source reading order.
+- Quality comes from typography, asymmetry, spacing, aligned data, and a conclusion → evidence → source reading order. Short decorative rules are not a motif; lines are reserved for full structural divisions such as rows, columns, and tables.
 - Informational muted text uses `#88889c`, which remains readable on both the base and surface backgrounds.
 
 ## Stage and alignment
