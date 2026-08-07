@@ -28,6 +28,7 @@ REQUIRED = [
     "templates/showcase.html",
     "templates/briefing.manifest.json",
     "index.html",
+    "index.en.html",
     "PRODUCT.md",
     "DESIGN.md",
     "themes/zxchart/design.md",
@@ -209,40 +210,77 @@ def main() -> int:
             f"Briefing bytes changed without explicit acceptance: {briefing_digest}"
         )
 
-    gallery = (ROOT / "index.html").read_text(encoding="utf-8")
-    gallery_cards = gallery.count('class="gallery-card"')
-    briefing_previews = [
-        int(value)
-        for value in re.findall(r'<iframe src="template\.html\?slide=(\d+)&amp;embed=1"', gallery)
-    ]
-    showcase_previews = [
-        int(value)
-        for value in re.findall(r'<iframe src="templates/showcase\.html\?slide=(\d+)&amp;embed=1"', gallery)
-    ]
-    gallery_previews = briefing_previews + showcase_previews
-    if not 4 <= gallery_cards <= 8:
-        errors.append(f"gallery must stay curated at 4-8 cards, found {gallery_cards}")
-    if len(gallery_previews) != gallery_cards:
-        errors.append(f"gallery live previews are missing: {gallery_previews}")
-    if len(briefing_previews) != 3 or len(showcase_previews) != 3:
-        errors.append(
-            f"gallery must show three Briefing and three Showcase previews: "
-            f"{briefing_previews} / {showcase_previews}"
-        )
-    if len(briefing_previews) != len(set(briefing_previews)) or len(showcase_previews) != len(set(showcase_previews)):
-        errors.append("gallery must not duplicate a preview within one template")
-    if any(value < 1 or value > len(LAYOUTS) for value in gallery_previews):
-        errors.append(f"gallery references an invalid slide number: {gallery_previews}")
-    for marker in [
-        "ZXcharT Briefing",
-        "ZXcharT Showcase",
-        "Briefing is the default",
-        'href="template.html"',
-        'href="templates/showcase.html"',
-        "Three live previews from each template",
-    ]:
-        if marker not in gallery:
-            errors.append(f"dual-template gallery marker missing: {marker}")
+    gallery_paths = {
+        "zh-CN": ROOT / "index.html",
+        "en": ROOT / "index.en.html",
+    }
+    locale_markers = {
+        "zh-CN": [
+            '<html lang="zh-CN">',
+            'href="index.en.html" lang="en"',
+            "Briefing 为默认模板",
+            "每套模板各 3 个实时预览",
+        ],
+        "en": [
+            '<html lang="en">',
+            'href="index.html" lang="zh-CN"',
+            "Briefing is the default",
+            "Three live previews from each template",
+        ],
+    }
+    gallery_preview_sets: dict[str, tuple[list[int], list[int]]] = {}
+    gallery_sources: dict[str, str] = {}
+    for locale, path in gallery_paths.items():
+        gallery = path.read_text(encoding="utf-8")
+        gallery_sources[locale] = gallery
+        gallery_cards = gallery.count('class="gallery-card"')
+        briefing_previews = [
+            int(value)
+            for value in re.findall(r'<iframe src="template\.html\?slide=(\d+)&amp;embed=1"', gallery)
+        ]
+        showcase_previews = [
+            int(value)
+            for value in re.findall(r'<iframe src="templates/showcase\.html\?slide=(\d+)&amp;embed=1"', gallery)
+        ]
+        gallery_previews = briefing_previews + showcase_previews
+        gallery_preview_sets[locale] = (briefing_previews, showcase_previews)
+        if not 4 <= gallery_cards <= 8:
+            errors.append(f"{locale} gallery must stay curated at 4-8 cards, found {gallery_cards}")
+        if len(gallery_previews) != gallery_cards:
+            errors.append(f"{locale} gallery live previews are missing: {gallery_previews}")
+        if len(briefing_previews) != 3 or len(showcase_previews) != 3:
+            errors.append(
+                f"{locale} gallery must show three Briefing and three Showcase previews: "
+                f"{briefing_previews} / {showcase_previews}"
+            )
+        if len(briefing_previews) != len(set(briefing_previews)) or len(showcase_previews) != len(set(showcase_previews)):
+            errors.append(f"{locale} gallery must not duplicate a preview within one template")
+        if any(value < 1 or value > len(LAYOUTS) for value in gallery_previews):
+            errors.append(f"{locale} gallery references an invalid slide number: {gallery_previews}")
+        for marker in [
+            "ZXcharT Briefing",
+            "ZXcharT Showcase",
+            'href="template.html"',
+            'href="templates/showcase.html"',
+            *locale_markers[locale],
+        ]:
+            if marker not in gallery:
+                errors.append(f"{locale} dual-template gallery marker missing: {marker}")
+    if gallery_preview_sets["zh-CN"] != gallery_preview_sets["en"]:
+        errors.append("Chinese and English galleries must preview the same slides")
+    gallery_style_matches = {
+        locale: re.search(r"<style>(.*?)</style>", source, re.S)
+        for locale, source in gallery_sources.items()
+    }
+    if any(match is None for match in gallery_style_matches.values()):
+        errors.append("Chinese and English galleries must each contain an inline style block")
+    else:
+        gallery_styles = {
+            locale: match.group(1)
+            for locale, match in gallery_style_matches.items()
+        }
+        if gallery_styles["zh-CN"] != gallery_styles["en"]:
+            errors.append("Chinese and English galleries must share identical layout and visual CSS")
     if ".text-gradient { color: var(--accent); }" not in template:
         errors.append("core layouts must not use gradient text")
     if ".text-gradient {\n      background:" in template:
